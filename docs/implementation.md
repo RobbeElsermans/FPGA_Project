@@ -28,6 +28,14 @@ Steps
 
 If you get an error, check that jumper **JP5** is set to **JTAG**. If not, do so and restart the board.
 
+After the programming, you should see this in a serial console (Like Putty or Tera).
+![picture of serial console](pictures/DEMO_Console_output.jpg)
+Here we can change some setting and request some registers from tje camera.
+
+Last but not least you need to have a video output on your monitor.
+![picture of monitor](pictures/DEMO_monitor_output.jpg)
+
+It's working! That means it is time to dig into the code and understand every bit and byte of it.
 
 ## Sources
 * [Tutorial usage Demo](https://digilent.com/reference/learn/programmable-logic/tutorials/zybo-z7-pcam-5c-demo/start)
