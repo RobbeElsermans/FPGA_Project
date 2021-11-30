@@ -26,7 +26,7 @@ Steps
 8. Program the FPGA via ```Xilinx Tools -> Program FPGA```
 9. Upload the program via right click ```pcam_vdma_hdmi``` -> ```Run As``` -> ```1 Launch On Hardware (System Debugger)```
 
-If you get an error, check that jumper **JP5** is set to **JTAG**. If not, do so and restart the board.
+If you get an error, check if jumper **JP5** is set to **JTAG**. If not, do so and restart the board.
 
 After the programming, you should see this in a serial console (Like Putty or Tera).
 ![picture of serial console](pictures/DEMO_Console_output.jpg)
