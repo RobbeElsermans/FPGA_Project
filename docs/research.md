@@ -17,3 +17,7 @@ I expect no dificulties to setting up this tutorial. However in my experience th
 
 ## Update
 In the [GitHub repo](https://github.com/Digilent/Zybo-Z7-20-pcam-5c) we can see that there is a version for Vivado 2019.1 available. We're going to test that one out in the future.
+
+## links I used
+
+[slice and concat](https://support.xilinx.com/s/article/60844?language=en_US)
