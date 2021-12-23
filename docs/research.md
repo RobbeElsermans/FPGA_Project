@@ -15,8 +15,6 @@ As I read the tutorial that was given, I noticied that the progam itself was wri
 
 I expect no dificulties to setting up this tutorial. However in my experience this happends rarely.
 
-## Update
-In the [GitHub repo](https://github.com/Digilent/Zybo-Z7-20-pcam-5c) we can see that there is a version for Vivado 2019.1 available. We're going to test that one out in the future.
 
 ## links I used
 
