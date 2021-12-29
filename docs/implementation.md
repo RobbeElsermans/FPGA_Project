@@ -11,15 +11,13 @@ Dit zijn de kern stappen die ik ga volgen in dit project:
 
 Als we even naar de tutorial's pagina gaan, dan zien we dat we niet enkel en alleen het tutorial project moeten downloaden. We hebben ook nog board-files nodig.
 
-> board-files -> Deze beschrijven een evaluation board zoals type FPGA, Boudrate, hoeveelheid flipflops etc.
+?> **board-files** beschrijven een evaluation board zoals type FPGA, Boudrate, hoeveelheid flipflops etc.
 
 [Hier](https://digilent.com/reference/software/vivado/board-files) een tutorial om board-files te importeren in Vivado 2016.4. [Dit](https://github.com/Digilent/vivado-boards/) is de GitRepo van de nodige board-files. 
 
 Na het downloaden en installeren van Vivado Design Suite & Xilinx SDK 2016.4 en het inporteren van de juiste board-files gaan we het [tutorial project](https://github.com/Digilent/Zybo-Z7-20-pcam-5c/releases/download/v2016.4-1/Zybo-Z7-20-pcam-5c-2016.4-1.zip) downloaden en openen in Vivado Design Suite.
 
-> **OPGELET** 
-> 
-> Er zijn nog andere versies ter beschikking op de [GitHub Pagina](https://github.com/Digilent/Zybo-Z7-20-pcam-5c/releases). Wij gaan versie 2016.4 nemen zoals in de tutorial.
+!> **OPGELET** er zijn nog andere versies ter beschikking op de [GitHub Pagina](https://github.com/Digilent/Zybo-Z7-20-pcam-5c/releases). Wij gaan versie 2016.4 nemen zoals in de tutorial.
 
 Stappen
 1. kopieer de bestands locatie van ```create_project.tcl``` die zich in de folder ```proj``` bevind. 
@@ -52,14 +50,6 @@ Niet te vergeten is de video output op de HDMI display.
 ![picture of monitor](pictures/DEMO_monitor_output.jpg)
 
 Het werkt! Dat betekend dat het tijd is om het Block Design te inspecteren en de blokken die er gebruikt worden. Zo kunnen we bepalen waar we de filters kunnen plaatsen.
-
-### Bronnen
-* [Tutorial usage Demo](https://digilent.com/reference/learn/programmable-logic/tutorials/zybo-z7-pcam-5c-demo/start)
-* [Tutorial opening project demo](https://digilent.com/reference/learn/programmable-logic/tutorials/github-demos/start)
-* [Tutorial importing board files](https://digilent.com/reference/software/vivado/board-files?redirect=1)
-* [programming problem](https://forum.digilentinc.com/topic/12952-ap-transaction-error-dap-status-f0000021/) 
-* [Demo gitHub repo](https://github.com/Digilent/Zybo-Z7-20-pcam-5c)
-* [Board Files gitHub repo](https://github.com/Digilent/vivado-boards/)
 
 # data divider
 
@@ -181,8 +171,171 @@ Na de bitstream aanmaken, zouden we hetzelfde resultaat moeten te zien krijgen.
 [slice and concat](https://support.xilinx.com/s/article/60844?language=en_US)
 
 # data filter
-Nu we weten hoe de de RGB waardes kunnen scheiden van elkaar, kunnen we eens proberen om hier een filter op toe te passen. We gaan nu eens proberen om zelf een "filter" te maken in VHDL. We gaan eerst gewoon proberen om een 8 bit vector te shiften naar rechts met 4 bits en nadien terug naar buiten te sturen. We gaan dit met de kleur rood doen.
+Nu we weten hoe de de RGB waardes kunnen scheiden van elkaar, kunnen we eens proberen om hier een filter op toe te passen. We gaan zelf een "filter" maken in VHDL en deze nadien toevoegen aan de block design. 
+
+## first "filter"
+We gaan eerst gewoon proberen om een 8 bit vector te shiften naar links met 2 bits en nadien terug naar buiten te sturen. We gaan dit met de kleur rood doen.
+
+``` VHDL
+entity Filter is
+    Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
+           data_out : out STD_LOGIC_VECTOR (7 downto 0));
+end Filter;
+
+architecture Behavioral of Filter is
+
+signal tempData: STD_LOGIC_VECTOR (7 downto 0);
+
+begin
+
+process(data_in, tempData)
+begin
+
+tempData <= data_in;
+data_out <= "00000000";
+data_out(7 downto 2) <= tempData(5 downto 0); --We verschuiven 2 bits
+
+end process;
+end Behavioral;
+```
+
+Wat bovestaande VHDL code zal doen is 
+1. De 8 bit kleur waarde binnen nemen,
+2. Opslaan in een tijdelijke variabelen (gebruiken we later),
+3. De uitgang volledig op 0 plaatsen en enkel bit [5-0] naar bit [7-2] verplaatsen.
+
+Op deze manier wordt de kleur rood versterkt met een factor van 2. 
+
+> voorbeeld
+> 
+> - data_in = 1011 0101 
+> - data_out[7-2] = data_in[5-0]
+> - data_out = 1101 0100
+
+Deze moment hebben we een component gemaakt maar nog niet geïmporteerd in onze block design.
+
+Stappen om de filter te importeren in het block design
+1. Om onze filter toe te voegen aan het block design, gaan we even terug naar het block design in Vivado via ```IP Integrator -> Open Block Design``` bij ```Flow Navigator```.
+2. rechtermuisklik ergens in het block design en ga naar de optie ```Add Module```.
+3. Selecteer de gemaakte component (In dit geval genaamd ***Filter***) en druk op OK.
+
+![imported filter block](pictures/REAL_Block_Design_Import_Filter_Test.png)
+
+Nu gaan we de 1ste slice afkoppelen van de concat en onze geïmporteerde block tussen beide plaatsen.
+
+![hookup filter](pictures/REAL_Block_Design_Hookup_Filter_Test.png)
+
+Als we nu opnieuw de bitstream genereren en de hardware exporteren, dan krijgen we een popup bij het SDK window waarin staat dat de hardware definities verander zijn. We selecteren ```Yes```.
+
+Na de update voeren we stap 9 en 10 van [Tutorial](#tutorial) uit.
+
+Als we de video output erbij halen dan zien we dat het plots veel roder is geworden. Dit kan kloppen omdat we de rode vector hebben versterkt met factor 2.
+![monitor output filter](pictures/REAL_monitor_output_Filter_Test.jpg)
+
+Om de filter iets dynamischer te maken gaan we 2 switches gebruiken van de Zybo Z7-20 board. De switches zullen het aantal bits voorstellen dat we gaan opschuiven naar links beginnend van 0 en eindigend met 3. We nemen hiervoor **SW0** en **SW1**.
+
+``` VHDL
+entity Filter is
+    Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
+           data_out : out STD_LOGIC_VECTOR (7 downto 0);
+           div : in STD_LOGIC_VECTOR (1 downto 0));
+end Filter;
+architecture Behavioral of Filter is
+signal tempData: STD_LOGIC_VECTOR (7 downto 0);
+
+begin
+
+process(data_in, tempData)
+
+begin
+tempData <= data_in;
+data_out <= "00000000";
+
+    case (div) is
+      when "00" => --factor 0
+        data_out(7 downto 0) <= tempData(7 downto 0); --We verschuiven 0 bits
+      when "01" => --factor 1
+        data_out(7 downto 1) <= tempData(6 downto 0); --We verschuiven 1 bits
+      when "10" => --factor 2
+        data_out(7 downto 2) <= tempData(5 downto 0); --We verschuiven 2 bits
+      when "11" => --factor 3
+        data_out(7 downto 3) <= tempData(4 downto 0); --We verschuiven 3 bits
+    end case;
+
+end process;
+end Behavioral;
+```
+
+In de code hierboven is te zien dat we de switches als ```div``` hebben gedeclareerd. De rest is duidelijk op het eerste zicht.
+
+We zien nu bovenaan dat er een popup is gekomen die zegt dat de module ***out-of-date*** is. Deze moeten we refreshen vooraleer we verder gaan.
+![refresh popup](pictures/REAL_Block_Design_Refresh_Filter_Test.png)
+
+Omdat de externe switches gebruikt worden, gaan we dit in ons Block Design moeten specifiëren. 
+We klikken op de ***div[1:0]*** input van onze filter en nadien op het icoontje ```Make External``` of ```Ctrl+T```.Het kan ook zijn dat de output pin ***div[1:0]*** vanzelf is geïnporteerd links bovenaan de block design. Als dit is dan moet je het gewoon verbinden met de ***div[1:0]*** input van onze filter.
+
+![make External Icon](pictures/REAL_Block_Design_Make_External_Filter_Test.png)
+
+Ook moeten we het .xdc bestand aanpassen in de folder ***constrains*** zodat Vivado weet welke pinnen we bedoelen.
+
+![xdc file](pictures/REAL_Block_Design_XDC_External_Filter_Test.png)
 
 
+Nu rest ons nog de bitstream aan te maken en weer de hardware exporteren zoals we al eerder hebben gedaan bij het importeren van de filter. Ook om de SDK up te daten en de FPGA opnieuw programmeren.
+
+<img src="./pictures/REAL_monitor_output_Filter_Test_DIP0.jpg" width="24%">
+<img src="./pictures/REAL_monitor_output_Filter_Test_DIP1.jpg" width="24%">
+<img src="./pictures/REAL_monitor_output_Filter_Test_DIP2.jpg" width="24%">
+<img src="./pictures/REAL_monitor_output_Filter_Test_DIP3.jpg" width="24%">
+
+We zien duidelijk de standen van onze filter.
+
+We kunnen nu een uitgebreide filter maken die verschillende masks kan bevatten om bv. enkel de 4 eerste bits door te laten of een XOR op uit te voeren. De mogelijkheden zijn eindeloos.
+
+De uitgebreide filter
+
+``` VHDL
+
+
+```
+
+
+# Fix video shift
+
+Zoals we hebben beschreven in [Resultaat](#resultaat) hebben we een rare image output. Ik dacht dat dit timing gerelateerd was. We gaan eens de slice toepassen op een andere plaats in het block Design.
+
+We gaan de slice - filter - concat tussen de component **AXI_GammaCorrection_0** en **AXI_VDMA_0** plaatsen. Hier hebben we ook de RGB waardes verpakt als 24 bit vector.
+
+
+<img src="./pictures/REAL_Block_Design_Hookup_Filter_Test_2.png" width="49%">
+<img src="./pictures/REAL_monitor_output_Filter_Test_2.jpg" width="49%">
+
+wederom geen succes.
+
+i.p.v. maar op 1 datapad een filter te polaatsen, kan ik ook op alle 3 een filter plaatsen. Dit kan misschien ons probleem verhelpen.
+
+<img src="./pictures/REAL_Block_Design_Hookup_Filter_3_Test_2.png" width="49%">
+<img src="./pictures/REAL_monitor_output_Filter_Test_3.jpg" width="49%">
+
+tevergeefs was dit ook geen succes.
+
+We gaan een component maken die zowel de slice zal bevatten, de filter en de concat. En dit alles met een ready pin zodat de timing juist blijft. Ik hoop op deze manier de timings correct te krijgen.
+
+
+# Bronnen
+* [Tutorial usage Demo](https://digilent.com/reference/learn/programmable-logic/tutorials/zybo-z7-pcam-5c-demo/start)
+* [Tutorial opening project demo](https://digilent.com/reference/learn/programmable-logic/tutorials/github-demos/start)
+* [Tutorial importing board files](https://digilent.com/reference/software/vivado/board-files?redirect=1)
+* [programming problem](https://forum.digilentinc.com/topic/12952-ap-transaction-error-dap-status-f0000021/) 
+* [Demo gitHub repo](https://github.com/Digilent/Zybo-Z7-20-pcam-5c)
+* [Board Files gitHub repo](https://github.com/Digilent/vivado-boards/)
+* [Zybo z7 reference](https://digilent.com/reference/programmable-logic/zybo-z7/reference-manual)
+* [Referencing RTL Modules for use in Vivado IP Integrator](https://www.youtube.com/watch?v=bsvpJYCDmCQ)
+* [Case statement](https://www.allaboutcircuits.com/technical-articles/sequential-vhdl-if-and-case-statements/)
+* [Variables VHDL](https://www.nandland.com/vhdl/examples/example-variable.html)
+* [VHDL Opreators](https://www.csee.umbc.edu/portal/help/VHDL/operator.html)
+* [ERROR DRC23-20](https://support.xilinx.com/s/article/56354?language=en_US)
+* [Bayer to RGB](https://www.visengi.com/products/bayer2rgb)
+* [Paper over video processing](https://digilent.s3-us-west-2.amazonaws.com/resources/whitepapers/EmbeddedVisionDemo.pdf?_ga=2.167079991.807386272.1568825362-2125793643.1506359851)
 
 Een link om bayer2RGB aan te passen om eventueel daar de RGB waarde aan te passen [link](https://fumimaker.net/entry/2020/02/06/002934)
