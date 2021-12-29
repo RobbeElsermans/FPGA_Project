@@ -1,6 +1,6 @@
 # Research
 
-before I could begin on this project, I had to make sure that I had the right components at my disposal. Like the given tutorial said I needed a
+Voor ik aan dit project kon beginnen, moest ik ervoor zorgen dat ik de juiste componenten ter beschikking had. Zoals de tutorial aangaf heb ik volgende zaken nodig:
 
 * Zybo Z7-20 board
 * External 5V supply
@@ -9,13 +9,10 @@ before I could begin on this project, I had to make sure that I had the right co
 * 1 Pcam 5C assembly
 * HDMI or DVI monitor
 
-At the time of writing this, I was going to school so the school provided me the hardware needed for this task. 
+De componenten werden mij bezorgd via de school.
 
-As I read the tutorial that was given, I noticied that the progam itself was written in Vivado Design Suite & Xilinx SDK 2016.4. I suppose a lot has changed in the past 4 years. To test the tutorial I'm going t use the version 2016.4. In the future I could try this in verion 20.2. 
+Tijdens de tutorial te lezen viel me op dat het programma oorspronkelijk geschreven was voor Vivado Design Suite & Xilinx SDK 2016.4. Ik veronderstel dat veel is veranderd in de laatste 4 jaar (Tussen versie 2016 en 2020) dus ik ga voor de rest van deze opdracht ook in versie 2016 werken om geen comptabiliteits problemen aan te wakkeren. Moest de opdracht een succes zijn, dan kan ik eventueel dit nog in versie 2020.2 verwezelijken.
 
-I expect no dificulties to setting up this tutorial. However in my experience this happends rarely.
-
-
-## links I used
+## Gebruikte links
 
 [slice and concat](https://support.xilinx.com/s/article/60844?language=en_US)
