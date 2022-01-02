@@ -1,0 +1,32 @@
+// Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+// --------------------------------------------------------------------------------
+// Tool Version: Vivado v.2016.4 (lin64) Build 1756540 Mon Jan 23 19:11:19 MST 2017
+// Date        : Sun Jan  2 14:27:54 2022
+// Host        : the-beast running 64-bit Ubuntu 20.04.3 LTS
+// Command     : write_verilog -force -mode synth_stub
+//               /home/robbe/Desktop/Github/FPGA_Project/code/Zybo-Z7-20-pcam-5c-2016.4-1_original/Zybo-Z7-20-pcam-5c/src/bd/system/ip/system_Syncer_0_0/system_Syncer_0_0_stub.v
+// Design      : system_Syncer_0_0
+// Purpose     : Stub declaration of top-level module interface
+// Device      : xc7z020clg400-1
+// --------------------------------------------------------------------------------
+
+// This empty module with port declaration file causes synthesis tools to infer a black box for IP.
+// The synthesis directives are for Synopsys Synplify support to prevent IO buffer insertion.
+// Please paste the declaration into a Verilog source file or add the file as an additional source.
+(* x_core_info = "Syncer,Vivado 2016.4" *)
+module system_Syncer_0_0(valid_in, data_in, data_out, valid_out, tuser_in, 
+  tuser_out, tlast_in, tlast_out, tready_in, tready_out, clk, selector)
+/* synthesis syn_black_box black_box_pad_pin="valid_in,data_in[23:0],data_out[23:0],valid_out,tuser_in,tuser_out,tlast_in,tlast_out,tready_in,tready_out,clk,selector[3:0]" */;
+  input valid_in;
+  input [23:0]data_in;
+  output [23:0]data_out;
+  output valid_out;
+  input tuser_in;
+  output tuser_out;
+  input tlast_in;
+  output tlast_out;
+  output tready_in;
+  input tready_out;
+  input clk;
+  input [3:0]selector;
+endmodule

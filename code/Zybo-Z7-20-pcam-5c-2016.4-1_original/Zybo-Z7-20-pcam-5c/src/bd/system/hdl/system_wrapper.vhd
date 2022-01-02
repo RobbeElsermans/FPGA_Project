@@ -1,8 +1,8 @@
 --Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
---Tool Version: Vivado v.2016.4 (win64) Build 1756540 Mon Jan 23 19:11:23 MST 2017
---Date        : Wed Dec 29 20:12:38 2021
---Host        : ELZA running 64-bit major release  (build 9200)
+--Tool Version: Vivado v.2016.4 (lin64) Build 1756540 Mon Jan 23 19:11:19 MST 2017
+--Date        : Sun Jan  2 14:27:19 2022
+--Host        : the-beast running 64-bit Ubuntu 20.04.3 LTS
 --Command     : generate_target system_wrapper.bd
 --Design      : system_wrapper
 --Purpose     : IP block netlist
@@ -37,7 +37,7 @@ entity system_wrapper is
     cam_gpio_tri_io : inout STD_LOGIC_VECTOR ( 0 to 0 );
     cam_iic_scl_io : inout STD_LOGIC;
     cam_iic_sda_io : inout STD_LOGIC;
-    div : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    div : in STD_LOGIC_VECTOR ( 3 downto 0 );
     dphy_clk_lp_n : in STD_LOGIC;
     dphy_clk_lp_p : in STD_LOGIC;
     dphy_data_hs_n : in STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -98,7 +98,7 @@ architecture STRUCTURE of system_wrapper is
     dphy_data_hs_p : in STD_LOGIC_VECTOR ( 1 downto 0 );
     dphy_data_lp_n : in STD_LOGIC_VECTOR ( 1 downto 0 );
     dphy_data_lp_p : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    div : in STD_LOGIC_VECTOR ( 1 downto 0 )
+    div : in STD_LOGIC_VECTOR ( 3 downto 0 )
   );
   end component system;
   component IOBUF is
@@ -173,7 +173,7 @@ system_i: component system
       cam_iic_sda_i => cam_iic_sda_i,
       cam_iic_sda_o => cam_iic_sda_o,
       cam_iic_sda_t => cam_iic_sda_t,
-      div(1 downto 0) => div(1 downto 0),
+      div(3 downto 0) => div(3 downto 0),
       dphy_clk_lp_n => dphy_clk_lp_n,
       dphy_clk_lp_p => dphy_clk_lp_p,
       dphy_data_hs_n(1 downto 0) => dphy_data_hs_n(1 downto 0),

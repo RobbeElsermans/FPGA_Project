@@ -1,8 +1,8 @@
 --Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
---Tool Version: Vivado v.2016.4 (win64) Build 1756540 Mon Jan 23 19:11:23 MST 2017
---Date        : Wed Dec 29 20:12:38 2021
---Host        : ELZA running 64-bit major release  (build 9200)
+--Tool Version: Vivado v.2016.4 (lin64) Build 1756540 Mon Jan 23 19:11:19 MST 2017
+--Date        : Sun Jan  2 14:27:18 2022
+--Host        : the-beast running 64-bit Ubuntu 20.04.3 LTS
 --Command     : generate_target system.bd
 --Design      : system
 --Purpose     : IP block netlist
@@ -2836,7 +2836,7 @@ entity system is
     cam_iic_sda_i : in STD_LOGIC;
     cam_iic_sda_o : out STD_LOGIC;
     cam_iic_sda_t : out STD_LOGIC;
-    div : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    div : in STD_LOGIC_VECTOR ( 3 downto 0 );
     dphy_clk_lp_n : in STD_LOGIC;
     dphy_clk_lp_p : in STD_LOGIC;
     dphy_data_hs_n : in STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -2851,7 +2851,7 @@ entity system is
     hdmi_tx_data_p : out STD_LOGIC_VECTOR ( 2 downto 0 )
   );
   attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of system : entity is "system,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=system,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=37,numReposBlks=25,numNonXlnxBlks=6,numHierBlks=12,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=3,numPkgbdBlks=0,bdsource=USER,synth_mode=OOC_per_IP}";
+  attribute CORE_GENERATION_INFO of system : entity is "system,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=system,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=31,numReposBlks=19,numNonXlnxBlks=7,numHierBlks=12,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=1,numPkgbdBlks=0,bdsource=USER,synth_mode=OOC_per_IP}";
   attribute HW_HANDOFF : string;
   attribute HW_HANDOFF of system : entity is "system.hwdef";
 end system;
@@ -3445,53 +3445,22 @@ architecture STRUCTURE of system is
     dout : out STD_LOGIC_VECTOR ( 2 downto 0 )
   );
   end component system_xlconcat_0_0;
-  component system_xlslice_0_0 is
+  component system_Syncer_0_0 is
   port (
-    Din : in STD_LOGIC_VECTOR ( 23 downto 0 );
-    Dout : out STD_LOGIC_VECTOR ( 7 downto 0 )
+    valid_in : in STD_LOGIC;
+    data_in : in STD_LOGIC_VECTOR ( 23 downto 0 );
+    data_out : out STD_LOGIC_VECTOR ( 23 downto 0 );
+    valid_out : out STD_LOGIC;
+    tuser_in : in STD_LOGIC;
+    tuser_out : out STD_LOGIC;
+    tlast_in : in STD_LOGIC;
+    tlast_out : out STD_LOGIC;
+    tready_in : out STD_LOGIC;
+    tready_out : in STD_LOGIC;
+    clk : in STD_LOGIC;
+    selector : in STD_LOGIC_VECTOR ( 3 downto 0 )
   );
-  end component system_xlslice_0_0;
-  component system_xlslice_1_0 is
-  port (
-    Din : in STD_LOGIC_VECTOR ( 23 downto 0 );
-    Dout : out STD_LOGIC_VECTOR ( 7 downto 0 )
-  );
-  end component system_xlslice_1_0;
-  component system_xlslice_2_0 is
-  port (
-    Din : in STD_LOGIC_VECTOR ( 23 downto 0 );
-    Dout : out STD_LOGIC_VECTOR ( 7 downto 0 )
-  );
-  end component system_xlslice_2_0;
-  component system_xlconcat_1_0 is
-  port (
-    In0 : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    In1 : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    In2 : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    dout : out STD_LOGIC_VECTOR ( 23 downto 0 )
-  );
-  end component system_xlconcat_1_0;
-  component system_Filter_0_0 is
-  port (
-    data_in : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    data_out : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    div : in STD_LOGIC_VECTOR ( 1 downto 0 )
-  );
-  end component system_Filter_0_0;
-  component system_Filter_1_0 is
-  port (
-    data_in : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    data_out : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    div : in STD_LOGIC_VECTOR ( 1 downto 0 )
-  );
-  end component system_Filter_1_0;
-  component system_Filter_2_0 is
-  port (
-    data_in : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    data_out : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    div : in STD_LOGIC_VECTOR ( 1 downto 0 )
-  );
-  end component system_Filter_2_0;
+  end component system_Syncer_0_0;
   signal AXI_BayerToRGB_1_AXI_Stream_Master_TDATA : STD_LOGIC_VECTOR ( 31 downto 0 );
   signal AXI_BayerToRGB_1_AXI_Stream_Master_TLAST : STD_LOGIC;
   signal AXI_BayerToRGB_1_AXI_Stream_Master_TREADY : STD_LOGIC;
@@ -3501,9 +3470,6 @@ architecture STRUCTURE of system is
   signal AXI_GammaCorrection_0_m_axis_video_tlast : STD_LOGIC;
   signal AXI_GammaCorrection_0_m_axis_video_tuser : STD_LOGIC;
   signal AXI_GammaCorrection_0_m_axis_video_tvalid : STD_LOGIC;
-  signal Filter_0_data_out : STD_LOGIC_VECTOR ( 7 downto 0 );
-  signal Filter_1_data_out : STD_LOGIC_VECTOR ( 7 downto 0 );
-  signal Filter_2_data_out : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal MIPI_CSI_2_RX_0_m_axis_video_TDATA : STD_LOGIC_VECTOR ( 39 downto 0 );
   signal MIPI_CSI_2_RX_0_m_axis_video_TLAST : STD_LOGIC;
   signal MIPI_CSI_2_RX_0_m_axis_video_TREADY : STD_LOGIC;
@@ -3524,6 +3490,11 @@ architecture STRUCTURE of system is
   signal MIPI_D_PHY_RX_0_D_PHY_PPI_DL1_RXVALIDHS : STD_LOGIC;
   signal MIPI_D_PHY_RX_0_RxByteClkHS : STD_LOGIC;
   signal PixelClk_Generator_clk_out1 : STD_LOGIC;
+  signal Syncer_0_data_out : STD_LOGIC_VECTOR ( 23 downto 0 );
+  signal Syncer_0_tlast_out : STD_LOGIC;
+  signal Syncer_0_tready_in : STD_LOGIC;
+  signal Syncer_0_tuser_out : STD_LOGIC;
+  signal Syncer_0_valid_out : STD_LOGIC;
   signal axi_dynclk_0_LOCKED_O : STD_LOGIC;
   signal axi_dynclk_0_PXL_CLK_5X_O : STD_LOGIC;
   signal axi_mem_intercon_1_M00_AXI_AWADDR : STD_LOGIC_VECTOR ( 31 downto 0 );
@@ -3597,7 +3568,6 @@ architecture STRUCTURE of system is
   signal axi_vdma_0_s2mm_introut : STD_LOGIC;
   signal axi_vdma_0_s_axis_s2mm_tready : STD_LOGIC;
   signal clk_wiz_0_locked : STD_LOGIC;
-  signal div_1 : STD_LOGIC_VECTOR ( 1 downto 0 );
   signal dphy_clk_lp_n_1 : STD_LOGIC;
   signal dphy_clk_lp_p_1 : STD_LOGIC;
   signal dphy_data_hs_n_1 : STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -3797,6 +3767,7 @@ architecture STRUCTURE of system is
   signal rst_vid_clk_dyn_peripheral_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
   signal rst_vid_clk_dyn_peripheral_reset : STD_LOGIC_VECTOR ( 0 to 0 );
   signal s_axil_clk_50 : STD_LOGIC;
+  signal selector_1 : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal v_axi4s_vid_out_0_locked : STD_LOGIC;
   signal v_axi4s_vid_out_0_vid_active_video : STD_LOGIC;
   signal v_axi4s_vid_out_0_vid_hsync : STD_LOGIC;
@@ -3810,10 +3781,6 @@ architecture STRUCTURE of system is
   signal v_tc_0_vtiming_out_VBLANK : STD_LOGIC;
   signal v_tc_0_vtiming_out_VSYNC : STD_LOGIC;
   signal xlconcat_0_dout : STD_LOGIC_VECTOR ( 2 downto 0 );
-  signal xlconcat_1_dout : STD_LOGIC_VECTOR ( 23 downto 0 );
-  signal xlslice_0_Dout : STD_LOGIC_VECTOR ( 7 downto 0 );
-  signal xlslice_1_Dout : STD_LOGIC_VECTOR ( 7 downto 0 );
-  signal xlslice_2_Dout : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal NLW_MIPI_CSI_2_RX_0_aD2Enable_UNCONNECTED : STD_LOGIC;
   signal NLW_MIPI_CSI_2_RX_0_aD3Enable_UNCONNECTED : STD_LOGIC;
   signal NLW_MIPI_D_PHY_RX_0_D0RxClkEsc_UNCONNECTED : STD_LOGIC;
@@ -3889,7 +3856,6 @@ begin
   cam_iic_scl_t <= processing_system7_0_IIC_0_SCL_T;
   cam_iic_sda_o <= processing_system7_0_IIC_0_SDA_O;
   cam_iic_sda_t <= processing_system7_0_IIC_0_SDA_T;
-  div_1(1 downto 0) <= div(1 downto 0);
   dphy_clk_lp_n_1 <= dphy_clk_lp_n;
   dphy_clk_lp_p_1 <= dphy_clk_lp_p;
   dphy_data_hs_n_1(1 downto 0) <= dphy_data_hs_n(1 downto 0);
@@ -3905,6 +3871,7 @@ begin
   processing_system7_0_GPIO_0_TRI_I(0) <= cam_gpio_tri_i(0);
   processing_system7_0_IIC_0_SCL_I <= cam_iic_scl_i;
   processing_system7_0_IIC_0_SDA_I <= cam_iic_sda_i;
+  selector_1(3 downto 0) <= div(3 downto 0);
 AXI_BayerToRGB_1: component system_AXI_BayerToRGB_1_0
      port map (
       StreamClk => mm_clk_150,
@@ -3946,7 +3913,7 @@ AXI_GammaCorrection_0: component system_AXI_GammaCorrection_0_0
       aAxiLiteReset_n => rst_clk_wiz_0_50M_peripheral_aresetn(0),
       m_axis_video_tdata(23 downto 0) => AXI_GammaCorrection_0_m_axis_video_tdata(23 downto 0),
       m_axis_video_tlast => AXI_GammaCorrection_0_m_axis_video_tlast,
-      m_axis_video_tready => axi_vdma_0_s_axis_s2mm_tready,
+      m_axis_video_tready => Syncer_0_tready_in,
       m_axis_video_tuser => AXI_GammaCorrection_0_m_axis_video_tuser,
       m_axis_video_tvalid => AXI_GammaCorrection_0_m_axis_video_tvalid,
       sStreamReset_n => rst_clk_wiz_0_50M_peripheral_aresetn(0),
@@ -3955,24 +3922,6 @@ AXI_GammaCorrection_0: component system_AXI_GammaCorrection_0_0
       s_axis_video_tready => AXI_BayerToRGB_1_AXI_Stream_Master_TREADY,
       s_axis_video_tuser => AXI_BayerToRGB_1_AXI_Stream_Master_TUSER,
       s_axis_video_tvalid => AXI_BayerToRGB_1_AXI_Stream_Master_TVALID
-    );
-Filter_0: component system_Filter_0_0
-     port map (
-      data_in(7 downto 0) => xlslice_0_Dout(7 downto 0),
-      data_out(7 downto 0) => Filter_0_data_out(7 downto 0),
-      div(1 downto 0) => div_1(1 downto 0)
-    );
-Filter_1: component system_Filter_1_0
-     port map (
-      data_in(7 downto 0) => xlslice_1_Dout(7 downto 0),
-      data_out(7 downto 0) => Filter_1_data_out(7 downto 0),
-      div(1 downto 0) => div_1(1 downto 0)
-    );
-Filter_2: component system_Filter_2_0
-     port map (
-      data_in(7 downto 0) => xlslice_2_Dout(7 downto 0),
-      data_out(7 downto 0) => Filter_2_data_out(7 downto 0),
-      div(1 downto 0) => div_1(1 downto 0)
     );
 MIPI_CSI_2_RX_0: component system_MIPI_CSI_2_RX_0_0
      port map (
@@ -4106,6 +4055,21 @@ MIPI_D_PHY_RX_0: component system_MIPI_D_PHY_RX_0_0
       s_axi_lite_wready => ps7_0_axi_periph_M03_AXI_WREADY,
       s_axi_lite_wstrb(3 downto 0) => ps7_0_axi_periph_M03_AXI_WSTRB(3 downto 0),
       s_axi_lite_wvalid => ps7_0_axi_periph_M03_AXI_WVALID(0)
+    );
+Syncer_0: component system_Syncer_0_0
+     port map (
+      clk => s_axil_clk_50,
+      data_in(23 downto 0) => AXI_GammaCorrection_0_m_axis_video_tdata(23 downto 0),
+      data_out(23 downto 0) => Syncer_0_data_out(23 downto 0),
+      selector(3 downto 0) => selector_1(3 downto 0),
+      tlast_in => AXI_GammaCorrection_0_m_axis_video_tlast,
+      tlast_out => Syncer_0_tlast_out,
+      tready_in => Syncer_0_tready_in,
+      tready_out => axi_vdma_0_s_axis_s2mm_tready,
+      tuser_in => AXI_GammaCorrection_0_m_axis_video_tuser,
+      tuser_out => Syncer_0_tuser_out,
+      valid_in => AXI_GammaCorrection_0_m_axis_video_tvalid,
+      valid_out => Syncer_0_valid_out
     );
 axi_mem_intercon: entity work.system_axi_mem_intercon_0
      port map (
@@ -4250,12 +4214,12 @@ axi_vdma_0: component system_axi_vdma_0_0
       s_axi_lite_wready => ps7_0_axi_periph_M00_AXI_WREADY,
       s_axi_lite_wvalid => ps7_0_axi_periph_M00_AXI_WVALID(0),
       s_axis_s2mm_aclk => mm_clk_150,
-      s_axis_s2mm_tdata(23 downto 0) => xlconcat_1_dout(23 downto 0),
+      s_axis_s2mm_tdata(23 downto 0) => Syncer_0_data_out(23 downto 0),
       s_axis_s2mm_tkeep(2 downto 0) => B"111",
-      s_axis_s2mm_tlast => AXI_GammaCorrection_0_m_axis_video_tlast,
+      s_axis_s2mm_tlast => Syncer_0_tlast_out,
       s_axis_s2mm_tready => axi_vdma_0_s_axis_s2mm_tready,
-      s_axis_s2mm_tuser(0) => AXI_GammaCorrection_0_m_axis_video_tuser,
-      s_axis_s2mm_tvalid => AXI_GammaCorrection_0_m_axis_video_tvalid
+      s_axis_s2mm_tuser(0) => Syncer_0_tuser_out,
+      s_axis_s2mm_tvalid => Syncer_0_valid_out
     );
 clk_wiz_0: component system_clk_wiz_0_0
      port map (
@@ -4742,27 +4706,5 @@ xlconcat_0: component system_xlconcat_0_0
       In1(0) => axi_vdma_0_mm2s_introut,
       In2(0) => axi_vdma_0_s2mm_introut,
       dout(2 downto 0) => xlconcat_0_dout(2 downto 0)
-    );
-xlconcat_1: component system_xlconcat_1_0
-     port map (
-      In0(7 downto 0) => Filter_2_data_out(7 downto 0),
-      In1(7 downto 0) => Filter_1_data_out(7 downto 0),
-      In2(7 downto 0) => Filter_0_data_out(7 downto 0),
-      dout(23 downto 0) => xlconcat_1_dout(23 downto 0)
-    );
-xlslice_0: component system_xlslice_0_0
-     port map (
-      Din(23 downto 0) => AXI_GammaCorrection_0_m_axis_video_tdata(23 downto 0),
-      Dout(7 downto 0) => xlslice_0_Dout(7 downto 0)
-    );
-xlslice_1: component system_xlslice_1_0
-     port map (
-      Din(23 downto 0) => AXI_GammaCorrection_0_m_axis_video_tdata(23 downto 0),
-      Dout(7 downto 0) => xlslice_1_Dout(7 downto 0)
-    );
-xlslice_2: component system_xlslice_2_0
-     port map (
-      Din(23 downto 0) => AXI_GammaCorrection_0_m_axis_video_tdata(23 downto 0),
-      Dout(7 downto 0) => xlslice_2_Dout(7 downto 0)
     );
 end STRUCTURE;

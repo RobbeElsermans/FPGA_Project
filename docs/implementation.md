@@ -170,10 +170,10 @@ Na de bitstream aanmaken, zouden we hetzelfde resultaat moeten te zien krijgen.
 ## Bronnen
 [slice and concat](https://support.xilinx.com/s/article/60844?language=en_US)
 
-# data filter
+# data filtering
 Nu we weten hoe de de RGB waardes kunnen scheiden van elkaar, kunnen we eens proberen om hier een filter op toe te passen. We gaan zelf een "filter" maken in VHDL en deze nadien toevoegen aan de block design. 
 
-## first "filter"
+## First "filter"
 We gaan eerst gewoon proberen om een 8 bit vector te shiften naar links met 2 bits en nadien terug naar buiten te sturen. We gaan dit met de kleur rood doen.
 
 ``` VHDL
@@ -290,17 +290,50 @@ Nu rest ons nog de bitstream aan te maken en weer de hardware exporteren zoals w
 
 We zien duidelijk de standen van onze filter.
 
+## Advanced filter
+
 We kunnen nu een uitgebreide filter maken die verschillende masks kan bevatten om bv. enkel de 4 eerste bits door te laten of een XOR op uit te voeren. De mogelijkheden zijn eindeloos.
 
 De uitgebreide filter
 
 ``` VHDL
+entity FilterSpecial is
+    Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
+           data_out : out STD_LOGIC_VECTOR (7 downto 0);
+           selector : in STD_LOGIC_VECTOR (3 downto 0));
+end FilterSpecial;
+
+architecture Behavioral of FilterSpecial is
+
+signal temp_data: STD_LOGIC_VECTOR (7 downto 0) :="00000000";
+constant mask_1: STD_LOGIC_VECTOR (7 downto 0) :="00000000";
+constant mask_2: STD_LOGIC_VECTOR (7 downto 0) :="00001111";
+constant mask_3: STD_LOGIC_VECTOR (7 downto 0) :="11110000";
+constant mask_4: STD_LOGIC_VECTOR (7 downto 0) :="11111111";
+
+begin
+
+process (selector, data_in) begin
+temp_data <= data_in;
 
 
+case selector is
+    when "0000" => data_out <= temp_data;
+    when "0001" => data_out <= (temp_data XOR mask_1);
+    when "0010" => data_out <= (temp_data XOR mask_2);
+    when "0100" => data_out <= (temp_data XOR mask_3);
+    when "1000" => data_out <= (temp_data XOR mask_4);
+    when others => data_out <= temp_data;
+end case;
+end process;
+
+end Behavioral;
 ```
 
 
 # Fix video shift
+
+## Change position
 
 Zoals we hebben beschreven in [Resultaat](#resultaat) hebben we een rare image output. Ik dacht dat dit timing gerelateerd was. We gaan eens de slice toepassen op een andere plaats in het block Design.
 
@@ -312,15 +345,181 @@ We gaan de slice - filter - concat tussen de component **AXI_GammaCorrection_0**
 
 wederom geen succes.
 
-i.p.v. maar op 1 datapad een filter te polaatsen, kan ik ook op alle 3 een filter plaatsen. Dit kan misschien ons probleem verhelpen.
+i.p.v. maar op 1 datapad een filter te plaatsen, kan ik ook op alle 3 een filter plaatsen. Dit kan misschien ons probleem verhelpen.
 
 <img src="./pictures/REAL_Block_Design_Hookup_Filter_3_Test_2.png" width="49%">
 <img src="./pictures/REAL_monitor_output_Filter_Test_3.jpg" width="49%">
 
 tevergeefs was dit ook geen succes.
 
+## Advanced syncer block
+
 We gaan een component maken die zowel de slice zal bevatten, de filter en de concat. En dit alles met een ready pin zodat de timing juist blijft. Ik hoop op deze manier de timings correct te krijgen.
 
+``` VHDL
+entity Syncer is
+    Port ( valid_in : in STD_LOGIC;
+           data_in : in STD_LOGIC_VECTOR (23 downto 0);
+           data_out : out STD_LOGIC_VECTOR (23 downto 0);
+           valid_out : out STD_LOGIC;
+           clk : in STD_LOGIC;
+           selector : in STD_LOGIC_VECTOR (3 downto 0));
+end Syncer;
+
+architecture Behavioral of Syncer is
+
+component FilterSpecial is
+    Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
+           data_out : out STD_LOGIC_VECTOR (7 downto 0);
+           selector : in STD_LOGIC_VECTOR (3 downto 0));
+end component FilterSpecial;
+
+signal rood : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+signal groen : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+signal blauw : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+
+signal rood_out : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+signal groen_out : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+signal blauw_out : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+
+signal splitsing_ok : STD_LOGIC := '0';
+
+begin
+
+filterRood : FilterSpecial 
+port map(data_in => rood, data_out => rood_out, selector => selector);
+filterBlauw : FilterSpecial 
+port map(data_in => blauw, data_out => blauw_out, selector => selector);
+filterGroen : FilterSpecial 
+port map(data_in => groen, data_out => groen_out, selector => selector);
+
+process (valid_in, rood, groen, blauw, data_in) begin --data spritsen
+if rising_edge(clk) then
+    if valid_in = '1' then
+        valid_out <= '0';
+    
+        groen <= data_in(7 downto 0);   --groen data deel
+        blauw <= data_in(15 downto 8);  --blauw data deel
+        rood <= data_in(23 downto 16);  --rood data deel
+    
+        splitsing_ok <= '1';
+    end if;
+end if;
+end process;
+
+process (rood_out, blauw_out, groen_out, splitsing_ok) begin
+if rising_edge(clk) then
+    if(splitsing_ok = '1' AND rood_out /= "00000000") then
+        splitsing_ok <= '0';
+        data_out <= rood_out & blauw_out & groen_out;
+        valid_out <= '1';
+    end if;
+end if;
+
+end process;
+
+end Behavioral;
+
+```
+
+Zoals we zien in bovenstaande code gaan we onze uitgebreide filter gebruiken als component. Zo maken we onze code modulair als we bijvoorbeeld andere filters willen toepassen. Ook hebben we hier nu een valid in & out die zal zorgen voor de syncronisatie tussen de blokken. Ook een klok input voor extra timing.
+De selector voor de filters moeten we ook doorgeven via de syncer blok. Op deze moment heeft elke filter de zelfde selector inputs. Dit kan later eventueel opgesplitst worden.
+
+![aansluiting](./pictures/REAL_Block_Design_Hookup_Syncer.png)
+
+De aansluiting is nog steeds tussen de **AXI_GammaCorrection_0** en **AXI_VDMA_0** blokken. 
+
+XDC File 
+
+```
+#Switches
+set_property -dict { PACKAGE_PIN G15   IOSTANDARD LVCMOS33 } [get_ports { div[0] }]; #IO_L19N_T3_VREF_35 Sch=sw[0]
+set_property -dict { PACKAGE_PIN P15   IOSTANDARD LVCMOS33 } [get_ports { div[1] }]; #IO_L24P_T3_34 Sch=sw[1]
+set_property -dict { PACKAGE_PIN W13   IOSTANDARD LVCMOS33 } [get_ports { div[2] }]; #IO_L4N_T0_34 Sch=sw[2]
+set_property -dict { PACKAGE_PIN T16   IOSTANDARD LVCMOS33 } [get_ports { div[3] }]; #IO_L9P_T1_DQS_34 Sch=sw[3]
+```
+
+We hebben zoals bij de [Advanced filter](#advanced-filter) gebruik gemaakt van de 4 switches die op onze Zybo Z7 board ter beschikking staan.
+
+Na de bitstream generatie en het programmeren van het board, kregen we een verrassende outout te zien:
+
+![verrassende output monitor](pictures/REAL_monitor_output_Fix_Test_1.jpg)
+
+Het beeld was zo goed als zwart. Ik denk dat dit lag omdat de andere waardes (tready, tuser, tlast) eerder werden verplaatst dan de data. Ik heb dus de syncer block aangepast zodat we deze data lijnen ook bijhouwden totdat de data klaar is.
+
+``` VHDL
+entity Syncer is
+    Port ( valid_in : in STD_LOGIC;
+           data_in : in STD_LOGIC_VECTOR (23 downto 0);
+           data_out : out STD_LOGIC_VECTOR (23 downto 0);
+           valid_out : out STD_LOGIC;
+           tuser_in: in STD_LOGIC;
+           tuser_out: out STD_LOGIC;
+           tlast_in: in STD_LOGIC;
+           tlast_out: out STD_LOGIC;
+           tready_in: out STD_LOGIC;
+           tready_out: in STD_LOGIC;
+           clk : in STD_LOGIC;
+           selector : in STD_LOGIC_VECTOR (3 downto 0));
+end Syncer;
+
+architecture Behavioral of Syncer is
+
+component FilterSpecial is
+    Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
+           data_out : out STD_LOGIC_VECTOR (7 downto 0);
+           selector : in STD_LOGIC_VECTOR (3 downto 0));
+end component FilterSpecial;
+
+signal rood : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+signal groen : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+signal blauw : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+
+signal rood_out : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+signal groen_out : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+signal blauw_out : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+
+signal splitsing_ok : STD_LOGIC := '0';
+
+begin
+
+filterRood : FilterSpecial 
+port map(data_in => rood, data_out => rood_out, selector => selector);
+filterBlauw : FilterSpecial 
+port map(data_in => blauw, data_out => blauw_out, selector => selector);
+filterGroen : FilterSpecial 
+port map(data_in => groen, data_out => groen_out, selector => selector);
+
+process (valid_in, rood, groen, blauw, data_in) begin --data spritsen
+if rising_edge(clk) then
+    if valid_in = '1' then
+        valid_out <= '0';
+    
+        groen <= data_in(7 downto 0);   --groen data deel
+        blauw <= data_in(15 downto 8);  --blauw data deel
+        rood <= data_in(23 downto 16);  --rood data deel
+    
+        splitsing_ok <= '1';
+    end if;
+end if;
+end process;
+
+process (rood_out, blauw_out, groen_out, splitsing_ok) begin
+if rising_edge(clk) then
+    if(splitsing_ok = '1' AND rood_out /= "00000000") then
+        splitsing_ok <= '0';
+        data_out <= rood_out & blauw_out & groen_out;
+        tlast_out <= tlast_in;
+        tuser_out <= tuser_in;
+        tready_in <= tready_out;
+        valid_out <= '1';
+    end if;
+end if;
+
+end process;
+
+end Behavioral;
+```
 
 # Bronnen
 * [Tutorial usage Demo](https://digilent.com/reference/learn/programmable-logic/tutorials/zybo-z7-pcam-5c-demo/start)
