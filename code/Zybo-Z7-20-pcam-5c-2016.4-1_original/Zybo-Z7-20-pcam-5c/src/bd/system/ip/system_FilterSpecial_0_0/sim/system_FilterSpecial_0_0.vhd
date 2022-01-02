@@ -46,69 +46,36 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: user.org:module_ref:Syncer:1.0
+-- IP VLNV: user.org:module_ref:FilterSpecial:1.0
 -- IP Revision: 1
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-ENTITY system_Syncer_0_0 IS
+ENTITY system_FilterSpecial_0_0 IS
   PORT (
-    valid_in : IN STD_LOGIC;
-    data_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-    data_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
-    valid_out : OUT STD_LOGIC;
-    tuser_in : IN STD_LOGIC;
-    tuser_out : OUT STD_LOGIC;
-    tlast_in : IN STD_LOGIC;
-    tlast_out : OUT STD_LOGIC;
-    tready_in : OUT STD_LOGIC;
-    tready_out : IN STD_LOGIC;
-    clk : IN STD_LOGIC;
+    data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+    data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
     selector : IN STD_LOGIC_VECTOR(3 DOWNTO 0)
   );
-END system_Syncer_0_0;
+END system_FilterSpecial_0_0;
 
-ARCHITECTURE system_Syncer_0_0_arch OF system_Syncer_0_0 IS
+ARCHITECTURE system_FilterSpecial_0_0_arch OF system_FilterSpecial_0_0 IS
   ATTRIBUTE DowngradeIPIdentifiedWarnings : STRING;
-  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_Syncer_0_0_arch: ARCHITECTURE IS "yes";
-  COMPONENT Syncer IS
+  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_FilterSpecial_0_0_arch: ARCHITECTURE IS "yes";
+  COMPONENT FilterSpecial IS
     PORT (
-      valid_in : IN STD_LOGIC;
-      data_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-      data_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
-      valid_out : OUT STD_LOGIC;
-      tuser_in : IN STD_LOGIC;
-      tuser_out : OUT STD_LOGIC;
-      tlast_in : IN STD_LOGIC;
-      tlast_out : OUT STD_LOGIC;
-      tready_in : OUT STD_LOGIC;
-      tready_out : IN STD_LOGIC;
-      clk : IN STD_LOGIC;
+      data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+      data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
       selector : IN STD_LOGIC_VECTOR(3 DOWNTO 0)
     );
-  END COMPONENT Syncer;
-  ATTRIBUTE X_CORE_INFO : STRING;
-  ATTRIBUTE X_CORE_INFO OF system_Syncer_0_0_arch: ARCHITECTURE IS "Syncer,Vivado 2016.4";
-  ATTRIBUTE CHECK_LICENSE_TYPE : STRING;
-  ATTRIBUTE CHECK_LICENSE_TYPE OF system_Syncer_0_0_arch : ARCHITECTURE IS "system_Syncer_0_0,Syncer,{}";
-  ATTRIBUTE X_INTERFACE_INFO : STRING;
-  ATTRIBUTE X_INTERFACE_INFO OF clk: SIGNAL IS "xilinx.com:signal:clock:1.0 clk CLK";
+  END COMPONENT FilterSpecial;
 BEGIN
-  U0 : Syncer
+  U0 : FilterSpecial
     PORT MAP (
-      valid_in => valid_in,
       data_in => data_in,
       data_out => data_out,
-      valid_out => valid_out,
-      tuser_in => tuser_in,
-      tuser_out => tuser_out,
-      tlast_in => tlast_in,
-      tlast_out => tlast_out,
-      tready_in => tready_in,
-      tready_out => tready_out,
-      clk => clk,
       selector => selector
     );
-END system_Syncer_0_0_arch;
+END system_FilterSpecial_0_0_arch;

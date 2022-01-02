@@ -161,14 +161,11 @@ Als laatste connecteren we de concat IP-Block.
 
 Na de bitstream aanmaken, zouden we hetzelfde resultaat moeten te zien krijgen.
 
-## Resultaat 
+## Result 
 > 
 > Het beeld was een beetje verschoven en de kleur wit was meer richting rood
 > 
 > **De oorzaak hiervan ligt denk ik aan het feit dat de IP-block rgb2dvi_0 de VSync en HSync bits vele eerder krijgt dan de RGB-data waardoor er een verschuiving ontstaat.**
-
-## Bronnen
-[slice and concat](https://support.xilinx.com/s/article/60844?language=en_US)
 
 # data filtering
 Nu we weten hoe de de RGB waardes kunnen scheiden van elkaar, kunnen we eens proberen om hier een filter op toe te passen. We gaan zelf een "filter" maken in VHDL en deze nadien toevoegen aan de block design. 
@@ -445,86 +442,44 @@ Na de bitstream generatie en het programmeren van het board, kregen we een verra
 
 ![verrassende output monitor](pictures/REAL_monitor_output_Fix_Test_1.jpg)
 
-Het beeld was zo goed als zwart. Ik denk dat dit lag omdat de andere waardes (tready, tuser, tlast) eerder werden verplaatst dan de data. Ik heb dus de syncer block aangepast zodat we deze data lijnen ook bijhouwden totdat de data klaar is.
+Het beeld was zo goed als zwart. Ik denk dat dit lag omdat de andere waardes (tready, tuser, tlast) eerder werden verplaatst dan de data. Ik heb dus de syncer block aangepast zodat we deze data lijnen ook kunnen bijhouden totdat de data klaar is.
 
-``` VHDL
-entity Syncer is
-    Port ( valid_in : in STD_LOGIC;
-           data_in : in STD_LOGIC_VECTOR (23 downto 0);
-           data_out : out STD_LOGIC_VECTOR (23 downto 0);
-           valid_out : out STD_LOGIC;
-           tuser_in: in STD_LOGIC;
-           tuser_out: out STD_LOGIC;
-           tlast_in: in STD_LOGIC;
-           tlast_out: out STD_LOGIC;
-           tready_in: out STD_LOGIC;
-           tready_out: in STD_LOGIC;
-           clk : in STD_LOGIC;
-           selector : in STD_LOGIC_VECTOR (3 downto 0));
-end Syncer;
+Jammer genoeg gaf dit hetzelfde resultaat. 
 
-architecture Behavioral of Syncer is
+## Problem continued
 
-component FilterSpecial is
-    Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
-           data_out : out STD_LOGIC_VECTOR (7 downto 0);
-           selector : in STD_LOGIC_VECTOR (3 downto 0));
-end component FilterSpecial;
+Na dat ik opnieuw de originele code heb geüpload en hiermee de data lijnen deel per deel heb opgesplitst en bekeken, heb ik het probleem gevonden.
 
-signal rood : STD_LOGIC_VECTOR(7 downto 0):="00000000";
-signal groen : STD_LOGIC_VECTOR(7 downto 0):="00000000";
-signal blauw : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+![problem solved](pictures/REAL_Block_Design_Reveal_Sync_Error.png)
 
-signal rood_out : STD_LOGIC_VECTOR(7 downto 0):="00000000";
-signal groen_out : STD_LOGIC_VECTOR(7 downto 0):="00000000";
-signal blauw_out : STD_LOGIC_VECTOR(7 downto 0):="00000000";
+Zoals we kunnen zien op de foto zijn de datalijnen gewoon verbonden zoals het hoort zonder iets ertussen. Als ik nu enkel lijnen **AXI_Stream_Master** en **S_AXIS_S2MM** verbind zonder tuser, tvaldi, tlast en tdata dan verkrijgen we een perfect beeld. Als ik deze weg laat en de andere met elkaar verbind, verkrijg ik een verschove beeld en de kleuren zijn mee verschoven (blauw wordt rood etc.)
 
-signal splitsing_ok : STD_LOGIC := '0';
+Echter als we ze allemaal verbinden, krijg ik enkel een kleur verschuiving (rood -> groen, groen -> blauw, blauw -> rood) en de beeldverschuiving lijkt weg te zijn. Om onze kleur verschuiving dus op te lossen gaan we eerst een component aanmaken die de kleuren juist zal plaatsen en deze eerst testen. Als dit niet werkt gaan we dit proberen met de slice en concat IP-blokken.
 
-begin
+Bij het proberen van deze methode ging het niet zoals verwacht:
 
-filterRood : FilterSpecial 
-port map(data_in => rood, data_out => rood_out, selector => selector);
-filterBlauw : FilterSpecial 
-port map(data_in => blauw, data_out => blauw_out, selector => selector);
-filterGroen : FilterSpecial 
-port map(data_in => groen, data_out => groen_out, selector => selector);
+![onverwacht monitor scherm](./pictures/REAL_monitor_output_Fix_Test_2.jpg)
 
-process (valid_in, rood, groen, blauw, data_in) begin --data spritsen
-if rising_edge(clk) then
-    if valid_in = '1' then
-        valid_out <= '0';
-    
-        groen <= data_in(7 downto 0);   --groen data deel
-        blauw <= data_in(15 downto 8);  --blauw data deel
-        rood <= data_in(23 downto 16);  --rood data deel
-    
-        splitsing_ok <= '1';
-    end if;
-end if;
-end process;
+De kleuren bleven geshift staan. Ookal veranderde we de volgorden, deed dit niets.
 
-process (rood_out, blauw_out, groen_out, splitsing_ok) begin
-if rising_edge(clk) then
-    if(splitsing_ok = '1' AND rood_out /= "00000000") then
-        splitsing_ok <= '0';
-        data_out <= rood_out & blauw_out & groen_out;
-        tlast_out <= tlast_in;
-        tuser_out <= tuser_in;
-        tready_in <= tready_out;
-        valid_out <= '1';
-    end if;
-end if;
+## Problem solved
 
-end process;
+Ik was ten einde raad dus ik klikte op wat knopjes in de hoop dat het iets deed. En dit deed ook iets wat ik wou. 
 
-end Behavioral;
-```
+De FPGA werd telkens geprogrameerd met de geëxporteerde bitstream file in het SDK programma. Ik heb nu eens de FPGA geprogrammeerd in het Vivado programma (Hardware Manager) en dit gaf een juist resultaat. De kleuren waren niet verschoven. Uiteraard moeten we stap 10 van hoofdstuk [Tutorial](#tutorial) nog wel uitvoeren.
+
+We zullen eens proberen om de syncer block er in te plaatsen. De syncronisatie poorten (tuser, tready, tlast) laten we er uit om de boel wat simpliciteit te geven bij het debuggen.
+
+![block diagram probeersel 3](pictures/REAL_Block_Design_Hookup_Filter_Test_3.png)
+
+## Result
+
 
 # Bronnen
 * [Tutorial usage Demo](https://digilent.com/reference/learn/programmable-logic/tutorials/zybo-z7-pcam-5c-demo/start)
 * [Tutorial opening project demo](https://digilent.com/reference/learn/programmable-logic/tutorials/github-demos/start)
 * [Tutorial importing board files](https://digilent.com/reference/software/vivado/board-files?redirect=1)
+* [slice and concat](https://support.xilinx.com/s/article/60844?language=en_US)
 * [programming problem](https://forum.digilentinc.com/topic/12952-ap-transaction-error-dap-status-f0000021/) 
 * [Demo gitHub repo](https://github.com/Digilent/Zybo-Z7-20-pcam-5c)
 * [Board Files gitHub repo](https://github.com/Digilent/vivado-boards/)
@@ -536,5 +491,7 @@ end Behavioral;
 * [ERROR DRC23-20](https://support.xilinx.com/s/article/56354?language=en_US)
 * [Bayer to RGB](https://www.visengi.com/products/bayer2rgb)
 * [Paper over video processing](https://digilent.s3-us-west-2.amazonaws.com/resources/whitepapers/EmbeddedVisionDemo.pdf?_ga=2.167079991.807386272.1568825362-2125793643.1506359851)
+* [VHDL operators](https://www.ics.uci.edu/~jmoorkan/vhdlref/operator.html)
+* [VHDL concat bits](https://stackoverflow.com/questions/209458/concatenating-bits-in-vhdl)
 
 Een link om bayer2RGB aan te passen om eventueel daar de RGB waarde aan te passen [link](https://fumimaker.net/entry/2020/02/06/002934)
