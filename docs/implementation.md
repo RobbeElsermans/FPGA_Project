@@ -51,7 +51,7 @@ Niet te vergeten is de video output op de HDMI display.
 
 Het werkt! Dat betekend dat het tijd is om het Block Design te inspecteren en de blokken die er gebruikt worden. Zo kunnen we bepalen waar we de filters kunnen plaatsen.
 
-# data divider
+# Data divider
 
 ## Where is the data?!
 
@@ -162,12 +162,12 @@ Als laatste connecteren we de concat IP-Block.
 Na de bitstream aanmaken, zouden we hetzelfde resultaat moeten te zien krijgen.
 
 ## Result 
-> 
-> Het beeld was een beetje verschoven en de kleur wit was meer richting rood
-> 
-> **De oorzaak hiervan ligt denk ik aan het feit dat de IP-block rgb2dvi_0 de VSync en HSync bits vele eerder krijgt dan de RGB-data waardoor er een verschuiving ontstaat.**
 
-# data filtering
+Het beeld was een beetje verschoven en de kleur wit was meer richting rood
+
+**De oorzaak hiervan ligt denk ik aan het feit dat de IP-block rgb2dvi_0 de VSync en HSync bits vele eerder krijgt dan de RGB-data waardoor er een verschuiving ontstaat.**
+
+# Data filtering
 Nu we weten hoe de de RGB waardes kunnen scheiden van elkaar, kunnen we eens proberen om hier een filter op toe te passen. We gaan zelf een "filter" maken in VHDL en deze nadien toevoegen aan de block design. 
 
 ## First "filter"
@@ -462,18 +462,23 @@ Bij het proberen van deze methode ging het niet zoals verwacht:
 
 De kleuren bleven geshift staan. Ookal veranderde we de volgorden, deed dit niets.
 
-## Problem solved
+## Problem solved?
 
 Ik was ten einde raad dus ik klikte op wat knopjes in de hoop dat het iets deed. En dit deed ook iets wat ik wou. 
 
 De FPGA werd telkens geprogrameerd met de geëxporteerde bitstream file in het SDK programma. Ik heb nu eens de FPGA geprogrammeerd in het Vivado programma (Hardware Manager) en dit gaf een juist resultaat. De kleuren waren niet verschoven. Uiteraard moeten we stap 10 van hoofdstuk [Tutorial](#tutorial) nog wel uitvoeren.
 
-We zullen eens proberen om de syncer block er in te plaatsen. De syncronisatie poorten (tuser, tready, tlast) laten we er uit om de boel wat simpliciteit te geven bij het debuggen.
+We zullen eens proberen om de slicer block te plaatsen die de data zal uitpakken en terug zal inpakken zonder enige wijzigingen.
 
 ![block diagram probeersel 3](pictures/REAL_Block_Design_Hookup_Filter_Test_3.png)
 
-## Result
+Dit gaf me weer een verkeerd resultaat. Echter wanneer ik gewoon keer na keer de FPGA programeerde verschoof telkens de kleur totdat de kleuren weer correct stonden.
+Dit is natuurlijk geen oplossing voor het probleem. 
 
+De verschuiving in het beeld is er nog steeds.
+
+## Result
+Het is me niet gelukt om de juiste kleuren over te zetten wegens onbekende redenen. De video zelf was verschoven in tijd waardoor de kleuren mee verschuiven denk ik.
 
 # Bronnen
 * [Tutorial usage Demo](https://digilent.com/reference/learn/programmable-logic/tutorials/zybo-z7-pcam-5c-demo/start)
