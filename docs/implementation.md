@@ -173,7 +173,7 @@ Nu we weten hoe de de RGB waardes kunnen scheiden van elkaar, kunnen we eens pro
 ## First "filter"
 We gaan eerst gewoon proberen om een 8 bit vector te shiften naar links met 2 bits en nadien terug naar buiten te sturen. We gaan dit met de kleur rood doen.
 
-``` VHDL
+``` filter VHDL
 entity Filter is
     Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
            data_out : out STD_LOGIC_VECTOR (7 downto 0));
@@ -231,7 +231,7 @@ Als we de video output erbij halen dan zien we dat het plots veel roder is gewor
 
 Om de filter iets dynamischer te maken gaan we 2 switches gebruiken van de Zybo Z7-20 board. De switches zullen het aantal bits voorstellen dat we gaan opschuiven naar links beginnend van 0 en eindigend met 3. We nemen hiervoor **SW0** en **SW1**.
 
-``` VHDL
+``` filter VHDL
 entity Filter is
     Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
            data_out : out STD_LOGIC_VECTOR (7 downto 0);
@@ -291,9 +291,7 @@ We zien duidelijk de standen van onze filter.
 
 We kunnen nu een uitgebreide filter maken die verschillende masks kan bevatten om bv. enkel de 4 eerste bits door te laten of een XOR op uit te voeren. De mogelijkheden zijn eindeloos.
 
-De uitgebreide filter
-
-``` VHDL
+``` advanced filter VHDL
 entity FilterSpecial is
     Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
            data_out : out STD_LOGIC_VECTOR (7 downto 0);
@@ -339,9 +337,7 @@ Nu dat we weten dat de filter zijn ding doet, kunnen we de slice en concat blokk
 
 We weten dat de data 24 bits lang is en dat elke kleur 8-bits in beslag neemt gaande van groen (LSB), blauw en rood.
 
-De shifter
-
-``` VHDL
+``` shifter VHDL
 entity shifter is
     Port ( data_in : in STD_LOGIC_VECTOR (23 downto 0);
            green : out STD_LOGIC_VECTOR (7 downto 0);
@@ -364,9 +360,7 @@ end process;
 end Behavioral;
 ```
 
-De concater
-
-``` VHDL
+``` concater VHDL
 entity concater is
     Port ( green : in STD_LOGIC_VECTOR (7 downto 0);
            blue : in STD_LOGIC_VECTOR (7 downto 0);
@@ -392,6 +386,139 @@ end Behavioral;
 Aansluiting
 
 ![block design aansluiting](pictures/REAL_Block_Design_Hookup_AdvancedFilter_4.png)
+
+Dit geeft hetzelfde resultaat weer zoals bij [Advanced filter](#advanced-filter)
+
+We gaan de slicer en concater nog wat verbeteren door hier ook een selector toe te voegen. Zo kunnen we gemakkelijk andere kleuren naar de filter doorsturen.
+
+Omdat we maar over 4 switches bezitten, gaan we 2 voor de filter nemen ( in totaal 4 toestanden ) en 2 voor de slicer en concater blokken ( ook 4 toestanden ).
+
+Uiteraard gaan we de .xdc file ook moeten aanpassen naar 2 verschillende switches (fir en div).
+
+``` Advanced filter VHDL
+
+entity FilterSpecial is
+    Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
+           data_out : out STD_LOGIC_VECTOR (7 downto 0);
+           selector : in STD_LOGIC_VECTOR (1 downto 0));
+end FilterSpecial;
+
+architecture Behavioral of FilterSpecial is
+
+signal temp_data: STD_LOGIC_VECTOR (7 downto 0) :="00000000";
+constant mask_1: STD_LOGIC_VECTOR (7 downto 0) :="00000000";
+constant mask_2: STD_LOGIC_VECTOR (7 downto 0) :="00001111";
+constant mask_3: STD_LOGIC_VECTOR (7 downto 0) :="11110000";
+constant mask_4: STD_LOGIC_VECTOR (7 downto 0) :="11111111";
+
+begin
+
+process (selector, data_in) begin
+temp_data <= data_in;
+
+
+case selector is
+    when "00" => data_out <= temp_data;
+    when "01" => data_out <= (temp_data XOR mask_3);
+    when "10" => data_out <= (temp_data XOR mask_4);
+    when "11" => data_out <= "00000000";
+    when others => data_out <= temp_data;
+end case;
+end process;
+
+end Behavioral;
+```
+
+``` slicer VHDL
+
+entity shifter is
+    Port ( data_in : in STD_LOGIC_VECTOR (23 downto 0);
+           data_out : out STD_LOGIC_VECTOR (7 downto 0);
+           rest : out STD_LOGIC_VECTOR (23 downto 0);
+           selector: in STD_LOGIC_VECTOR (1 downto 0));
+end shifter;
+
+architecture Behavioral of shifter is
+
+begin
+
+process (data_in, selector) begin
+
+case selector is
+    when "00" => 
+        data_out <= data_in (7 downto 0);
+        rest(7 downto 0) <= "00000000";
+        rest(15 downto 8) <= data_in (15 downto 8);
+        rest(23 downto 16) <= data_in (23 downto 16);
+    when "01" => 
+        data_out <= data_in (15 downto 8);
+        rest(7 downto 0) <= data_in (7 downto 0);
+        rest(15 downto 8) <= "00000000";
+        rest(23 downto 16) <= data_in (23 downto 16);
+    when "10" => 
+        data_out <= data_in (23 downto 16);
+        rest(7 downto 0) <= data_in (7 downto 0);
+        rest(15 downto 8) <= data_in (15 downto 8);
+        rest(23 downto 16) <= "00000000";
+    when "11" => 
+        data_out <= "11111111";
+end case;
+
+--green <= data_in(7 downto 0);
+--blue <= data_in(15 downto 8);
+--red <= data_in(23 downto 16);
+
+end process;
+
+end Behavioral;
+```
+
+``` concater VHDL
+
+entity concater is
+    Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
+           data_out : out STD_LOGIC_VECTOR (23 downto 0);
+           rest : in STD_LOGIC_VECTOR (23 downto 0);
+           selector: in STD_LOGIC_VECTOR (1 downto 0));
+end concater;
+
+architecture Behavioral of concater is
+
+begin
+
+process (data_in, rest, selector) begin
+
+case selector is
+    when "00" =>
+        data_out(7 downto 0) <= data_in;
+        data_out(15 downto 8) <= rest(15 downto 8);
+        data_out(23 downto 16) <= rest(23 downto 16);
+    when "01" =>
+        data_out(7 downto 0) <= rest(7 downto 0);
+        data_out(15 downto 8) <= data_in;
+        data_out(23 downto 16) <= rest(23 downto 16);
+    when "10" =>
+        data_out(7 downto 0) <= rest(7 downto 0);
+        data_out(15 downto 8) <= rest(15 downto 8);
+        data_out(23 downto 16) <= data_in;
+    when "11" =>
+        data_out(7 downto 0) <= rest(7 downto 0);
+        data_out(15 downto 8) <= rest(15 downto 8);
+        data_out(23 downto 16) <= rest(23 downto 16);
+end case;
+
+
+end process;
+
+end Behavioral;
+```
+
+![block design aansluitingg](pictures/REAL_Block_Design_Hookup_AdvancedFilter_5.png)
+
+<img src="./pictures/REAL_monitor_output_AdvancedFilter_Test_3.jpg" width="32%">
+<img src="./pictures/REAL_monitor_output_AdvancedFilter_Test_2.jpg" width="32%">
+<img src="./pictures/REAL_monitor_output_AdvancedFilter_Test_1.jpg" width="32%">
+
 
 
 # Fix video shift
@@ -419,7 +546,7 @@ tevergeefs was dit ook geen succes.
 
 We gaan een component maken die zowel de slice zal bevatten, de filter en de concat. En dit alles met een ready pin zodat de timing juist blijft. Ik hoop op deze manier de timings correct te krijgen.
 
-``` VHDL
+``` syncer VHDL
 entity Syncer is
     Port ( valid_in : in STD_LOGIC;
            data_in : in STD_LOGIC_VECTOR (23 downto 0);

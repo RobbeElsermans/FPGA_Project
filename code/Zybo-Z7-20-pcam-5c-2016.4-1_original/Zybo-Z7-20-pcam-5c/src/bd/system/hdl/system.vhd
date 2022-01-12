@@ -1,7 +1,7 @@
 --Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2016.4 (lin64) Build 1756540 Mon Jan 23 19:11:19 MST 2017
---Date        : Wed Jan 12 15:30:36 2022
+--Date        : Wed Jan 12 16:57:25 2022
 --Host        : the-beast running 64-bit Ubuntu 20.04.3 LTS
 --Command     : generate_target system.bd
 --Design      : system
@@ -2836,7 +2836,7 @@ entity system is
     cam_iic_sda_i : in STD_LOGIC;
     cam_iic_sda_o : out STD_LOGIC;
     cam_iic_sda_t : out STD_LOGIC;
-    div : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    div : in STD_LOGIC_VECTOR ( 1 downto 0 );
     dphy_clk_lp_n : in STD_LOGIC;
     dphy_clk_lp_p : in STD_LOGIC;
     dphy_data_hs_n : in STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -2845,6 +2845,7 @@ entity system is
     dphy_data_lp_p : in STD_LOGIC_VECTOR ( 1 downto 0 );
     dphy_hs_clock_clk_n : in STD_LOGIC;
     dphy_hs_clock_clk_p : in STD_LOGIC;
+    fil : in STD_LOGIC_VECTOR ( 1 downto 0 );
     hdmi_tx_clk_n : out STD_LOGIC;
     hdmi_tx_clk_p : out STD_LOGIC;
     hdmi_tx_data_n : out STD_LOGIC_VECTOR ( 2 downto 0 );
@@ -3445,29 +3446,29 @@ architecture STRUCTURE of system is
     dout : out STD_LOGIC_VECTOR ( 2 downto 0 )
   );
   end component system_xlconcat_0_0;
+  component system_shifter_0_0 is
+  port (
+    data_in : in STD_LOGIC_VECTOR ( 23 downto 0 );
+    data_out : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    rest : out STD_LOGIC_VECTOR ( 23 downto 0 );
+    selector : in STD_LOGIC_VECTOR ( 1 downto 0 )
+  );
+  end component system_shifter_0_0;
+  component system_concater_0_1 is
+  port (
+    data_in : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    data_out : out STD_LOGIC_VECTOR ( 23 downto 0 );
+    rest : in STD_LOGIC_VECTOR ( 23 downto 0 );
+    selector : in STD_LOGIC_VECTOR ( 1 downto 0 )
+  );
+  end component system_concater_0_1;
   component system_FilterSpecial_0_0 is
   port (
     data_in : in STD_LOGIC_VECTOR ( 7 downto 0 );
     data_out : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    selector : in STD_LOGIC_VECTOR ( 3 downto 0 )
+    selector : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   end component system_FilterSpecial_0_0;
-  component system_shifter_0_0 is
-  port (
-    data_in : in STD_LOGIC_VECTOR ( 23 downto 0 );
-    green : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    blue : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    red : out STD_LOGIC_VECTOR ( 7 downto 0 )
-  );
-  end component system_shifter_0_0;
-  component system_concater_0_0 is
-  port (
-    green : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    blue : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    red : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    data_out : out STD_LOGIC_VECTOR ( 23 downto 0 )
-  );
-  end component system_concater_0_0;
   signal AXI_BayerToRGB_1_AXI_Stream_Master_TDATA : STD_LOGIC_VECTOR ( 31 downto 0 );
   signal AXI_BayerToRGB_1_AXI_Stream_Master_TLAST : STD_LOGIC;
   signal AXI_BayerToRGB_1_AXI_Stream_Master_TREADY : STD_LOGIC;
@@ -3572,7 +3573,6 @@ architecture STRUCTURE of system is
   signal axi_vdma_0_s2mm_introut : STD_LOGIC;
   signal clk_wiz_0_locked : STD_LOGIC;
   signal concater_0_data_out : STD_LOGIC_VECTOR ( 23 downto 0 );
-  signal div_1 : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal dphy_clk_lp_n_1 : STD_LOGIC;
   signal dphy_clk_lp_p_1 : STD_LOGIC;
   signal dphy_data_hs_n_1 : STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -3772,9 +3772,10 @@ architecture STRUCTURE of system is
   signal rst_vid_clk_dyn_peripheral_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
   signal rst_vid_clk_dyn_peripheral_reset : STD_LOGIC_VECTOR ( 0 to 0 );
   signal s_axil_clk_50 : STD_LOGIC;
-  signal shifter_0_blue : STD_LOGIC_VECTOR ( 7 downto 0 );
+  signal selector_1 : STD_LOGIC_VECTOR ( 1 downto 0 );
+  signal selector_2 : STD_LOGIC_VECTOR ( 1 downto 0 );
   signal shifter_0_green : STD_LOGIC_VECTOR ( 7 downto 0 );
-  signal shifter_0_red : STD_LOGIC_VECTOR ( 7 downto 0 );
+  signal shifter_0_rest : STD_LOGIC_VECTOR ( 23 downto 0 );
   signal v_axi4s_vid_out_0_locked : STD_LOGIC;
   signal v_axi4s_vid_out_0_vid_active_video : STD_LOGIC;
   signal v_axi4s_vid_out_0_vid_data : STD_LOGIC_VECTOR ( 23 downto 0 );
@@ -3863,7 +3864,6 @@ begin
   cam_iic_scl_t <= processing_system7_0_IIC_0_SCL_T;
   cam_iic_sda_o <= processing_system7_0_IIC_0_SDA_O;
   cam_iic_sda_t <= processing_system7_0_IIC_0_SDA_T;
-  div_1(3 downto 0) <= div(3 downto 0);
   dphy_clk_lp_n_1 <= dphy_clk_lp_n;
   dphy_clk_lp_p_1 <= dphy_clk_lp_p;
   dphy_data_hs_n_1(1 downto 0) <= dphy_data_hs_n(1 downto 0);
@@ -3879,6 +3879,8 @@ begin
   processing_system7_0_GPIO_0_TRI_I(0) <= cam_gpio_tri_i(0);
   processing_system7_0_IIC_0_SCL_I <= cam_iic_scl_i;
   processing_system7_0_IIC_0_SDA_I <= cam_iic_sda_i;
+  selector_1(1 downto 0) <= fil(1 downto 0);
+  selector_2(1 downto 0) <= div(1 downto 0);
 AXI_BayerToRGB_1: component system_AXI_BayerToRGB_1_0
      port map (
       StreamClk => mm_clk_150,
@@ -3932,9 +3934,9 @@ AXI_GammaCorrection_0: component system_AXI_GammaCorrection_0_0
     );
 FilterSpecial_0: component system_FilterSpecial_0_0
      port map (
-      data_in(7 downto 0) => shifter_0_blue(7 downto 0),
+      data_in(7 downto 0) => shifter_0_green(7 downto 0),
       data_out(7 downto 0) => FilterSpecial_0_data_out(7 downto 0),
-      selector(3 downto 0) => div_1(3 downto 0)
+      selector(1 downto 0) => selector_1(1 downto 0)
     );
 MIPI_CSI_2_RX_0: component system_MIPI_CSI_2_RX_0_0
      port map (
@@ -4227,12 +4229,12 @@ clk_wiz_0: component system_clk_wiz_0_0
       clk_out3 => ref_clk_200,
       locked => clk_wiz_0_locked
     );
-concater_0: component system_concater_0_0
+concater_0: component system_concater_0_1
      port map (
-      blue(7 downto 0) => FilterSpecial_0_data_out(7 downto 0),
+      data_in(7 downto 0) => FilterSpecial_0_data_out(7 downto 0),
       data_out(23 downto 0) => concater_0_data_out(23 downto 0),
-      green(7 downto 0) => shifter_0_green(7 downto 0),
-      red(7 downto 0) => shifter_0_red(7 downto 0)
+      rest(23 downto 0) => shifter_0_rest(23 downto 0),
+      selector(1 downto 0) => selector_2(1 downto 0)
     );
 processing_system7_0: component system_processing_system7_0_0
      port map (
@@ -4611,10 +4613,10 @@ rst_vid_clk_dyn: component system_rst_vid_clk_dyn_0
     );
 shifter_0: component system_shifter_0_0
      port map (
-      blue(7 downto 0) => shifter_0_blue(7 downto 0),
       data_in(23 downto 0) => v_axi4s_vid_out_0_vid_data(23 downto 0),
-      green(7 downto 0) => shifter_0_green(7 downto 0),
-      red(7 downto 0) => shifter_0_red(7 downto 0)
+      data_out(7 downto 0) => shifter_0_green(7 downto 0),
+      rest(23 downto 0) => shifter_0_rest(23 downto 0),
+      selector(1 downto 0) => selector_2(1 downto 0)
     );
 v_axi4s_vid_out_0: component system_v_axi4s_vid_out_0_0
      port map (

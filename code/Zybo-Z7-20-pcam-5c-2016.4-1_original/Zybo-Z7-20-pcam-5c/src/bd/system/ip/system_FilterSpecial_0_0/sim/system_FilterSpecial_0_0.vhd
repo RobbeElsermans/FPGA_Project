@@ -57,7 +57,7 @@ ENTITY system_FilterSpecial_0_0 IS
   PORT (
     data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
     data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-    selector : IN STD_LOGIC_VECTOR(3 DOWNTO 0)
+    selector : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
   );
 END system_FilterSpecial_0_0;
 
@@ -68,7 +68,7 @@ ARCHITECTURE system_FilterSpecial_0_0_arch OF system_FilterSpecial_0_0 IS
     PORT (
       data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
       data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-      selector : IN STD_LOGIC_VECTOR(3 DOWNTO 0)
+      selector : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
     );
   END COMPONENT FilterSpecial;
 BEGIN

@@ -56,9 +56,9 @@ USE ieee.numeric_std.ALL;
 ENTITY system_shifter_0_0 IS
   PORT (
     data_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-    green : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-    blue : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-    red : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+    data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    rest : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
+    selector : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
   );
 END system_shifter_0_0;
 
@@ -68,17 +68,17 @@ ARCHITECTURE system_shifter_0_0_arch OF system_shifter_0_0 IS
   COMPONENT shifter IS
     PORT (
       data_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-      green : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-      blue : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-      red : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+      data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+      rest : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
+      selector : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
     );
   END COMPONENT shifter;
 BEGIN
   U0 : shifter
     PORT MAP (
       data_in => data_in,
-      green => green,
-      blue => blue,
-      red => red
+      data_out => data_out,
+      rest => rest,
+      selector => selector
     );
 END system_shifter_0_0_arch;

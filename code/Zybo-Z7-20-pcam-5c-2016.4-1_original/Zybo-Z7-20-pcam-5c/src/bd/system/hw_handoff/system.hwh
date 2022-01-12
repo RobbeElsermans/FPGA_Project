@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Jan 12 15:30:39 2022" VIVADOVERSION="2016.4">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Jan 12 16:57:28 2022" VIVADOVERSION="2016.4">
 
   <SYSTEMINFO ARCH="zynq" DEVICE="7z020" NAME="system" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -70,9 +70,15 @@
         <CONNECTION INSTANCE="MIPI_D_PHY_RX_0" PORT="dphy_data_lp_p"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="I" LEFT="3" NAME="div" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_div">
+    <PORT DIR="I" LEFT="1" NAME="fil" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_fil">
       <CONNECTIONS>
         <CONNECTION INSTANCE="FilterSpecial_0" PORT="selector"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" LEFT="1" NAME="div" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_div">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="shifter_0" PORT="selector"/>
+        <CONNECTION INSTANCE="concater_0" PORT="selector"/>
       </CONNECTIONS>
     </PORT>
   </EXTERNALPORTS>
@@ -557,19 +563,19 @@
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
       </PARAMETERS>
       <PORTS>
-        <PORT DIR="I" LEFT="7" NAME="data_in" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_blue">
+        <PORT DIR="I" LEFT="7" NAME="data_in" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_data_out">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="shifter_0" PORT="blue"/>
+            <CONNECTION INSTANCE="shifter_0" PORT="data_out"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="7" NAME="data_out" RIGHT="0" SIGIS="undef" SIGNAME="FilterSpecial_0_data_out">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="concater_0" PORT="blue"/>
+            <CONNECTION INSTANCE="concater_0" PORT="data_in"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="3" NAME="selector" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_div">
+        <PORT DIR="I" LEFT="1" NAME="selector" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_fil">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="div"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="fil"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -5444,28 +5450,28 @@
     <MODULE FULLNAME="/concater_0" HWVERSION="1.0" INSTANCE="concater_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="concater" VLNV="user.org:module_ref:concater:1.0">
       <DOCUMENTS/>
       <PARAMETERS>
-        <PARAMETER NAME="Component_Name" VALUE="system_concater_0_0"/>
+        <PARAMETER NAME="Component_Name" VALUE="system_concater_0_1"/>
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
       </PARAMETERS>
       <PORTS>
-        <PORT DIR="I" LEFT="7" NAME="green" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_green">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="shifter_0" PORT="green"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" LEFT="7" NAME="blue" RIGHT="0" SIGIS="undef" SIGNAME="FilterSpecial_0_data_out">
+        <PORT DIR="I" LEFT="7" NAME="data_in" RIGHT="0" SIGIS="undef" SIGNAME="FilterSpecial_0_data_out">
           <CONNECTIONS>
             <CONNECTION INSTANCE="FilterSpecial_0" PORT="data_out"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" LEFT="7" NAME="red" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_red">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="shifter_0" PORT="red"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="23" NAME="data_out" RIGHT="0" SIGIS="undef" SIGNAME="concater_0_data_out">
           <CONNECTIONS>
             <CONNECTION INSTANCE="rgb2dvi_0" PORT="vid_pData"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="23" NAME="rest" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_rest">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="shifter_0" PORT="rest"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="1" NAME="selector" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_div">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="div"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -8932,19 +8938,19 @@
             <CONNECTION INSTANCE="v_axi4s_vid_out_0" PORT="vid_data"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="7" NAME="green" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_green">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="concater_0" PORT="green"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="7" NAME="blue" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_blue">
+        <PORT DIR="O" LEFT="7" NAME="data_out" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_data_out">
           <CONNECTIONS>
             <CONNECTION INSTANCE="FilterSpecial_0" PORT="data_in"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="7" NAME="red" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_red">
+        <PORT DIR="O" LEFT="23" NAME="rest" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_rest">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="concater_0" PORT="red"/>
+            <CONNECTION INSTANCE="concater_0" PORT="rest"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="1" NAME="selector" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_div">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="div"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>

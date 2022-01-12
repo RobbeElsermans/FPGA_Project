@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<bd:repository xmlns:bd="http://www.xilinx.com/bd" bd:BoundaryCRC="0x9360D1BD7FB27F7" bd:device="xc7z020clg400-1" bd:isValidated="true" bd:synthFlowMode="Hierarchical" bd:tool_version="2016.4" bd:top="system" bd:version="1.00.a">
+<bd:repository xmlns:bd="http://www.xilinx.com/bd" bd:BoundaryCRC="0xBC0634E28B652ADB" bd:device="xc7z020clg400-1" bd:isValidated="true" bd:synthFlowMode="Hierarchical" bd:tool_version="2016.4" bd:top="system" bd:version="1.00.a">
 
   <spirit:component xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009">
     <spirit:vendor>xilinx.com</spirit:vendor>
@@ -224,11 +224,21 @@
           </spirit:wire>
         </spirit:port>
         <spirit:port>
+          <spirit:name>fil</spirit:name>
+          <spirit:wire>
+            <spirit:direction>in</spirit:direction>
+            <spirit:vector>
+              <spirit:left>1</spirit:left>
+              <spirit:right>0</spirit:right>
+            </spirit:vector>
+          </spirit:wire>
+        </spirit:port>
+        <spirit:port>
           <spirit:name>div</spirit:name>
           <spirit:wire>
             <spirit:direction>in</spirit:direction>
             <spirit:vector>
-              <spirit:left>3</spirit:left>
+              <spirit:left>1</spirit:left>
               <spirit:right>0</spirit:right>
             </spirit:vector>
           </spirit:wire>
@@ -973,17 +983,6 @@
         </spirit:configurableElementValues>
       </spirit:componentInstance>
       <spirit:componentInstance>
-        <spirit:instanceName>FilterSpecial_0</spirit:instanceName>
-        <spirit:componentRef spirit:library="module_ref" spirit:name="FilterSpecial" spirit:vendor="user.org" spirit:version="1.0"/>
-        <spirit:configurableElementValues>
-          <spirit:configurableElementValue spirit:referenceId="bd:xciName">system_FilterSpecial_0_0</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="bd:referenceName">FilterSpecial</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="bd:subInstancePath"></spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="bd:referenceType">hdl</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="bd:BoundaryCRC">0x0</spirit:configurableElementValue>
-        </spirit:configurableElementValues>
-      </spirit:componentInstance>
-      <spirit:componentInstance>
         <spirit:instanceName>shifter_0</spirit:instanceName>
         <spirit:componentRef spirit:library="module_ref" spirit:name="shifter" spirit:vendor="user.org" spirit:version="1.0"/>
         <spirit:configurableElementValues>
@@ -998,8 +997,19 @@
         <spirit:instanceName>concater_0</spirit:instanceName>
         <spirit:componentRef spirit:library="module_ref" spirit:name="concater" spirit:vendor="user.org" spirit:version="1.0"/>
         <spirit:configurableElementValues>
-          <spirit:configurableElementValue spirit:referenceId="bd:xciName">system_concater_0_0</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="bd:xciName">system_concater_0_1</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="bd:referenceName">concater</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="bd:subInstancePath"></spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="bd:referenceType">hdl</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="bd:BoundaryCRC">0x0</spirit:configurableElementValue>
+        </spirit:configurableElementValues>
+      </spirit:componentInstance>
+      <spirit:componentInstance>
+        <spirit:instanceName>FilterSpecial_0</spirit:instanceName>
+        <spirit:componentRef spirit:library="module_ref" spirit:name="FilterSpecial" spirit:vendor="user.org" spirit:version="1.0"/>
+        <spirit:configurableElementValues>
+          <spirit:configurableElementValue spirit:referenceId="bd:xciName">system_FilterSpecial_0_0</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="bd:referenceName">FilterSpecial</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="bd:subInstancePath"></spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="bd:referenceType">hdl</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="bd:BoundaryCRC">0x0</spirit:configurableElementValue>
@@ -1291,11 +1301,6 @@
         <spirit:internalPortReference spirit:componentRef="processing_system7_0" spirit:portRef="IRQ_F2P"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
-        <spirit:name>div_1</spirit:name>
-        <spirit:externalPortReference spirit:portRef="div"/>
-        <spirit:internalPortReference spirit:componentRef="FilterSpecial_0" spirit:portRef="selector"/>
-      </spirit:adHocConnection>
-      <spirit:adHocConnection>
         <spirit:name>v_axi4s_vid_out_0_vid_hsync</spirit:name>
         <spirit:internalPortReference spirit:componentRef="v_axi4s_vid_out_0" spirit:portRef="vid_hsync"/>
         <spirit:internalPortReference spirit:componentRef="rgb2dvi_0" spirit:portRef="vid_pHSync"/>
@@ -1317,23 +1322,29 @@
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>shifter_0_green</spirit:name>
-        <spirit:internalPortReference spirit:componentRef="shifter_0" spirit:portRef="green"/>
-        <spirit:internalPortReference spirit:componentRef="concater_0" spirit:portRef="green"/>
+        <spirit:internalPortReference spirit:componentRef="shifter_0" spirit:portRef="data_out"/>
+        <spirit:internalPortReference spirit:componentRef="FilterSpecial_0" spirit:portRef="data_in"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
-        <spirit:name>shifter_0_blue</spirit:name>
-        <spirit:internalPortReference spirit:componentRef="shifter_0" spirit:portRef="blue"/>
-        <spirit:internalPortReference spirit:componentRef="FilterSpecial_0" spirit:portRef="data_in"/>
+        <spirit:name>selector_1</spirit:name>
+        <spirit:externalPortReference spirit:portRef="fil"/>
+        <spirit:internalPortReference spirit:componentRef="FilterSpecial_0" spirit:portRef="selector"/>
+      </spirit:adHocConnection>
+      <spirit:adHocConnection>
+        <spirit:name>selector_2</spirit:name>
+        <spirit:externalPortReference spirit:portRef="div"/>
+        <spirit:internalPortReference spirit:componentRef="shifter_0" spirit:portRef="selector"/>
+        <spirit:internalPortReference spirit:componentRef="concater_0" spirit:portRef="selector"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>FilterSpecial_0_data_out</spirit:name>
         <spirit:internalPortReference spirit:componentRef="FilterSpecial_0" spirit:portRef="data_out"/>
-        <spirit:internalPortReference spirit:componentRef="concater_0" spirit:portRef="blue"/>
+        <spirit:internalPortReference spirit:componentRef="concater_0" spirit:portRef="data_in"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
-        <spirit:name>shifter_0_red</spirit:name>
-        <spirit:internalPortReference spirit:componentRef="shifter_0" spirit:portRef="red"/>
-        <spirit:internalPortReference spirit:componentRef="concater_0" spirit:portRef="red"/>
+        <spirit:name>shifter_0_rest</spirit:name>
+        <spirit:internalPortReference spirit:componentRef="shifter_0" spirit:portRef="rest"/>
+        <spirit:internalPortReference spirit:componentRef="concater_0" spirit:portRef="rest"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>concater_0_data_out</spirit:name>

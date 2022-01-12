@@ -13,7 +13,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>boundaryCRC</spirit:name>
-            <spirit:value>e8353f5a</spirit:value>
+            <spirit:value>ae60397b</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRCversion</spirit:name>
@@ -40,11 +40,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 12 14:30:39 UTC 2022</spirit:value>
+            <spirit:value>Wed Jan 12 15:42:49 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRC</spirit:name>
-            <spirit:value>e8353f5a</spirit:value>
+            <spirit:value>ae60397b</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRCversion</spirit:name>
@@ -67,7 +67,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>boundaryCRC</spirit:name>
-            <spirit:value>e8353f5a</spirit:value>
+            <spirit:value>ae60397b</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRCversion</spirit:name>
@@ -94,11 +94,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 12 14:30:39 UTC 2022</spirit:value>
+            <spirit:value>Wed Jan 12 15:42:49 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRC</spirit:name>
-            <spirit:value>e8353f5a</spirit:value>
+            <spirit:value>ae60397b</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRCversion</spirit:name>
@@ -123,8 +123,12 @@
         </spirit:fileSetRef>
         <spirit:parameters>
           <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Wed Jan 12 15:43:24 UTC 2022</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
             <spirit:name>boundaryCRC</spirit:name>
-            <spirit:value>e8353f5a</spirit:value>
+            <spirit:value>ae60397b</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>boundaryCRCversion</spirit:name>
@@ -160,7 +164,7 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>green</spirit:name>
+        <spirit:name>data_out</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
@@ -177,11 +181,11 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>blue</spirit:name>
+        <spirit:name>rest</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">7</spirit:left>
+            <spirit:left spirit:format="long">23</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -194,11 +198,11 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>red</spirit:name>
+        <spirit:name>selector</spirit:name>
         <spirit:wire>
-          <spirit:direction>out</spirit:direction>
+          <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">7</spirit:left>
+            <spirit:left spirit:format="long">1</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>

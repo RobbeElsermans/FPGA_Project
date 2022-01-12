@@ -1,7 +1,7 @@
 --Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2016.4 (lin64) Build 1756540 Mon Jan 23 19:11:19 MST 2017
---Date        : Wed Jan 12 15:30:37 2022
+--Date        : Wed Jan 12 16:57:25 2022
 --Host        : the-beast running 64-bit Ubuntu 20.04.3 LTS
 --Command     : generate_target system_wrapper.bd
 --Design      : system_wrapper
@@ -37,7 +37,7 @@ entity system_wrapper is
     cam_gpio_tri_io : inout STD_LOGIC_VECTOR ( 0 to 0 );
     cam_iic_scl_io : inout STD_LOGIC;
     cam_iic_sda_io : inout STD_LOGIC;
-    div : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    div : in STD_LOGIC_VECTOR ( 1 downto 0 );
     dphy_clk_lp_n : in STD_LOGIC;
     dphy_clk_lp_p : in STD_LOGIC;
     dphy_data_hs_n : in STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -46,6 +46,7 @@ entity system_wrapper is
     dphy_data_lp_p : in STD_LOGIC_VECTOR ( 1 downto 0 );
     dphy_hs_clock_clk_n : in STD_LOGIC;
     dphy_hs_clock_clk_p : in STD_LOGIC;
+    fil : in STD_LOGIC_VECTOR ( 1 downto 0 );
     hdmi_tx_clk_n : out STD_LOGIC;
     hdmi_tx_clk_p : out STD_LOGIC;
     hdmi_tx_data_n : out STD_LOGIC_VECTOR ( 2 downto 0 );
@@ -98,7 +99,8 @@ architecture STRUCTURE of system_wrapper is
     dphy_data_hs_p : in STD_LOGIC_VECTOR ( 1 downto 0 );
     dphy_data_lp_n : in STD_LOGIC_VECTOR ( 1 downto 0 );
     dphy_data_lp_p : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    div : in STD_LOGIC_VECTOR ( 3 downto 0 )
+    fil : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    div : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   end component system;
   component IOBUF is
@@ -173,7 +175,7 @@ system_i: component system
       cam_iic_sda_i => cam_iic_sda_i,
       cam_iic_sda_o => cam_iic_sda_o,
       cam_iic_sda_t => cam_iic_sda_t,
-      div(3 downto 0) => div(3 downto 0),
+      div(1 downto 0) => div(1 downto 0),
       dphy_clk_lp_n => dphy_clk_lp_n,
       dphy_clk_lp_p => dphy_clk_lp_p,
       dphy_data_hs_n(1 downto 0) => dphy_data_hs_n(1 downto 0),
@@ -182,6 +184,7 @@ system_i: component system
       dphy_data_lp_p(1 downto 0) => dphy_data_lp_p(1 downto 0),
       dphy_hs_clock_clk_n => dphy_hs_clock_clk_n,
       dphy_hs_clock_clk_p => dphy_hs_clock_clk_p,
+      fil(1 downto 0) => fil(1 downto 0),
       hdmi_tx_clk_n => hdmi_tx_clk_n,
       hdmi_tx_clk_p => hdmi_tx_clk_p,
       hdmi_tx_data_n(2 downto 0) => hdmi_tx_data_n(2 downto 0),
