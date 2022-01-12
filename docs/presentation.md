@@ -13,12 +13,15 @@
 
 * tijds verschuivingen in video beeld (soms)
 * weinig documentatie
+* VHDL als block importeren
 
 <img src="./pictures/REAL_monitor_output_Filter_Test_3.jpg">
 
 ## wat heb je gedaan om dit op te lossen
 
-* Meerdere paden afgelopen zonder resultaat
+* Meerdere paden afgelopen zonder resultaat (tijd verschuivingen in video beeld)
+* veel uitproberen
+* internet afschuimen
 
 [link probeersels](./implementation?id=fix-video-shift)
 
@@ -36,5 +39,5 @@
 
 ## waar kan een student in de toekomst nog aan werken
 
-* Timing probleem oplossen
 * Complexere filters opbouwen
+* meer zaken doen met de kleuren dan alleen filteren

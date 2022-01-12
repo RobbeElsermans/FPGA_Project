@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Jan 12 16:10:35 2022" VIVADOVERSION="2016.4">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Jan 12 16:57:28 2022" VIVADOVERSION="2016.4">
 
   <SYSTEMINFO ARCH="zynq" DEVICE="7z020" NAME="system" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -70,9 +70,15 @@
         <CONNECTION INSTANCE="MIPI_D_PHY_RX_0" PORT="dphy_data_lp_p"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="I" LEFT="3" NAME="div" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_div">
+    <PORT DIR="I" LEFT="1" NAME="fil" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_fil">
       <CONNECTIONS>
         <CONNECTION INSTANCE="FilterSpecial_0" PORT="selector"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" LEFT="1" NAME="div" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_div">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="shifter_0" PORT="selector"/>
+        <CONNECTION INSTANCE="concater_0" PORT="selector"/>
       </CONNECTIONS>
     </PORT>
   </EXTERNALPORTS>
@@ -550,30 +556,6 @@
         </BUSINTERFACE>
       </BUSINTERFACES>
     </MODULE>
-    <MODULE FULLNAME="/Blue" HWVERSION="1.0" INSTANCE="Blue" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlslice" VLNV="xilinx.com:ip:xlslice:1.0">
-      <DOCUMENTS/>
-      <PARAMETERS>
-        <PARAMETER NAME="DIN_WIDTH" VALUE="24"/>
-        <PARAMETER NAME="DIN_FROM" VALUE="15"/>
-        <PARAMETER NAME="DIN_TO" VALUE="8"/>
-        <PARAMETER NAME="DOUT_WIDTH" VALUE="8"/>
-        <PARAMETER NAME="Component_Name" VALUE="system_Green_0"/>
-        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
-      </PARAMETERS>
-      <PORTS>
-        <PORT DIR="I" LEFT="23" NAME="Din" RIGHT="0" SIGIS="undef" SIGNAME="v_axi4s_vid_out_0_vid_data">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="v_axi4s_vid_out_0" PORT="vid_data"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="7" NAME="Dout" RIGHT="0" SIGIS="undef" SIGNAME="Blue_Dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="xlconcat_1" PORT="In1"/>
-          </CONNECTIONS>
-        </PORT>
-      </PORTS>
-      <BUSINTERFACES/>
-    </MODULE>
     <MODULE FULLNAME="/FilterSpecial_0" HWVERSION="1.0" INSTANCE="FilterSpecial_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="FilterSpecial" VLNV="user.org:module_ref:FilterSpecial:1.0">
       <DOCUMENTS/>
       <PARAMETERS>
@@ -581,43 +563,19 @@
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
       </PARAMETERS>
       <PORTS>
-        <PORT DIR="I" LEFT="7" NAME="data_in" RIGHT="0" SIGIS="undef" SIGNAME="Green_Dout">
+        <PORT DIR="I" LEFT="7" NAME="data_in" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_data_out">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Green" PORT="Dout"/>
+            <CONNECTION INSTANCE="shifter_0" PORT="data_out"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="7" NAME="data_out" RIGHT="0" SIGIS="undef" SIGNAME="FilterSpecial_0_data_out">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="xlconcat_1" PORT="In0"/>
+            <CONNECTION INSTANCE="concater_0" PORT="data_in"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="3" NAME="selector" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_div">
+        <PORT DIR="I" LEFT="1" NAME="selector" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_fil">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="div"/>
-          </CONNECTIONS>
-        </PORT>
-      </PORTS>
-      <BUSINTERFACES/>
-    </MODULE>
-    <MODULE FULLNAME="/Green" HWVERSION="1.0" INSTANCE="Green" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlslice" VLNV="xilinx.com:ip:xlslice:1.0">
-      <DOCUMENTS/>
-      <PARAMETERS>
-        <PARAMETER NAME="DIN_WIDTH" VALUE="24"/>
-        <PARAMETER NAME="DIN_FROM" VALUE="7"/>
-        <PARAMETER NAME="DIN_TO" VALUE="0"/>
-        <PARAMETER NAME="DOUT_WIDTH" VALUE="8"/>
-        <PARAMETER NAME="Component_Name" VALUE="system_xlslice_0_0"/>
-        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
-      </PARAMETERS>
-      <PORTS>
-        <PORT DIR="I" LEFT="23" NAME="Din" RIGHT="0" SIGIS="undef" SIGNAME="v_axi4s_vid_out_0_vid_data">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="v_axi4s_vid_out_0" PORT="vid_data"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="7" NAME="Dout" RIGHT="0" SIGIS="undef" SIGNAME="Green_Dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="FilterSpecial_0" PORT="data_in"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="fil"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -1355,30 +1313,6 @@
           </PORTMAPS>
         </BUSINTERFACE>
       </BUSINTERFACES>
-    </MODULE>
-    <MODULE FULLNAME="/Red" HWVERSION="1.0" INSTANCE="Red" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlslice" VLNV="xilinx.com:ip:xlslice:1.0">
-      <DOCUMENTS/>
-      <PARAMETERS>
-        <PARAMETER NAME="DIN_WIDTH" VALUE="24"/>
-        <PARAMETER NAME="DIN_FROM" VALUE="23"/>
-        <PARAMETER NAME="DIN_TO" VALUE="16"/>
-        <PARAMETER NAME="DOUT_WIDTH" VALUE="8"/>
-        <PARAMETER NAME="Component_Name" VALUE="system_Green_1"/>
-        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
-      </PARAMETERS>
-      <PORTS>
-        <PORT DIR="I" LEFT="23" NAME="Din" RIGHT="0" SIGIS="undef" SIGNAME="v_axi4s_vid_out_0_vid_data">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="v_axi4s_vid_out_0" PORT="vid_data"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="7" NAME="Dout" RIGHT="0" SIGIS="undef" SIGNAME="Red_Dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="xlconcat_1" PORT="In2"/>
-          </CONNECTIONS>
-        </PORT>
-      </PORTS>
-      <BUSINTERFACES/>
     </MODULE>
     <MODULE FULLNAME="/axi_mem_intercon" HWVERSION="2.1" INSTANCE="axi_mem_intercon" IPTYPE="BUS" IS_ENABLE="1" MODCLASS="BUS" MODTYPE="axi_interconnect" VLNV="xilinx.com:ip:axi_interconnect:2.1">
       <DOCUMENTS>
@@ -5513,6 +5447,36 @@
       </PORTS>
       <BUSINTERFACES/>
     </MODULE>
+    <MODULE FULLNAME="/concater_0" HWVERSION="1.0" INSTANCE="concater_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="concater" VLNV="user.org:module_ref:concater:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="Component_Name" VALUE="system_concater_0_1"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT DIR="I" LEFT="7" NAME="data_in" RIGHT="0" SIGIS="undef" SIGNAME="FilterSpecial_0_data_out">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="FilterSpecial_0" PORT="data_out"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="23" NAME="data_out" RIGHT="0" SIGIS="undef" SIGNAME="concater_0_data_out">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="rgb2dvi_0" PORT="vid_pData"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="23" NAME="rest" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_rest">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="shifter_0" PORT="rest"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="1" NAME="selector" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_div">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="div"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES/>
+    </MODULE>
     <MODULE CONFIGURABLE="TRUE" FULLNAME="/processing_system7_0" HWVERSION="5.5" INSTANCE="processing_system7_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" IS_PL="FALSE" MODTYPE="processing_system7" VLNV="xilinx.com:ip:processing_system7:5.5">
       <DOCUMENTS>
         <DOCUMENT SOURCE="http://www.xilinx.com/cgi-bin/docs/ipdoc?c=processing_system7;v=v5_3;d=pg082-processing-system7.pdf"/>
@@ -8775,10 +8739,12 @@
             <CONNECTION INSTANCE="v_axi4s_vid_out_0" PORT="locked"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="23" NAME="vid_pData" RIGHT="0" SIGIS="undef" SIGNAME="xlconcat_1_dout">
+        <PORT DIR="I" LEFT="23" NAME="vid_pData" RIGHT="0" SIGIS="undef" SIGNAME="rgb2dvi_0_vid_pData">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="concater_0" PORT="data_out"/>
+          </CONNECTIONS>
           <CONNECTIONS>
             <CONNECTION INSTANCE="v_axi4s_vid_out_0" PORT="vid_data"/>
-            <CONNECTION INSTANCE="xlconcat_1" PORT="dout"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" NAME="vid_pVDE" SIGIS="undef" SIGNAME="v_axi4s_vid_out_0_vid_active_video">
@@ -8960,6 +8926,36 @@
       </PORTS>
       <BUSINTERFACES/>
     </MODULE>
+    <MODULE FULLNAME="/shifter_0" HWVERSION="1.0" INSTANCE="shifter_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="shifter" VLNV="user.org:module_ref:shifter:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="Component_Name" VALUE="system_shifter_0_0"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT DIR="I" LEFT="23" NAME="data_in" RIGHT="0" SIGIS="undef" SIGNAME="v_axi4s_vid_out_0_vid_data">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="v_axi4s_vid_out_0" PORT="vid_data"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="7" NAME="data_out" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_data_out">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="FilterSpecial_0" PORT="data_in"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="23" NAME="rest" RIGHT="0" SIGIS="undef" SIGNAME="shifter_0_rest">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="concater_0" PORT="rest"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="1" NAME="selector" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_div">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="div"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES/>
+    </MODULE>
     <MODULE FULLNAME="/v_axi4s_vid_out_0" HWVERSION="4.0" INSTANCE="v_axi4s_vid_out_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="v_axi4s_vid_out" VLNV="xilinx.com:ip:v_axi4s_vid_out:4.0">
       <DOCUMENTS>
         <DOCUMENT SOURCE="http://www.xilinx.com/cgi-bin/docs/ipdoc?c=v_axi4s_vid_out;v=v4_0;d=pg044_v_axis_vid_out.pdf"/>
@@ -9055,9 +9051,7 @@
         <PORT DIR="O" LEFT="23" NAME="vid_data" RIGHT="0" SIGIS="undef" SIGNAME="v_axi4s_vid_out_0_vid_data">
           <CONNECTIONS>
             <CONNECTION INSTANCE="rgb2dvi_0" PORT="vid_pData"/>
-            <CONNECTION INSTANCE="Green" PORT="Din"/>
-            <CONNECTION INSTANCE="Blue" PORT="Din"/>
-            <CONNECTION INSTANCE="Red" PORT="Din"/>
+            <CONNECTION INSTANCE="shifter_0" PORT="data_in"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" NAME="vtg_vsync" SIGIS="undef" SIGNAME="v_axi4s_vid_out_0_vtg_vsync">
@@ -9800,70 +9794,6 @@
         <PORT DIR="O" LEFT="2" NAME="dout" RIGHT="0" SIGIS="undef" SIGNAME="xlconcat_0_dout">
           <CONNECTIONS>
             <CONNECTION INSTANCE="processing_system7_0" PORT="IRQ_F2P"/>
-          </CONNECTIONS>
-        </PORT>
-      </PORTS>
-      <BUSINTERFACES/>
-    </MODULE>
-    <MODULE FULLNAME="/xlconcat_1" HWVERSION="2.1" INSTANCE="xlconcat_1" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlconcat" VLNV="xilinx.com:ip:xlconcat:2.1">
-      <DOCUMENTS/>
-      <PARAMETERS>
-        <PARAMETER NAME="IN0_WIDTH" VALUE="8"/>
-        <PARAMETER NAME="IN1_WIDTH" VALUE="8"/>
-        <PARAMETER NAME="IN2_WIDTH" VALUE="8"/>
-        <PARAMETER NAME="IN3_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN4_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN5_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN6_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN7_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN8_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN9_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN10_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN11_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN12_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN13_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN14_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN15_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN16_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN17_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN18_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN19_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN20_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN21_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN22_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN23_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN24_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN25_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN26_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN27_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN28_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN29_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN30_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="IN31_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="dout_width" VALUE="24"/>
-        <PARAMETER NAME="NUM_PORTS" VALUE="3"/>
-        <PARAMETER NAME="Component_Name" VALUE="system_xlconcat_1_0"/>
-        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
-      </PARAMETERS>
-      <PORTS>
-        <PORT DIR="I" LEFT="7" NAME="In0" RIGHT="0" SIGIS="undef" SIGNAME="FilterSpecial_0_data_out">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="FilterSpecial_0" PORT="data_out"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" LEFT="7" NAME="In1" RIGHT="0" SIGIS="undef" SIGNAME="Blue_Dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="Blue" PORT="Dout"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" LEFT="7" NAME="In2" RIGHT="0" SIGIS="undef" SIGNAME="Red_Dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="Red" PORT="Dout"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="23" NAME="dout" RIGHT="0" SIGIS="undef" SIGNAME="xlconcat_1_dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="rgb2dvi_0" PORT="vid_pData"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>

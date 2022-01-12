@@ -1,103 +1,102 @@
 {
    guistr: "# # String gsaved with Nlview 6.6.5b  2016-09-06 bk=1.3687 VDI=39 GEI=35 GUI=JA:1.6
 #  -string -flagsOSRD
-preplace port DDR -pg 1 -y 580 -defaultsOSRD
-preplace port dphy_hs_clock -pg 1 -y 610 -defaultsOSRD
-preplace port dphy_clk_lp_n -pg 1 -y 660 -defaultsOSRD
-preplace port cam_gpio -pg 1 -y 560 -defaultsOSRD
-preplace port dphy_clk_lp_p -pg 1 -y 640 -defaultsOSRD
-preplace port hdmi_tx -pg 1 -y 250 -defaultsOSRD
-preplace port FIXED_IO -pg 1 -y 600 -defaultsOSRD
-preplace port cam_iic -pg 1 -y 620 -defaultsOSRD
-preplace portBus dphy_data_hs_n -pg 1 -y 700 -defaultsOSRD
-preplace portBus dphy_data_hs_p -pg 1 -y 680 -defaultsOSRD
-preplace portBus div -pg 1 -y -20 -defaultsOSRD
-preplace portBus dphy_data_lp_n -pg 1 -y 740 -defaultsOSRD
-preplace portBus dphy_data_lp_p -pg 1 -y 720 -defaultsOSRD
-preplace inst v_axi4s_vid_out_0 -pg 1 -lvl 9 -y 310 -defaultsOSRD
-preplace inst vtg -pg 1 -lvl 8 -y 460 -defaultsOSRD
-preplace inst axi_vdma_0 -pg 1 -lvl 8 -y 210 -defaultsOSRD
-preplace inst MIPI_D_PHY_RX_0 -pg 1 -lvl 4 -y 720 -defaultsOSRD
-preplace inst MIPI_CSI_2_RX_0 -pg 1 -lvl 5 -y 360 -defaultsOSRD
-preplace inst axi_mem_intercon_1 -pg 1 -lvl 9 -y 610 -defaultsOSRD
-preplace inst Blue -pg 1 -lvl 10 -y 280 -defaultsOSRD
-preplace inst AXI_GammaCorrection_0 -pg 1 -lvl 7 -y 260 -defaultsOSRD
-preplace inst xlconcat_0 -pg 1 -lvl 9 -y 70 -defaultsOSRD
-preplace inst rst_vid_clk_dyn -pg 1 -lvl 7 -y 590 -defaultsOSRD
-preplace inst xlconcat_1 -pg 1 -lvl 12 -y 210 -defaultsOSRD
-preplace inst Red -pg 1 -lvl 10 -y 360 -defaultsOSRD
-preplace inst rgb2dvi_0 -pg 1 -lvl 13 -y 260 -defaultsOSRD
-preplace inst FilterSpecial_0 -pg 1 -lvl 11 -y 210 -defaultsOSRD
-preplace inst ps7_0_axi_periph -pg 1 -lvl 3 -y 210 -defaultsOSRD
-preplace inst video_dynclk -pg 1 -lvl 4 -y 460 -defaultsOSRD
-preplace inst clk_wiz_0 -pg 1 -lvl 1 -y 510 -defaultsOSRD
-preplace inst axi_mem_intercon -pg 1 -lvl 9 -y 880 -defaultsOSRD
-preplace inst AXI_BayerToRGB_1 -pg 1 -lvl 6 -y 310 -defaultsOSRD
-preplace inst Green -pg 1 -lvl 10 -y 200 -defaultsOSRD
-preplace inst rst_clk_wiz_0_50M -pg 1 -lvl 2 -y 520 -defaultsOSRD
-preplace inst processing_system7_0 -pg 1 -lvl 13 -y 660 -defaultsOSRD
-preplace netloc processing_system7_0_DDR 1 13 1 4390J
-preplace netloc ps7_0_axi_periph_M02_AXI 1 3 5 NJ 200 NJ 200 NJ 200 1920J 380 N
-preplace netloc FilterSpecial_0_data_out 1 11 1 3650
-preplace netloc v_axi4s_vid_out_0_vid_data 1 9 1 3170
-preplace netloc dphy_data_hs_p_1 1 0 4 NJ 680 NJ 680 NJ 680 NJ
-preplace netloc Blue_Dout 1 10 2 N 280 3660J
-preplace netloc s_axil_clk_50 1 1 12 200 420 560 440 870 70 1230 70 NJ 70 1940 70 2350 70 2730J -20 NJ -20 NJ -20 NJ -20 3890J
-preplace netloc dphy_data_lp_n_1 1 0 4 NJ 740 NJ 740 NJ 740 NJ
-preplace netloc clk_wiz_0_locked 1 1 1 180
-preplace netloc axi_vdma_0_s2mm_introut 1 8 1 2770
-preplace netloc v_axi4s_vid_out_0_vid_hsync 1 9 4 3160 420 N 420 N 420 3850
-preplace netloc mm_clk_150 1 1 12 200J 920 NJ 920 NJ 920 1240 920 1550 920 1910 920 2340 920 2810 740 3150 710 N 710 N 710 3920
-preplace netloc dphy_hs_clock_1 1 0 4 -10J 620 NJ 620 NJ 620 NJ
-preplace netloc v_axi4s_vid_out_0_vid_io_out 1 9 4 3170 140 N 140 N 140 3900
-preplace netloc processing_system7_0_M_AXI_GP0 1 2 12 550 -10 NJ -10 NJ -10 NJ -10 NJ -10 NJ -10 NJ -10 NJ -10 N -10 N -10 N -10 4370
-preplace netloc axi_vdma_0_M_AXI_MM2S 1 8 1 2790
-preplace netloc axi_mem_intercon_1_M00_AXI 1 9 4 N 610 N 610 N 610 3860
-preplace netloc rst_vid_clk_dyn_peripheral_aresetn 1 7 1 2350
-preplace netloc dphy_clk_lp_p_1 1 0 4 NJ 640 NJ 640 NJ 640 NJ
-preplace netloc axi_dynclk_0_LOCKED_O 1 4 3 NJ 480 NJ 480 1900
-preplace netloc axi_vdma_0_M_AXIS_MM2S 1 8 1 2800
-preplace netloc xlconcat_1_dout 1 12 1 N
-preplace netloc v_tc_0_irq 1 8 1 2750
-preplace netloc rst_clk_wiz_0_50M_peripheral_reset 1 2 2 N 520 850J
-preplace netloc processing_system7_0_FCLK_RESET0_N 1 1 13 210 900 NJ 900 NJ 900 1260J 730 NJ 730 1940 730 NJ 730 NJ 730 NJ 730 N 730 N 730 3850 530 4350
-preplace netloc dphy_clk_lp_n_1 1 0 4 NJ 660 NJ 660 NJ 660 NJ
-preplace netloc processing_system7_0_IIC_0 1 13 1 4410J
-preplace netloc ps7_0_axi_periph_M03_AXI 1 3 1 860
-preplace netloc axi_mem_intercon_M00_AXI 1 9 4 N 880 N 880 N 880 3910
-preplace netloc Red_Dout 1 10 2 N 360 3670J
-preplace netloc v_axi4s_vid_out_0_vid_active_video 1 9 4 3150 130 N 130 N 130 3910
-preplace netloc dphy_data_hs_n_1 1 0 4 NJ 700 NJ 700 NJ 700 NJ
-preplace netloc axi_dynclk_0_PXL_CLK_5X_O 1 4 9 1190J -30 NJ -30 NJ -30 NJ -30 NJ -30 N -30 N -30 N -30 3920
-preplace netloc rgb2dvi_0_TMDS 1 13 1 4390J
-preplace netloc ps7_0_axi_periph_M01_AXI 1 3 1 890
-preplace netloc v_axi4s_vid_out_0_locked 1 9 4 3140 430 N 430 N 430 3880
-preplace netloc rst_clk_wiz_0_50M_peripheral_aresetn 1 2 7 570 940 890 940 1250 940 1560 940 1930 940 2370 940 2830
-preplace netloc xlconcat_0_dout 1 9 4 N 70 N 70 N 70 3870
-preplace netloc v_axi4s_vid_out_0_vtg_ce 1 7 3 2380 0 NJ 0 3140
-preplace netloc ref_clk_200 1 1 3 190 760 NJ 760 NJ
-preplace netloc processing_system7_0_FIXED_IO 1 13 1 4400J
-preplace netloc AXI_GammaCorrection_0_AXI_Stream_Master 1 7 1 2320
-preplace netloc div_1 1 0 11 NJ -20 N -20 N -20 N -20 N -20 N -20 N -20 N -20 2720 140 3160 150 3380
-preplace netloc rst_clk_wiz_0_50M_interconnect_aresetn 1 2 7 550 540 NJ 540 NJ 540 NJ 540 1920J 490 2330J 860 2840
-preplace netloc axi_vdma_0_mm2s_introut 1 8 1 2740
-preplace netloc MIPI_D_PHY_RX_0_RxByteClkHS 1 4 1 1220
-preplace netloc processing_system7_0_GPIO_0 1 13 1 4380J
-preplace netloc ps7_0_axi_periph_M05_AXI 1 3 4 850J 230 NJ 230 NJ 230 N
-preplace netloc ps7_0_axi_periph_M04_AXI 1 3 2 NJ 240 1200
-preplace netloc Green_Dout 1 10 1 N
-preplace netloc processing_system7_0_FCLK_CLK0 1 0 14 0 610 NJ 610 NJ 610 880 550 1230J 500 NJ 500 NJ 500 2320J 590 2820J 490 NJ 490 N 490 N 490 N 490 4360
-preplace netloc AXI_BayerToRGB_1_AXI_Stream_Master 1 6 1 1900
-preplace netloc v_tc_0_vtiming_out 1 8 1 2800
-preplace netloc ps7_0_axi_periph_M00_AXI 1 3 5 850J 140 NJ 140 NJ 140 NJ 140 N
-preplace netloc axi_vdma_0_M_AXI_S2MM 1 8 1 2780
-preplace netloc MIPI_D_PHY_RX_0_D_PHY_PPI 1 4 1 1200
-preplace netloc v_axi4s_vid_out_0_vid_vsync 1 9 4 3150 410 N 410 N 410 3860
-preplace netloc dphy_data_lp_p_1 1 0 4 NJ 720 NJ 720 NJ 720 NJ
-preplace netloc MIPI_CSI_2_RX_0_m_axis_video 1 5 1 1540
-preplace netloc rst_vid_clk_dyn_peripheral_reset 1 7 2 2310J 90 2760
-preplace netloc PixelClk_Generator_clk_out1 1 4 9 1210J 470 NJ 470 1940 400 2360 330 2720 480 NJ 480 NJ 480 NJ 480 3900J
-levelinfo -pg 1 -30 100 380 710 1040 1400 1730 2140 2550 2990 3280 3520 3760 4140 4430 -top -40 -bot 1010
+preplace port DDR -pg 1 -y 590 -defaultsOSRD
+preplace port dphy_hs_clock -pg 1 -y 550 -defaultsOSRD
+preplace port dphy_clk_lp_n -pg 1 -y 590 -defaultsOSRD
+preplace port cam_gpio -pg 1 -y 570 -defaultsOSRD
+preplace port dphy_clk_lp_p -pg 1 -y 570 -defaultsOSRD
+preplace port hdmi_tx -pg 1 -y 300 -defaultsOSRD
+preplace port FIXED_IO -pg 1 -y 610 -defaultsOSRD
+preplace port cam_iic -pg 1 -y 630 -defaultsOSRD
+preplace portBus fil -pg 1 -y 20 -defaultsOSRD
+preplace portBus dphy_data_hs_n -pg 1 -y 630 -defaultsOSRD
+preplace portBus dphy_data_hs_p -pg 1 -y 610 -defaultsOSRD
+preplace portBus div -pg 1 -y 340 -defaultsOSRD
+preplace portBus dphy_data_lp_n -pg 1 -y 670 -defaultsOSRD
+preplace portBus dphy_data_lp_p -pg 1 -y 650 -defaultsOSRD
+preplace inst concater_0 -pg 1 -lvl 12 -y 310 -defaultsOSRD
+preplace inst v_axi4s_vid_out_0 -pg 1 -lvl 9 -y 350 -defaultsOSRD
+preplace inst vtg -pg 1 -lvl 8 -y 530 -defaultsOSRD
+preplace inst axi_vdma_0 -pg 1 -lvl 8 -y 260 -defaultsOSRD
+preplace inst MIPI_D_PHY_RX_0 -pg 1 -lvl 4 -y 650 -defaultsOSRD
+preplace inst MIPI_CSI_2_RX_0 -pg 1 -lvl 5 -y 400 -defaultsOSRD
+preplace inst axi_mem_intercon_1 -pg 1 -lvl 9 -y 640 -defaultsOSRD
+preplace inst AXI_GammaCorrection_0 -pg 1 -lvl 7 -y 380 -defaultsOSRD
+preplace inst shifter_0 -pg 1 -lvl 10 -y 310 -defaultsOSRD
+preplace inst xlconcat_0 -pg 1 -lvl 9 -y 90 -defaultsOSRD
+preplace inst rst_vid_clk_dyn -pg 1 -lvl 7 -y 580 -defaultsOSRD
+preplace inst rgb2dvi_0 -pg 1 -lvl 13 -y 300 -defaultsOSRD
+preplace inst FilterSpecial_0 -pg 1 -lvl 11 -y 300 -defaultsOSRD
+preplace inst ps7_0_axi_periph -pg 1 -lvl 3 -y 240 -defaultsOSRD
+preplace inst video_dynclk -pg 1 -lvl 4 -y 390 -defaultsOSRD
+preplace inst clk_wiz_0 -pg 1 -lvl 1 -y 460 -defaultsOSRD
+preplace inst axi_mem_intercon -pg 1 -lvl 9 -y 910 -defaultsOSRD
+preplace inst AXI_BayerToRGB_1 -pg 1 -lvl 6 -y 420 -defaultsOSRD
+preplace inst rst_clk_wiz_0_50M -pg 1 -lvl 2 -y 440 -defaultsOSRD
+preplace inst processing_system7_0 -pg 1 -lvl 13 -y 650 -defaultsOSRD
+preplace netloc processing_system7_0_DDR 1 13 1 NJ
+preplace netloc ps7_0_axi_periph_M02_AXI 1 3 5 NJ 230 NJ 230 NJ 230 NJ 230 2390
+preplace netloc FilterSpecial_0_data_out 1 11 1 3840
+preplace netloc v_axi4s_vid_out_0_vid_data 1 9 1 3230
+preplace netloc dphy_data_hs_p_1 1 0 4 NJ 610 NJ 610 NJ 610 NJ
+preplace netloc s_axil_clk_50 1 1 12 180 320 600 500 930 140 1300 140 NJ 140 1990 140 2400 140 2870J 520 NJ 520 NJ 520 NJ 520 4150J
+preplace netloc dphy_data_lp_n_1 1 0 4 NJ 670 NJ 670 NJ 670 NJ
+preplace netloc clk_wiz_0_locked 1 1 1 200
+preplace netloc axi_vdma_0_s2mm_introut 1 8 1 2850
+preplace netloc v_axi4s_vid_out_0_vid_hsync 1 9 4 3240 390 NJ 390 NJ 390 4150J
+preplace netloc mm_clk_150 1 1 12 190J 870 NJ 870 NJ 870 1310 870 1620 870 2010 870 2410 870 2900 770 3250J 700 NJ 700 NJ 700 4200
+preplace netloc dphy_hs_clock_1 1 0 4 NJ 550 NJ 550 NJ 550 NJ
+preplace netloc v_axi4s_vid_out_0_vid_io_out 1 9 4 N 230 NJ 230 NJ 230 NJ
+preplace netloc processing_system7_0_M_AXI_GP0 1 2 12 610 10 NJ 10 NJ 10 NJ 10 NJ 10 NJ 10 NJ 10 NJ 10 NJ 10 NJ 10 NJ 10 4630
+preplace netloc axi_vdma_0_M_AXI_MM2S 1 8 1 2820
+preplace netloc axi_mem_intercon_1_M00_AXI 1 9 4 NJ 640 NJ 640 NJ 640 N
+preplace netloc rst_vid_clk_dyn_peripheral_aresetn 1 7 1 2450
+preplace netloc dphy_clk_lp_p_1 1 0 4 NJ 570 NJ 570 NJ 570 NJ
+preplace netloc axi_dynclk_0_LOCKED_O 1 4 3 1270J 620 NJ 620 N
+preplace netloc axi_vdma_0_M_AXIS_MM2S 1 8 1 2860
+preplace netloc v_tc_0_irq 1 8 1 2830
+preplace netloc rst_clk_wiz_0_50M_peripheral_reset 1 2 2 560J 710 N
+preplace netloc processing_system7_0_FCLK_RESET0_N 1 1 13 210 820 NJ 820 NJ 820 1320J 780 NJ 780 2020 780 NJ 780 NJ 780 NJ 780 NJ 780 NJ 780 NJ 780 4620
+preplace netloc dphy_clk_lp_n_1 1 0 4 NJ 590 NJ 590 NJ 590 NJ
+preplace netloc processing_system7_0_IIC_0 1 13 1 NJ
+preplace netloc ps7_0_axi_periph_M03_AXI 1 3 1 900
+preplace netloc axi_mem_intercon_M00_AXI 1 9 4 NJ 910 NJ 910 NJ 910 4190
+preplace netloc shifter_0_green 1 10 1 3570
+preplace netloc v_axi4s_vid_out_0_vid_active_video 1 9 4 3230 240 NJ 240 NJ 240 4190J
+preplace netloc dphy_data_hs_n_1 1 0 4 NJ 630 NJ 630 NJ 630 NJ
+preplace netloc axi_dynclk_0_PXL_CLK_5X_O 1 4 9 1240J 100 NJ 100 NJ 100 NJ 100 2900J 170 NJ 170 NJ 170 NJ 170 4170
+preplace netloc rgb2dvi_0_TMDS 1 13 1 NJ
+preplace netloc ps7_0_axi_periph_M01_AXI 1 3 1 920
+preplace netloc v_axi4s_vid_out_0_locked 1 9 4 N 410 NJ 410 NJ 410 4190J
+preplace netloc rst_clk_wiz_0_50M_peripheral_aresetn 1 2 7 610 930 940 930 1330 930 1630 930 2030 930 2440 930 2910
+preplace netloc xlconcat_0_dout 1 9 4 NJ 90 NJ 90 NJ 90 4180
+preplace netloc v_axi4s_vid_out_0_vtg_ce 1 7 3 2460 760 NJ 760 3230
+preplace netloc ref_clk_200 1 1 3 180J 690 NJ 690 N
+preplace netloc processing_system7_0_FIXED_IO 1 13 1 NJ
+preplace netloc AXI_GammaCorrection_0_AXI_Stream_Master 1 7 1 2380
+preplace netloc rst_clk_wiz_0_50M_interconnect_aresetn 1 2 7 570 890 NJ 890 NJ 890 NJ 890 NJ 890 NJ 890 2920
+preplace netloc axi_vdma_0_mm2s_introut 1 8 1 2800
+preplace netloc MIPI_D_PHY_RX_0_RxByteClkHS 1 4 1 1290
+preplace netloc processing_system7_0_GPIO_0 1 13 1 NJ
+preplace netloc ps7_0_axi_periph_M05_AXI 1 3 4 NJ 290 NJ 290 NJ 290 1980
+preplace netloc ps7_0_axi_periph_M04_AXI 1 3 2 NJ 270 1290
+preplace netloc processing_system7_0_FCLK_CLK0 1 0 14 20 300 NJ 300 590J 480 910 280 1280J 790 NJ 790 NJ 790 NJ 790 NJ 790 NJ 790 NJ 790 NJ 790 NJ 790 4630
+preplace netloc AXI_BayerToRGB_1_AXI_Stream_Master 1 6 1 1970
+preplace netloc v_tc_0_vtiming_out 1 8 1 2880
+preplace netloc ps7_0_axi_periph_M00_AXI 1 3 5 N 190 NJ 190 NJ 190 NJ 190 NJ
+preplace netloc axi_vdma_0_M_AXI_S2MM 1 8 1 2810
+preplace netloc MIPI_D_PHY_RX_0_D_PHY_PPI 1 4 1 1260
+preplace netloc selector_1 1 0 11 NJ 20 NJ 20 NJ 20 NJ 20 NJ 20 NJ 20 NJ 20 NJ 20 NJ 20 NJ 20 3580J
+preplace netloc v_axi4s_vid_out_0_vid_vsync 1 9 4 3230 380 NJ 380 NJ 380 4160J
+preplace netloc dphy_data_lp_p_1 1 0 4 NJ 650 NJ 650 NJ 650 NJ
+preplace netloc MIPI_CSI_2_RX_0_m_axis_video 1 5 1 N
+preplace netloc concater_0_data_out 1 12 1 4140
+preplace netloc shifter_0_rest 1 10 2 3570J 360 3840
+preplace netloc selector_2 1 0 12 NJ 340 NJ 340 580J 460 890J 110 NJ 110 NJ 110 NJ 110 NJ 110 2840J 180 3250 370 NJ 370 3850J
+preplace netloc rst_vid_clk_dyn_peripheral_reset 1 7 2 2420 400 2800J
+preplace netloc PixelClk_Generator_clk_out1 1 4 9 1250J 130 NJ 130 2000 130 2430 130 2890 160 NJ 160 NJ 160 NJ 160 4200J
+levelinfo -pg 1 0 100 390 750 1090 1480 1800 2210 2630 3080 3430 3710 4000 4410 4650 -top 0 -bot 1020
 ",
 }
 0

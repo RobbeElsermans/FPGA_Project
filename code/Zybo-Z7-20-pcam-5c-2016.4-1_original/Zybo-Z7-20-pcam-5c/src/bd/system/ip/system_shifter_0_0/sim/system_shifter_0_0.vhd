@@ -46,36 +46,39 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: user.org:module_ref:FilterSpecial:1.0
+-- IP VLNV: user.org:module_ref:shifter:1.0
 -- IP Revision: 1
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-ENTITY system_FilterSpecial_0_0 IS
+ENTITY system_shifter_0_0 IS
   PORT (
-    data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+    data_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
     data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    rest : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
     selector : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
   );
-END system_FilterSpecial_0_0;
+END system_shifter_0_0;
 
-ARCHITECTURE system_FilterSpecial_0_0_arch OF system_FilterSpecial_0_0 IS
+ARCHITECTURE system_shifter_0_0_arch OF system_shifter_0_0 IS
   ATTRIBUTE DowngradeIPIdentifiedWarnings : STRING;
-  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_FilterSpecial_0_0_arch: ARCHITECTURE IS "yes";
-  COMPONENT FilterSpecial IS
+  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_shifter_0_0_arch: ARCHITECTURE IS "yes";
+  COMPONENT shifter IS
     PORT (
-      data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+      data_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
       data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+      rest : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
       selector : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
     );
-  END COMPONENT FilterSpecial;
+  END COMPONENT shifter;
 BEGIN
-  U0 : FilterSpecial
+  U0 : shifter
     PORT MAP (
       data_in => data_in,
       data_out => data_out,
+      rest => rest,
       selector => selector
     );
-END system_FilterSpecial_0_0_arch;
+END system_shifter_0_0_arch;

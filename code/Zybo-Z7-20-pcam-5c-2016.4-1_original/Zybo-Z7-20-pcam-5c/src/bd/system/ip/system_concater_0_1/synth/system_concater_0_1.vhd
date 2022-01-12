@@ -46,36 +46,43 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: user.org:module_ref:FilterSpecial:1.0
+-- IP VLNV: user.org:module_ref:concater:1.0
 -- IP Revision: 1
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-ENTITY system_FilterSpecial_0_0 IS
+ENTITY system_concater_0_1 IS
   PORT (
     data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    data_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
+    rest : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
     selector : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
   );
-END system_FilterSpecial_0_0;
+END system_concater_0_1;
 
-ARCHITECTURE system_FilterSpecial_0_0_arch OF system_FilterSpecial_0_0 IS
+ARCHITECTURE system_concater_0_1_arch OF system_concater_0_1 IS
   ATTRIBUTE DowngradeIPIdentifiedWarnings : STRING;
-  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_FilterSpecial_0_0_arch: ARCHITECTURE IS "yes";
-  COMPONENT FilterSpecial IS
+  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_concater_0_1_arch: ARCHITECTURE IS "yes";
+  COMPONENT concater IS
     PORT (
       data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-      data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+      data_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
+      rest : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
       selector : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
     );
-  END COMPONENT FilterSpecial;
+  END COMPONENT concater;
+  ATTRIBUTE X_CORE_INFO : STRING;
+  ATTRIBUTE X_CORE_INFO OF system_concater_0_1_arch: ARCHITECTURE IS "concater,Vivado 2016.4";
+  ATTRIBUTE CHECK_LICENSE_TYPE : STRING;
+  ATTRIBUTE CHECK_LICENSE_TYPE OF system_concater_0_1_arch : ARCHITECTURE IS "system_concater_0_1,concater,{}";
 BEGIN
-  U0 : FilterSpecial
+  U0 : concater
     PORT MAP (
       data_in => data_in,
       data_out => data_out,
+      rest => rest,
       selector => selector
     );
-END system_FilterSpecial_0_0_arch;
+END system_concater_0_1_arch;

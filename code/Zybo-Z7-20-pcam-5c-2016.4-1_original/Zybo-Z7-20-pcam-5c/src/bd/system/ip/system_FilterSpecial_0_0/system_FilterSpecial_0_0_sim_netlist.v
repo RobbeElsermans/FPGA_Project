@@ -1,7 +1,7 @@
 // Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2016.4 (lin64) Build 1756540 Mon Jan 23 19:11:19 MST 2017
-// Date        : Sun Jan  2 16:28:21 2022
+// Date        : Wed Jan 12 16:57:59 2022
 // Host        : the-beast running 64-bit Ubuntu 20.04.3 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/robbe/Desktop/Github/FPGA_Project/code/Zybo-Z7-20-pcam-5c-2016.4-1_original/Zybo-Z7-20-pcam-5c/src/bd/system/ip/system_FilterSpecial_0_0/system_FilterSpecial_0_0_sim_netlist.v
@@ -20,11 +20,11 @@ module system_FilterSpecial_0_0
     selector);
   input [7:0]data_in;
   output [7:0]data_out;
-  input [3:0]selector;
+  input [1:0]selector;
 
   wire [7:0]data_in;
   wire [7:0]data_out;
-  wire [3:0]selector;
+  wire [1:0]selector;
 
   system_FilterSpecial_0_0_FilterSpecial U0
        (.data_in(data_in),
@@ -38,84 +38,76 @@ module system_FilterSpecial_0_0_FilterSpecial
     selector,
     data_in);
   output [7:0]data_out;
-  input [3:0]selector;
+  input [1:0]selector;
   input [7:0]data_in;
 
   wire [7:0]data_in;
   wire [7:0]data_out;
-  wire [3:0]selector;
+  wire [1:0]selector;
 
-  LUT5 #(
-    .INIT(32'hFEFD0102)) 
+  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+  LUT3 #(
+    .INIT(8'hAC)) 
     \data_out[0]_INST_0 
-       (.I0(selector[3]),
-        .I1(selector[2]),
-        .I2(selector[0]),
-        .I3(selector[1]),
-        .I4(data_in[0]),
+       (.I0(selector[0]),
+        .I1(data_in[0]),
+        .I2(selector[1]),
         .O(data_out[0]));
-  LUT5 #(
-    .INIT(32'hFEFD0102)) 
+  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+  LUT3 #(
+    .INIT(8'h9A)) 
     \data_out[1]_INST_0 
-       (.I0(selector[3]),
-        .I1(selector[2]),
-        .I2(selector[0]),
-        .I3(selector[1]),
-        .I4(data_in[1]),
+       (.I0(selector[0]),
+        .I1(selector[1]),
+        .I2(data_in[1]),
         .O(data_out[1]));
-  LUT5 #(
-    .INIT(32'hFEFD0102)) 
+  (* SOFT_HLUTNM = "soft_lutpair1" *) 
+  LUT3 #(
+    .INIT(8'hAC)) 
     \data_out[2]_INST_0 
-       (.I0(selector[3]),
-        .I1(selector[2]),
-        .I2(selector[0]),
-        .I3(selector[1]),
-        .I4(data_in[2]),
+       (.I0(selector[0]),
+        .I1(data_in[2]),
+        .I2(selector[1]),
         .O(data_out[2]));
-  LUT5 #(
-    .INIT(32'hFEFD0102)) 
+  (* SOFT_HLUTNM = "soft_lutpair1" *) 
+  LUT3 #(
+    .INIT(8'h9A)) 
     \data_out[3]_INST_0 
-       (.I0(selector[3]),
-        .I1(selector[2]),
-        .I2(selector[0]),
-        .I3(selector[1]),
-        .I4(data_in[3]),
+       (.I0(selector[0]),
+        .I1(selector[1]),
+        .I2(data_in[3]),
         .O(data_out[3]));
-  LUT5 #(
-    .INIT(32'hFEFD0102)) 
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  LUT3 #(
+    .INIT(8'hEC)) 
     \data_out[4]_INST_0 
-       (.I0(selector[3]),
-        .I1(selector[1]),
+       (.I0(selector[1]),
+        .I1(data_in[4]),
         .I2(selector[0]),
-        .I3(selector[2]),
-        .I4(data_in[4]),
         .O(data_out[4]));
-  LUT5 #(
-    .INIT(32'hFEFD0102)) 
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  LUT3 #(
+    .INIT(8'hBC)) 
     \data_out[5]_INST_0 
-       (.I0(selector[3]),
-        .I1(selector[1]),
+       (.I0(selector[1]),
+        .I1(data_in[5]),
         .I2(selector[0]),
-        .I3(selector[2]),
-        .I4(data_in[5]),
         .O(data_out[5]));
-  LUT5 #(
-    .INIT(32'hFEFD0102)) 
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
+  LUT3 #(
+    .INIT(8'hEC)) 
     \data_out[6]_INST_0 
-       (.I0(selector[3]),
-        .I1(selector[1]),
+       (.I0(selector[1]),
+        .I1(data_in[6]),
         .I2(selector[0]),
-        .I3(selector[2]),
-        .I4(data_in[6]),
         .O(data_out[6]));
-  LUT5 #(
-    .INIT(32'hFEFD0102)) 
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
+  LUT3 #(
+    .INIT(8'hBC)) 
     \data_out[7]_INST_0 
-       (.I0(selector[3]),
-        .I1(selector[1]),
+       (.I0(selector[1]),
+        .I1(data_in[7]),
         .I2(selector[0]),
-        .I3(selector[2]),
-        .I4(data_in[7]),
         .O(data_out[7]));
 endmodule
 `ifndef GLBL

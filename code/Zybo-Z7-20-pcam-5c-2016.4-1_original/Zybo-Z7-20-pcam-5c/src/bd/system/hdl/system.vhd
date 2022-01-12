@@ -1,7 +1,7 @@
 --Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2016.4 (lin64) Build 1756540 Mon Jan 23 19:11:19 MST 2017
---Date        : Wed Jan 12 16:10:32 2022
+--Date        : Wed Jan 12 16:57:25 2022
 --Host        : the-beast running 64-bit Ubuntu 20.04.3 LTS
 --Command     : generate_target system.bd
 --Design      : system
@@ -2836,7 +2836,7 @@ entity system is
     cam_iic_sda_i : in STD_LOGIC;
     cam_iic_sda_o : out STD_LOGIC;
     cam_iic_sda_t : out STD_LOGIC;
-    div : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    div : in STD_LOGIC_VECTOR ( 1 downto 0 );
     dphy_clk_lp_n : in STD_LOGIC;
     dphy_clk_lp_p : in STD_LOGIC;
     dphy_data_hs_n : in STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -2845,13 +2845,14 @@ entity system is
     dphy_data_lp_p : in STD_LOGIC_VECTOR ( 1 downto 0 );
     dphy_hs_clock_clk_n : in STD_LOGIC;
     dphy_hs_clock_clk_p : in STD_LOGIC;
+    fil : in STD_LOGIC_VECTOR ( 1 downto 0 );
     hdmi_tx_clk_n : out STD_LOGIC;
     hdmi_tx_clk_p : out STD_LOGIC;
     hdmi_tx_data_n : out STD_LOGIC_VECTOR ( 2 downto 0 );
     hdmi_tx_data_p : out STD_LOGIC_VECTOR ( 2 downto 0 )
   );
   attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of system : entity is "system,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=system,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=35,numReposBlks=23,numNonXlnxBlks=7,numHierBlks=12,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=1,numPkgbdBlks=0,bdsource=USER,synth_mode=OOC_per_IP}";
+  attribute CORE_GENERATION_INFO of system : entity is "system,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=system,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=33,numReposBlks=21,numNonXlnxBlks=9,numHierBlks=12,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=3,numPkgbdBlks=0,bdsource=USER,synth_mode=OOC_per_IP}";
   attribute HW_HANDOFF : string;
   attribute HW_HANDOFF of system : entity is "system.hwdef";
 end system;
@@ -3445,39 +3446,29 @@ architecture STRUCTURE of system is
     dout : out STD_LOGIC_VECTOR ( 2 downto 0 )
   );
   end component system_xlconcat_0_0;
+  component system_shifter_0_0 is
+  port (
+    data_in : in STD_LOGIC_VECTOR ( 23 downto 0 );
+    data_out : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    rest : out STD_LOGIC_VECTOR ( 23 downto 0 );
+    selector : in STD_LOGIC_VECTOR ( 1 downto 0 )
+  );
+  end component system_shifter_0_0;
+  component system_concater_0_1 is
+  port (
+    data_in : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    data_out : out STD_LOGIC_VECTOR ( 23 downto 0 );
+    rest : in STD_LOGIC_VECTOR ( 23 downto 0 );
+    selector : in STD_LOGIC_VECTOR ( 1 downto 0 )
+  );
+  end component system_concater_0_1;
   component system_FilterSpecial_0_0 is
   port (
     data_in : in STD_LOGIC_VECTOR ( 7 downto 0 );
     data_out : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    selector : in STD_LOGIC_VECTOR ( 3 downto 0 )
+    selector : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   end component system_FilterSpecial_0_0;
-  component system_xlslice_0_0 is
-  port (
-    Din : in STD_LOGIC_VECTOR ( 23 downto 0 );
-    Dout : out STD_LOGIC_VECTOR ( 7 downto 0 )
-  );
-  end component system_xlslice_0_0;
-  component system_Green_0 is
-  port (
-    Din : in STD_LOGIC_VECTOR ( 23 downto 0 );
-    Dout : out STD_LOGIC_VECTOR ( 7 downto 0 )
-  );
-  end component system_Green_0;
-  component system_Green_1 is
-  port (
-    Din : in STD_LOGIC_VECTOR ( 23 downto 0 );
-    Dout : out STD_LOGIC_VECTOR ( 7 downto 0 )
-  );
-  end component system_Green_1;
-  component system_xlconcat_1_0 is
-  port (
-    In0 : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    In1 : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    In2 : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    dout : out STD_LOGIC_VECTOR ( 23 downto 0 )
-  );
-  end component system_xlconcat_1_0;
   signal AXI_BayerToRGB_1_AXI_Stream_Master_TDATA : STD_LOGIC_VECTOR ( 31 downto 0 );
   signal AXI_BayerToRGB_1_AXI_Stream_Master_TLAST : STD_LOGIC;
   signal AXI_BayerToRGB_1_AXI_Stream_Master_TREADY : STD_LOGIC;
@@ -3488,9 +3479,7 @@ architecture STRUCTURE of system is
   signal AXI_GammaCorrection_0_AXI_Stream_Master_TREADY : STD_LOGIC;
   signal AXI_GammaCorrection_0_AXI_Stream_Master_TUSER : STD_LOGIC;
   signal AXI_GammaCorrection_0_AXI_Stream_Master_TVALID : STD_LOGIC;
-  signal Blue_Dout : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal FilterSpecial_0_data_out : STD_LOGIC_VECTOR ( 7 downto 0 );
-  signal Green_Dout : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal MIPI_CSI_2_RX_0_m_axis_video_TDATA : STD_LOGIC_VECTOR ( 39 downto 0 );
   signal MIPI_CSI_2_RX_0_m_axis_video_TLAST : STD_LOGIC;
   signal MIPI_CSI_2_RX_0_m_axis_video_TREADY : STD_LOGIC;
@@ -3511,7 +3500,6 @@ architecture STRUCTURE of system is
   signal MIPI_D_PHY_RX_0_D_PHY_PPI_DL1_RXVALIDHS : STD_LOGIC;
   signal MIPI_D_PHY_RX_0_RxByteClkHS : STD_LOGIC;
   signal PixelClk_Generator_clk_out1 : STD_LOGIC;
-  signal Red_Dout : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal axi_dynclk_0_LOCKED_O : STD_LOGIC;
   signal axi_dynclk_0_PXL_CLK_5X_O : STD_LOGIC;
   signal axi_mem_intercon_1_M00_AXI_AWADDR : STD_LOGIC_VECTOR ( 31 downto 0 );
@@ -3584,7 +3572,7 @@ architecture STRUCTURE of system is
   signal axi_vdma_0_mm2s_introut : STD_LOGIC;
   signal axi_vdma_0_s2mm_introut : STD_LOGIC;
   signal clk_wiz_0_locked : STD_LOGIC;
-  signal div_1 : STD_LOGIC_VECTOR ( 3 downto 0 );
+  signal concater_0_data_out : STD_LOGIC_VECTOR ( 23 downto 0 );
   signal dphy_clk_lp_n_1 : STD_LOGIC;
   signal dphy_clk_lp_p_1 : STD_LOGIC;
   signal dphy_data_hs_n_1 : STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -3784,6 +3772,10 @@ architecture STRUCTURE of system is
   signal rst_vid_clk_dyn_peripheral_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
   signal rst_vid_clk_dyn_peripheral_reset : STD_LOGIC_VECTOR ( 0 to 0 );
   signal s_axil_clk_50 : STD_LOGIC;
+  signal selector_1 : STD_LOGIC_VECTOR ( 1 downto 0 );
+  signal selector_2 : STD_LOGIC_VECTOR ( 1 downto 0 );
+  signal shifter_0_green : STD_LOGIC_VECTOR ( 7 downto 0 );
+  signal shifter_0_rest : STD_LOGIC_VECTOR ( 23 downto 0 );
   signal v_axi4s_vid_out_0_locked : STD_LOGIC;
   signal v_axi4s_vid_out_0_vid_active_video : STD_LOGIC;
   signal v_axi4s_vid_out_0_vid_data : STD_LOGIC_VECTOR ( 23 downto 0 );
@@ -3797,7 +3789,6 @@ architecture STRUCTURE of system is
   signal v_tc_0_vtiming_out_VBLANK : STD_LOGIC;
   signal v_tc_0_vtiming_out_VSYNC : STD_LOGIC;
   signal xlconcat_0_dout : STD_LOGIC_VECTOR ( 2 downto 0 );
-  signal xlconcat_1_dout : STD_LOGIC_VECTOR ( 23 downto 0 );
   signal NLW_MIPI_CSI_2_RX_0_aD2Enable_UNCONNECTED : STD_LOGIC;
   signal NLW_MIPI_CSI_2_RX_0_aD3Enable_UNCONNECTED : STD_LOGIC;
   signal NLW_MIPI_D_PHY_RX_0_D0RxClkEsc_UNCONNECTED : STD_LOGIC;
@@ -3873,7 +3864,6 @@ begin
   cam_iic_scl_t <= processing_system7_0_IIC_0_SCL_T;
   cam_iic_sda_o <= processing_system7_0_IIC_0_SDA_O;
   cam_iic_sda_t <= processing_system7_0_IIC_0_SDA_T;
-  div_1(3 downto 0) <= div(3 downto 0);
   dphy_clk_lp_n_1 <= dphy_clk_lp_n;
   dphy_clk_lp_p_1 <= dphy_clk_lp_p;
   dphy_data_hs_n_1(1 downto 0) <= dphy_data_hs_n(1 downto 0);
@@ -3889,6 +3879,8 @@ begin
   processing_system7_0_GPIO_0_TRI_I(0) <= cam_gpio_tri_i(0);
   processing_system7_0_IIC_0_SCL_I <= cam_iic_scl_i;
   processing_system7_0_IIC_0_SDA_I <= cam_iic_sda_i;
+  selector_1(1 downto 0) <= fil(1 downto 0);
+  selector_2(1 downto 0) <= div(1 downto 0);
 AXI_BayerToRGB_1: component system_AXI_BayerToRGB_1_0
      port map (
       StreamClk => mm_clk_150,
@@ -3940,21 +3932,11 @@ AXI_GammaCorrection_0: component system_AXI_GammaCorrection_0_0
       s_axis_video_tuser => AXI_BayerToRGB_1_AXI_Stream_Master_TUSER,
       s_axis_video_tvalid => AXI_BayerToRGB_1_AXI_Stream_Master_TVALID
     );
-Blue: component system_Green_0
-     port map (
-      Din(23 downto 0) => v_axi4s_vid_out_0_vid_data(23 downto 0),
-      Dout(7 downto 0) => Blue_Dout(7 downto 0)
-    );
 FilterSpecial_0: component system_FilterSpecial_0_0
      port map (
-      data_in(7 downto 0) => Green_Dout(7 downto 0),
+      data_in(7 downto 0) => shifter_0_green(7 downto 0),
       data_out(7 downto 0) => FilterSpecial_0_data_out(7 downto 0),
-      selector(3 downto 0) => div_1(3 downto 0)
-    );
-Green: component system_xlslice_0_0
-     port map (
-      Din(23 downto 0) => v_axi4s_vid_out_0_vid_data(23 downto 0),
-      Dout(7 downto 0) => Green_Dout(7 downto 0)
+      selector(1 downto 0) => selector_1(1 downto 0)
     );
 MIPI_CSI_2_RX_0: component system_MIPI_CSI_2_RX_0_0
      port map (
@@ -4088,11 +4070,6 @@ MIPI_D_PHY_RX_0: component system_MIPI_D_PHY_RX_0_0
       s_axi_lite_wready => ps7_0_axi_periph_M03_AXI_WREADY,
       s_axi_lite_wstrb(3 downto 0) => ps7_0_axi_periph_M03_AXI_WSTRB(3 downto 0),
       s_axi_lite_wvalid => ps7_0_axi_periph_M03_AXI_WVALID(0)
-    );
-Red: component system_Green_1
-     port map (
-      Din(23 downto 0) => v_axi4s_vid_out_0_vid_data(23 downto 0),
-      Dout(7 downto 0) => Red_Dout(7 downto 0)
     );
 axi_mem_intercon: entity work.system_axi_mem_intercon_0
      port map (
@@ -4251,6 +4228,13 @@ clk_wiz_0: component system_clk_wiz_0_0
       clk_out2 => mm_clk_150,
       clk_out3 => ref_clk_200,
       locked => clk_wiz_0_locked
+    );
+concater_0: component system_concater_0_1
+     port map (
+      data_in(7 downto 0) => FilterSpecial_0_data_out(7 downto 0),
+      data_out(23 downto 0) => concater_0_data_out(23 downto 0),
+      rest(23 downto 0) => shifter_0_rest(23 downto 0),
+      selector(1 downto 0) => selector_2(1 downto 0)
     );
 processing_system7_0: component system_processing_system7_0_0
      port map (
@@ -4596,7 +4580,7 @@ rgb2dvi_0: component system_rgb2dvi_0_0
       TMDS_Data_n(2 downto 0) => rgb2dvi_0_TMDS_DATA_N(2 downto 0),
       TMDS_Data_p(2 downto 0) => rgb2dvi_0_TMDS_DATA_P(2 downto 0),
       aRst_n => v_axi4s_vid_out_0_locked,
-      vid_pData(23 downto 0) => xlconcat_1_dout(23 downto 0),
+      vid_pData(23 downto 0) => concater_0_data_out(23 downto 0),
       vid_pHSync => v_axi4s_vid_out_0_vid_hsync,
       vid_pVDE => v_axi4s_vid_out_0_vid_active_video,
       vid_pVSync => v_axi4s_vid_out_0_vid_vsync
@@ -4626,6 +4610,13 @@ rst_vid_clk_dyn: component system_rst_vid_clk_dyn_0
       peripheral_aresetn(0) => rst_vid_clk_dyn_peripheral_aresetn(0),
       peripheral_reset(0) => rst_vid_clk_dyn_peripheral_reset(0),
       slowest_sync_clk => PixelClk_Generator_clk_out1
+    );
+shifter_0: component system_shifter_0_0
+     port map (
+      data_in(23 downto 0) => v_axi4s_vid_out_0_vid_data(23 downto 0),
+      data_out(7 downto 0) => shifter_0_green(7 downto 0),
+      rest(23 downto 0) => shifter_0_rest(23 downto 0),
+      selector(1 downto 0) => selector_2(1 downto 0)
     );
 v_axi4s_vid_out_0: component system_v_axi4s_vid_out_0_0
      port map (
@@ -4729,12 +4720,5 @@ xlconcat_0: component system_xlconcat_0_0
       In1(0) => axi_vdma_0_mm2s_introut,
       In2(0) => axi_vdma_0_s2mm_introut,
       dout(2 downto 0) => xlconcat_0_dout(2 downto 0)
-    );
-xlconcat_1: component system_xlconcat_1_0
-     port map (
-      In0(7 downto 0) => FilterSpecial_0_data_out(7 downto 0),
-      In1(7 downto 0) => Blue_Dout(7 downto 0),
-      In2(7 downto 0) => Red_Dout(7 downto 0),
-      dout(23 downto 0) => xlconcat_1_dout(23 downto 0)
     );
 end STRUCTURE;
