@@ -407,7 +407,7 @@ architecture Behavioral of FilterSpecial is
 
 signal temp_data: STD_LOGIC_VECTOR (7 downto 0) :="00000000";
 constant mask_1: STD_LOGIC_VECTOR (7 downto 0) :="00000000";
-constant mask_2: STD_LOGIC_VECTOR (7 downto 0) :="00001111";
+constant mask_2: STD_LOGIC_VECTOR (7 downto 0) :="10101010";
 constant mask_3: STD_LOGIC_VECTOR (7 downto 0) :="11110000";
 constant mask_4: STD_LOGIC_VECTOR (7 downto 0) :="11111111";
 
@@ -418,10 +418,10 @@ temp_data <= data_in;
 
 
 case selector is
-    when "00" => data_out <= temp_data;
-    when "01" => data_out <= (temp_data XOR mask_3);
-    when "10" => data_out <= (temp_data XOR mask_4);
-    when "11" => data_out <= "00000000";
+    when "00" => data_out <= (temp_data XOR mask_1);
+    when "01" => data_out <= (temp_data XOR mask_2);
+    when "10" => data_out <= (temp_data AND mask_3);
+    when "11" => data_out <= (temp_data OR mask_4);
     when others => data_out <= temp_data;
 end case;
 end process;

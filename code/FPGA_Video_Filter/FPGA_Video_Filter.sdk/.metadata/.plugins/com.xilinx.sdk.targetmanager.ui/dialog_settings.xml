@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="/home/robbe/Desktop/Github/FPGA_Project/code/Zybo-Z7-20-pcam-5c-2016.4-1_original/Zybo-Z7-20-pcam-5c/proj/pcam-5c.runs/impl_1/system_wrapper.bit" key="&lt;None&gt;-bitFile"/>
+	<item value="" key="&lt;None&gt;-bmmFile"/>
+	<item value="Auto Detect" key="&lt;None&gt;-device"/>
+	<item value="false" key="&lt;None&gt;-partial_bit"/>
+	<item value="Auto Detect" key="system_wrapper_hw_platform_0-device"/>
+	<item value="Auto Detect" key="system_wrapper_hw_platform_1-device"/>
+	<item value="Local" key="system_wrapper_hw_platform_0-target"/>
+	<item value="system_wrapper.bit" key="system_wrapper_hw_platform_1-bitFile"/>
+	<item value="false" key="system_wrapper_hw_platform_1-partial_bit"/>
+	<item value="system_wrapper.bit" key="system_wrapper_hw_platform_0-bitFile"/>
+	<item value="false" key="system_wrapper_hw_platform_0-partial_bit"/>
+	<item value="system_wrapper_hw_platform_0" key="programfpga.hwplatform"/>
+	<item value="Local" key="&lt;None&gt;-target"/>
+	<item value="" key="system_wrapper_hw_platform_0-bmmFile"/>
+	<item value="" key="system_wrapper_hw_platform_1-bmmFile"/>
+	<item value="Local" key="system_wrapper_hw_platform_1-target"/>
+</section>

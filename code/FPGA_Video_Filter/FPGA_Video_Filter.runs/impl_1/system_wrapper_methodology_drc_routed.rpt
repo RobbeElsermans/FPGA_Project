@@ -1,0 +1,316 @@
+Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2016.4 (lin64) Build 1756540 Mon Jan 23 19:11:19 MST 2017
+| Date         : Wed Jan 12 17:00:28 2022
+| Host         : the-beast running 64-bit Ubuntu 20.04.3 LTS
+| Command      : report_methodology -file system_wrapper_methodology_drc_routed.rpt -rpx system_wrapper_methodology_drc_routed.rpx
+| Design       : system_wrapper
+| Device       : xc7z020clg400-1
+| Speed File   : -1
+| Design State : Routed
+-----------------------------------------------------------------------------------------------------------------------------------
+
+Report Methodology
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: design_1
+      Design limits: <entire design considered>
+             Max violations: <unlimited>
+             Violations found: 54
++-----------+----------+-------------------------------------------------+------------+
+| Rule      | Severity | Description                                     | Violations |
++-----------+----------+-------------------------------------------------+------------+
+| PDRC-190  | Warning  | Suboptimally placed synchronized register chain | 3          |
+| TIMING-1  | Warning  | Invalid clock waveform on Clock Modifying Block | 2          |
+| TIMING-3  | Warning  | Invalid primary clock on Clock Modifying Block  | 2          |
+| TIMING-9  | Warning  | Unknown CDC Logic                               | 1          |
+| TIMING-15 | Warning  | Large hold violation on inter-clock path        | 1          |
+| TIMING-16 | Warning  | Large setup violation                           | 2          |
+| TIMING-18 | Warning  | Missing input or output delay                   | 18         |
+| TIMING-20 | Warning  | Non-clocked latch                               | 24         |
+| XDCB-1    | Warning  | Runtime intensive exceptions                    | 1          |
++-----------+----------+-------------------------------------------------+------------+
+
+2. REPORT DETAILS
+-----------------
+PDRC-190#1 Warning
+Suboptimally placed synchronized register chain  
+The FDCE cell system_i/MIPI_D_PHY_RX_0/U0/ClockLane/HSClockingX/SyncAsyncLocked/oSyncStages_reg[1] in site SLICE_X109Y116 is part of a synchronized register chain that is suboptimally placed as the load FDCE cell system_i/MIPI_D_PHY_RX_0/U0/ClockLane/SyncAsyncLocked/oSyncStages_reg[0] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#2 Warning
+Suboptimally placed synchronized register chain  
+The FDPE cell system_i/MIPI_CSI_2_RX_0/U0/MIPI_CSI2_Rx_inst/LLP_inst/LineBufferFIFO/inst/gen_fifo_generator.fifo_generator_inst/inst_fifo_gen/gaxis_fifo.gaxisf.axisf/grf.rf/rstblk/ngwrdrst.grst.g7serrst.rst_wr_reg2_reg in site SLICE_X62Y89 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell system_i/MIPI_CSI_2_RX_0/U0/MIPI_CSI2_Rx_inst/LLP_inst/LineBufferFIFO/inst/gen_fifo_generator.fifo_generator_inst/inst_fifo_gen/gaxis_fifo.gaxisf.axisf/grf.rf/rstblk/ngwrdrst.grst.g7serrst.gsckt_wrst.garst_sync[1].arst_sync_inst/Q_reg_reg[0] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#3 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell system_i/MIPI_CSI_2_RX_0/U0/YesAXILITE.SyncAsyncClkEnable/oSyncStages_reg[1] in site SLICE_X63Y99 is part of a synchronized register chain that is suboptimally placed as the load FDCE cell system_i/MIPI_CSI_2_RX_0/U0/MIPI_CSI2_Rx_inst/SyncAsyncEnable/oSyncStages_reg[0] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+TIMING-1#1 Warning
+Invalid clock waveform on Clock Modifying Block  
+Invalid clock waveform for clock pixel_dynclk specified at a BUFR output system_i/video_dynclk/U0/BUFR_inst/O that does not match the CMB settings. The waveform of the clock is 6.734 {0 3.367}. The expected waveform is 8.335 {0 3.334}
+Related violations: <none>
+
+TIMING-1#2 Warning
+Invalid clock waveform on Clock Modifying Block  
+Invalid clock waveform for clock video_dynclk specified at a MMCME2_ADV output system_i/video_dynclk/U0/Inst_mmcme2_drp/mmcm_adv_inst/CLKOUT0 that does not match the CMB settings. The waveform of the clock is 1.667 {0 0.8335}. The expected waveform is 2 {0 1}
+Related violations: <none>
+
+TIMING-3#1 Warning
+Invalid primary clock on Clock Modifying Block  
+A primary clock pixel_dynclk is created on the output pin or net system_i/video_dynclk/U0/BUFR_inst/O of a Clock Modifying Block
+Related violations: <none>
+
+TIMING-3#2 Warning
+Invalid primary clock on Clock Modifying Block  
+A primary clock video_dynclk is created on the output pin or net system_i/video_dynclk/U0/Inst_mmcme2_drp/mmcm_adv_inst/CLKOUT0 of a Clock Modifying Block
+Related violations: <none>
+
+TIMING-9#1 Warning
+Unknown CDC Logic  
+One or more asynchronous Clock Domain Crossing has been detected between 2 clock domains through a set_false_path or a set_clock_groups or set_max_delay -datapath_only constraint but no double-registers logic synchronizer has been found on the side of the capture clock. It is recommended to run report_cdc for a complete and detailed CDC coverage
+Related violations: <none>
+
+TIMING-15#1 Warning
+Large hold violation on inter-clock path  
+There is a large inter-clock skew of 1.885 ns between dphy_data_hs_p[0] (clocked by dphy_hs_clock_p) and system_i/MIPI_D_PHY_RX_0/U0/DataLaneGen[0].DPHY_LaneSFEN_X/HSDeserializerX/Deserializer/DDLY (clocked by dphy_hs_clock_p) that results in large hold timing violation(s) of -1.038 ns. Fixing large hold violations during routing might impact setup slack and result in more difficult timing closure
+Related violations: <none>
+
+TIMING-16#1 Warning
+Large setup violation  
+There is a large setup violation of -3.303 ns between dphy_data_hs_n[0] (clocked by dphy_hs_clock_p) and system_i/MIPI_D_PHY_RX_0/U0/DataLaneGen[0].DPHY_LaneSFEN_X/HSDeserializerX/Deserializer/DDLY (clocked by dphy_hs_clock_p). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#2 Warning
+Large setup violation  
+There is a large setup violation of -3.342 ns between dphy_data_hs_n[1] (clocked by dphy_hs_clock_p) and system_i/MIPI_D_PHY_RX_0/U0/DataLaneGen[1].DPHY_LaneSFEN_X/HSDeserializerX/Deserializer/DDLY (clocked by dphy_hs_clock_p). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-18#1 Warning
+Missing input or output delay  
+An input delay is missing on div[0] relative to clock(s) pixel_dynclk 
+Related violations: <none>
+
+TIMING-18#2 Warning
+Missing input or output delay  
+An input delay is missing on div[1] relative to clock(s) pixel_dynclk 
+Related violations: <none>
+
+TIMING-18#3 Warning
+Missing input or output delay  
+An input delay is missing on dphy_clk_lp_n relative to clock(s) VIRTUAL_clk_out3_system_clk_wiz_0_0 
+Related violations: <none>
+
+TIMING-18#4 Warning
+Missing input or output delay  
+An input delay is missing on dphy_clk_lp_p relative to clock(s) VIRTUAL_clk_out3_system_clk_wiz_0_0 
+Related violations: <none>
+
+TIMING-18#5 Warning
+Missing input or output delay  
+An input delay is missing on dphy_data_lp_n[0] relative to clock(s) VIRTUAL_clk_out3_system_clk_wiz_0_0 dphy_hs_clock_p 
+Related violations: <none>
+
+TIMING-18#6 Warning
+Missing input or output delay  
+An input delay is missing on dphy_data_lp_n[1] relative to clock(s) VIRTUAL_clk_out3_system_clk_wiz_0_0 dphy_hs_clock_p 
+Related violations: <none>
+
+TIMING-18#7 Warning
+Missing input or output delay  
+An input delay is missing on dphy_data_lp_p[0] relative to clock(s) VIRTUAL_clk_out3_system_clk_wiz_0_0 dphy_hs_clock_p 
+Related violations: <none>
+
+TIMING-18#8 Warning
+Missing input or output delay  
+An input delay is missing on dphy_data_lp_p[1] relative to clock(s) VIRTUAL_clk_out3_system_clk_wiz_0_0 dphy_hs_clock_p 
+Related violations: <none>
+
+TIMING-18#9 Warning
+Missing input or output delay  
+An input delay is missing on fil[0] relative to clock(s) pixel_dynclk 
+Related violations: <none>
+
+TIMING-18#10 Warning
+Missing input or output delay  
+An input delay is missing on fil[1] relative to clock(s) pixel_dynclk 
+Related violations: <none>
+
+TIMING-18#11 Warning
+Missing input or output delay  
+An output delay is missing on hdmi_tx_clk_n relative to clock(s) video_dynclk 
+Related violations: <none>
+
+TIMING-18#12 Warning
+Missing input or output delay  
+An output delay is missing on hdmi_tx_clk_p relative to clock(s) video_dynclk 
+Related violations: <none>
+
+TIMING-18#13 Warning
+Missing input or output delay  
+An output delay is missing on hdmi_tx_data_n[0] relative to clock(s) video_dynclk 
+Related violations: <none>
+
+TIMING-18#14 Warning
+Missing input or output delay  
+An output delay is missing on hdmi_tx_data_n[1] relative to clock(s) video_dynclk 
+Related violations: <none>
+
+TIMING-18#15 Warning
+Missing input or output delay  
+An output delay is missing on hdmi_tx_data_n[2] relative to clock(s) video_dynclk 
+Related violations: <none>
+
+TIMING-18#16 Warning
+Missing input or output delay  
+An output delay is missing on hdmi_tx_data_p[0] relative to clock(s) video_dynclk 
+Related violations: <none>
+
+TIMING-18#17 Warning
+Missing input or output delay  
+An output delay is missing on hdmi_tx_data_p[1] relative to clock(s) video_dynclk 
+Related violations: <none>
+
+TIMING-18#18 Warning
+Missing input or output delay  
+An output delay is missing on hdmi_tx_data_p[2] relative to clock(s) video_dynclk 
+Related violations: <none>
+
+TIMING-20#1 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[0] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[0]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#2 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[10] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[10]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#3 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[11] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[11]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#4 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[12] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[12]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#5 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[13] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[13]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#6 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[14] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[14]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#7 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[15] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[15]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#8 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[16] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[16]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#9 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[17] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[17]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#10 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[18] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[18]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#11 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[19] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[19]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#12 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[1] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[1]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#13 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[20] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[20]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#14 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[21] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[21]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#15 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[22] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[22]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#16 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[23] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[23]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#17 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[2] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[2]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#18 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[3] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[3]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#19 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[4] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[4]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#20 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[5] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[5]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#21 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[6] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[6]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#22 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[7] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[7]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#23 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[8] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[8]/G is not reached by a timing clock
+Related violations: <none>
+
+TIMING-20#24 Warning
+Non-clocked latch  
+The latch system_i/shifter_0/U0/rest_reg[9] cannot be properly analyzed as its control pin system_i/shifter_0/U0/rest_reg[9]/G is not reached by a timing clock
+Related violations: <none>
+
+XDCB-1#1 Warning
+Runtime intensive exceptions  
+The following constraint contains more than 1000 objects. To preserve runtime and memory performance, it is recommended to include minimum number of objects. Check whether this list can be simplified.
+-to = expands to 1810 design objects. 
+set_max_delay -datapath_only -from [get_clocks -of [get_ports -scoped_to_current_instance s_axi_aclk]] -to [all_registers -clock [get_clocks -of [get_...
+/home/robbe/Desktop/Github/FPGA_Project/code/Zybo-Z7-20-pcam-5c-2016.4-1_original/Zybo-Z7-20-pcam-5c/src/bd/system/ip/system_vtg_0/system_vtg_0_clocks.xdc (Line: 6)
+Related violations: <none>
+
+
