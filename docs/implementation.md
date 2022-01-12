@@ -327,12 +327,78 @@ end process;
 end Behavioral;
 ```
 
+De output van de monitor was speciaal. Enkel mask_1 en mask_2 hadden een zichtbaar effect. We gaan de filter dus nog wat moeten veranderen.
+
+![output monitor](pictures/REAL_monitor_output_advanced_FIlter.png)
+
+?> De video was op dit moment volledig normaal zonder enige kleur- en beeldverschuiving.
+
+## Advanced dividing
+
+Nu dat we weten dat de filter zijn ding doet, kunnen we de slice en concat blokken mee in het blok-design steken als IP-blokken. Hiervoor gaan we zelf een slice (shifter) en concat (concater) design block maken in VHDL.
+
+We weten dat de data 24 bits lang is en dat elke kleur 8-bits in beslag neemt gaande van groen (LSB), blauw en rood.
+
+De shifter
+
+``` VHDL
+entity shifter is
+    Port ( data_in : in STD_LOGIC_VECTOR (23 downto 0);
+           green : out STD_LOGIC_VECTOR (7 downto 0);
+           blue : out STD_LOGIC_VECTOR (7 downto 0);
+           red : out STD_LOGIC_VECTOR (7 downto 0));
+end shifter;
+
+architecture Behavioral of shifter is
+
+begin
+
+process (data_in) begin
+
+green <= data_in(7 downto 0);
+blue <= data_in(15 downto 8);
+red <= data_in(23 downto 16);
+
+end process;
+
+end Behavioral;
+```
+
+De concater
+
+``` VHDL
+entity concater is
+    Port ( green : in STD_LOGIC_VECTOR (7 downto 0);
+           blue : in STD_LOGIC_VECTOR (7 downto 0);
+           red : in STD_LOGIC_VECTOR (7 downto 0);
+           data_out : out STD_LOGIC_VECTOR (23 downto 0));
+end concater;
+
+architecture Behavioral of concater is
+
+begin
+
+process (green, blue,red) begin
+
+data_out(7 downto 0) <= green;
+data_out(15 downto 8) <= blue;
+data_out(23 downto 16) <= red;
+
+end process;
+
+end Behavioral;
+```
+
+Aansluiting
+
+![block design aansluiting](pictures/REAL_Block_Design_Hookup_AdvancedFilter_4.png)
+
 
 # Fix video shift
 
 ## Change position
 
-Zoals we hebben beschreven in [Resultaat](#resultaat) hebben we een rare image output. Ik dacht dat dit timing gerelateerd was. We gaan eens de slice toepassen op een andere plaats in het block Design.
+Zoals we hebben beschreven in [Resultaat](#result) hebben we een rare image output. Ik dacht dat dit timing gerelateerd was. We gaan eens de slice toepassen op een andere plaats in het block Design.
 
 We gaan de slice - filter - concat tussen de component **AXI_GammaCorrection_0** en **AXI_VDMA_0** plaatsen. Hier hebben we ook de RGB waardes verpakt als 24 bit vector.
 
@@ -448,7 +514,7 @@ Jammer genoeg gaf dit hetzelfde resultaat.
 
 ## Problem continued
 
-Na dat ik opnieuw de originele code heb geüpload en hiermee de data lijnen deel per deel heb opgesplitst en bekeken, heb ik het probleem gevonden.
+Na dat ik opnieuw de originele code heb geüpload en hiermee de data lijnen deel per deel heb opgesplitst en bekeken, heb ik het probleem denk ik gevonden.
 
 ![problem solved](pictures/REAL_Block_Design_Reveal_Sync_Error.png)
 
@@ -462,8 +528,6 @@ Bij het proberen van deze methode ging het niet zoals verwacht:
 
 De kleuren bleven geshift staan. Ookal veranderde we de volgorden, deed dit niets.
 
-## Problem solved?
-
 Ik was ten einde raad dus ik klikte op wat knopjes in de hoop dat het iets deed. En dit deed ook iets wat ik wou. 
 
 De FPGA werd telkens geprogrameerd met de geëxporteerde bitstream file in het SDK programma. Ik heb nu eens de FPGA geprogrammeerd in het Vivado programma (Hardware Manager) en dit gaf een juist resultaat. De kleuren waren niet verschoven. Uiteraard moeten we stap 10 van hoofdstuk [Tutorial](#tutorial) nog wel uitvoeren.
@@ -476,6 +540,18 @@ Dit gaf me weer een verkeerd resultaat. Echter wanneer ik gewoon keer na keer de
 Dit is natuurlijk geen oplossing voor het probleem. 
 
 De verschuiving in het beeld is er nog steeds.
+
+## Problem solved?
+
+Een laatste poging om het probleem op te lossen was een succes. Ik heb de slice & concat blokken samen met een filter ertussen nog eens tussen **v_axi4s_vid_out_0** en **rgb2dvi_0** geplaatst en dezelfde methode toegepast zoals bij [Problem continued](#problem-continued). Ook heb ik hier de datalijnen die ik kan verbinden tussen beide IP-blokken, verbonden.
+
+![schema block design](pictures/REAL_Block_Design_Hookup_AdvancedFilter_3_Test_2.png)
+
+Dit gaf een juist resultaat wanneer de video output werd doorgestuurd zonder enige bewerkingen op.
+
+![real monitor output](pictures/REAL_monitor_output_Fix_Test_3.jpg)
+
+Ik heb dit ook meerdere keren herprogrammeerd om zeker te zijn dat dit werkte.
 
 ## Result
 Het is me niet gelukt om de juiste kleuren over te zetten wegens onbekende redenen. De video zelf was verschoven in tijd waardoor de kleuren mee verschuiven denk ik.
@@ -498,5 +574,4 @@ Het is me niet gelukt om de juiste kleuren over te zetten wegens onbekende reden
 * [Paper over video processing](https://digilent.s3-us-west-2.amazonaws.com/resources/whitepapers/EmbeddedVisionDemo.pdf?_ga=2.167079991.807386272.1568825362-2125793643.1506359851)
 * [VHDL operators](https://www.ics.uci.edu/~jmoorkan/vhdlref/operator.html)
 * [VHDL concat bits](https://stackoverflow.com/questions/209458/concatenating-bits-in-vhdl)
-
-Een link om bayer2RGB aan te passen om eventueel daar de RGB waarde aan te passen [link](https://fumimaker.net/entry/2020/02/06/002934)
+* [Bayer2RGB Changing](https://fumimaker.net/entry/2020/02/06/002934)

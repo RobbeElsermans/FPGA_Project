@@ -46,52 +46,39 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: xilinx.com:ip:xlslice:1.0
--- IP Revision: 0
+-- IP VLNV: user.org:module_ref:concater:1.0
+-- IP Revision: 1
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-LIBRARY work;
-USE work.xlslice;
-
-ENTITY system_xlslice_0_1 IS
+ENTITY system_concater_0_0 IS
   PORT (
-    Din : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-    Dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+    green : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+    blue : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+    red : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+    data_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
   );
-END system_xlslice_0_1;
+END system_concater_0_0;
 
-ARCHITECTURE system_xlslice_0_1_arch OF system_xlslice_0_1 IS
+ARCHITECTURE system_concater_0_0_arch OF system_concater_0_0 IS
   ATTRIBUTE DowngradeIPIdentifiedWarnings : STRING;
-  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_xlslice_0_1_arch: ARCHITECTURE IS "yes";
-  COMPONENT xlslice IS
-    GENERIC (
-      DIN_WIDTH : INTEGER;
-      DIN_FROM : INTEGER;
-      DIN_TO : INTEGER
-    );
+  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_concater_0_0_arch: ARCHITECTURE IS "yes";
+  COMPONENT concater IS
     PORT (
-      Din : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-      Dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+      green : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+      blue : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+      red : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+      data_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
     );
-  END COMPONENT xlslice;
-  ATTRIBUTE X_CORE_INFO : STRING;
-  ATTRIBUTE X_CORE_INFO OF system_xlslice_0_1_arch: ARCHITECTURE IS "xlslice,Vivado 2016.4";
-  ATTRIBUTE CHECK_LICENSE_TYPE : STRING;
-  ATTRIBUTE CHECK_LICENSE_TYPE OF system_xlslice_0_1_arch : ARCHITECTURE IS "system_xlslice_0_1,xlslice,{}";
-  ATTRIBUTE CORE_GENERATION_INFO : STRING;
-  ATTRIBUTE CORE_GENERATION_INFO OF system_xlslice_0_1_arch: ARCHITECTURE IS "system_xlslice_0_1,xlslice,{x_ipProduct=Vivado 2016.4,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=xlslice,x_ipVersion=1.0,x_ipCoreRevision=0,x_ipLanguage=VHDL,x_ipSimLanguage=MIXED,DIN_WIDTH=24,DIN_FROM=23,DIN_TO=16}";
+  END COMPONENT concater;
 BEGIN
-  U0 : xlslice
-    GENERIC MAP (
-      DIN_WIDTH => 24,
-      DIN_FROM => 23,
-      DIN_TO => 16
-    )
+  U0 : concater
     PORT MAP (
-      Din => Din,
-      Dout => Dout
+      green => green,
+      blue => blue,
+      red => red,
+      data_out => data_out
     );
-END system_xlslice_0_1_arch;
+END system_concater_0_0_arch;

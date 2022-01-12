@@ -46,46 +46,39 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: xilinx.com:ip:xlslice:1.0
--- IP Revision: 0
+-- IP VLNV: user.org:module_ref:shifter:1.0
+-- IP Revision: 1
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-LIBRARY work;
-USE work.xlslice;
-
-ENTITY system_xlslice_0_0 IS
+ENTITY system_shifter_0_0 IS
   PORT (
-    Din : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-    Dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+    data_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+    green : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    blue : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    red : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
   );
-END system_xlslice_0_0;
+END system_shifter_0_0;
 
-ARCHITECTURE system_xlslice_0_0_arch OF system_xlslice_0_0 IS
+ARCHITECTURE system_shifter_0_0_arch OF system_shifter_0_0 IS
   ATTRIBUTE DowngradeIPIdentifiedWarnings : STRING;
-  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_xlslice_0_0_arch: ARCHITECTURE IS "yes";
-  COMPONENT xlslice IS
-    GENERIC (
-      DIN_WIDTH : INTEGER;
-      DIN_FROM : INTEGER;
-      DIN_TO : INTEGER
-    );
+  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_shifter_0_0_arch: ARCHITECTURE IS "yes";
+  COMPONENT shifter IS
     PORT (
-      Din : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-      Dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+      data_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+      green : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+      blue : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+      red : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
     );
-  END COMPONENT xlslice;
+  END COMPONENT shifter;
 BEGIN
-  U0 : xlslice
-    GENERIC MAP (
-      DIN_WIDTH => 24,
-      DIN_FROM => 7,
-      DIN_TO => 0
-    )
+  U0 : shifter
     PORT MAP (
-      Din => Din,
-      Dout => Dout
+      data_in => data_in,
+      green => green,
+      blue => blue,
+      red => red
     );
-END system_xlslice_0_0_arch;
+END system_shifter_0_0_arch;
