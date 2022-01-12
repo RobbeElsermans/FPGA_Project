@@ -46,43 +46,46 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: user.org:module_ref:concater:1.0
--- IP Revision: 1
+-- IP VLNV: xilinx.com:ip:xlslice:1.0
+-- IP Revision: 0
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-ENTITY system_concater_0_0 IS
-  PORT (
-    green : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    blue : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    red : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    data_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
-  );
-END system_concater_0_0;
+LIBRARY work;
+USE work.xlslice;
 
-ARCHITECTURE system_concater_0_0_arch OF system_concater_0_0 IS
+ENTITY system_xlslice_0_0 IS
+  PORT (
+    Din : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+    Dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+  );
+END system_xlslice_0_0;
+
+ARCHITECTURE system_xlslice_0_0_arch OF system_xlslice_0_0 IS
   ATTRIBUTE DowngradeIPIdentifiedWarnings : STRING;
-  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_concater_0_0_arch: ARCHITECTURE IS "yes";
-  COMPONENT concater IS
+  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_xlslice_0_0_arch: ARCHITECTURE IS "yes";
+  COMPONENT xlslice IS
+    GENERIC (
+      DIN_WIDTH : INTEGER;
+      DIN_FROM : INTEGER;
+      DIN_TO : INTEGER
+    );
     PORT (
-      green : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-      blue : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-      red : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-      data_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
+      Din : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+      Dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
     );
-  END COMPONENT concater;
-  ATTRIBUTE X_CORE_INFO : STRING;
-  ATTRIBUTE X_CORE_INFO OF system_concater_0_0_arch: ARCHITECTURE IS "concater,Vivado 2016.4";
-  ATTRIBUTE CHECK_LICENSE_TYPE : STRING;
-  ATTRIBUTE CHECK_LICENSE_TYPE OF system_concater_0_0_arch : ARCHITECTURE IS "system_concater_0_0,concater,{}";
+  END COMPONENT xlslice;
 BEGIN
-  U0 : concater
+  U0 : xlslice
+    GENERIC MAP (
+      DIN_WIDTH => 24,
+      DIN_FROM => 7,
+      DIN_TO => 0
+    )
     PORT MAP (
-      green => green,
-      blue => blue,
-      red => red,
-      data_out => data_out
+      Din => Din,
+      Dout => Dout
     );
-END system_concater_0_0_arch;
+END system_xlslice_0_0_arch;

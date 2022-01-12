@@ -46,39 +46,46 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: user.org:module_ref:concater:1.0
--- IP Revision: 1
+-- IP VLNV: xilinx.com:ip:xlslice:1.0
+-- IP Revision: 0
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-ENTITY system_concater_0_0 IS
-  PORT (
-    green : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    blue : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    red : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    data_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
-  );
-END system_concater_0_0;
+LIBRARY work;
+USE work.xlslice;
 
-ARCHITECTURE system_concater_0_0_arch OF system_concater_0_0 IS
+ENTITY system_Green_1 IS
+  PORT (
+    Din : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+    Dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+  );
+END system_Green_1;
+
+ARCHITECTURE system_Green_1_arch OF system_Green_1 IS
   ATTRIBUTE DowngradeIPIdentifiedWarnings : STRING;
-  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_concater_0_0_arch: ARCHITECTURE IS "yes";
-  COMPONENT concater IS
+  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_Green_1_arch: ARCHITECTURE IS "yes";
+  COMPONENT xlslice IS
+    GENERIC (
+      DIN_WIDTH : INTEGER;
+      DIN_FROM : INTEGER;
+      DIN_TO : INTEGER
+    );
     PORT (
-      green : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-      blue : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-      red : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-      data_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
+      Din : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+      Dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
     );
-  END COMPONENT concater;
+  END COMPONENT xlslice;
 BEGIN
-  U0 : concater
+  U0 : xlslice
+    GENERIC MAP (
+      DIN_WIDTH => 24,
+      DIN_FROM => 23,
+      DIN_TO => 16
+    )
     PORT MAP (
-      green => green,
-      blue => blue,
-      red => red,
-      data_out => data_out
+      Din => Din,
+      Dout => Dout
     );
-END system_concater_0_0_arch;
+END system_Green_1_arch;

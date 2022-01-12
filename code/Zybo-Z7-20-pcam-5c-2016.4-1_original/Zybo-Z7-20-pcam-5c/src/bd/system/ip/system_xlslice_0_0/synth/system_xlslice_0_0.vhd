@@ -46,43 +46,52 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: user.org:module_ref:shifter:1.0
--- IP Revision: 1
+-- IP VLNV: xilinx.com:ip:xlslice:1.0
+-- IP Revision: 0
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-ENTITY system_shifter_0_0 IS
-  PORT (
-    data_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-    green : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-    blue : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-    red : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
-  );
-END system_shifter_0_0;
+LIBRARY work;
+USE work.xlslice;
 
-ARCHITECTURE system_shifter_0_0_arch OF system_shifter_0_0 IS
+ENTITY system_xlslice_0_0 IS
+  PORT (
+    Din : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+    Dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+  );
+END system_xlslice_0_0;
+
+ARCHITECTURE system_xlslice_0_0_arch OF system_xlslice_0_0 IS
   ATTRIBUTE DowngradeIPIdentifiedWarnings : STRING;
-  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_shifter_0_0_arch: ARCHITECTURE IS "yes";
-  COMPONENT shifter IS
+  ATTRIBUTE DowngradeIPIdentifiedWarnings OF system_xlslice_0_0_arch: ARCHITECTURE IS "yes";
+  COMPONENT xlslice IS
+    GENERIC (
+      DIN_WIDTH : INTEGER;
+      DIN_FROM : INTEGER;
+      DIN_TO : INTEGER
+    );
     PORT (
-      data_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-      green : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-      blue : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-      red : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+      Din : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+      Dout : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
     );
-  END COMPONENT shifter;
+  END COMPONENT xlslice;
   ATTRIBUTE X_CORE_INFO : STRING;
-  ATTRIBUTE X_CORE_INFO OF system_shifter_0_0_arch: ARCHITECTURE IS "shifter,Vivado 2016.4";
+  ATTRIBUTE X_CORE_INFO OF system_xlslice_0_0_arch: ARCHITECTURE IS "xlslice,Vivado 2016.4";
   ATTRIBUTE CHECK_LICENSE_TYPE : STRING;
-  ATTRIBUTE CHECK_LICENSE_TYPE OF system_shifter_0_0_arch : ARCHITECTURE IS "system_shifter_0_0,shifter,{}";
+  ATTRIBUTE CHECK_LICENSE_TYPE OF system_xlslice_0_0_arch : ARCHITECTURE IS "system_xlslice_0_0,xlslice,{}";
+  ATTRIBUTE CORE_GENERATION_INFO : STRING;
+  ATTRIBUTE CORE_GENERATION_INFO OF system_xlslice_0_0_arch: ARCHITECTURE IS "system_xlslice_0_0,xlslice,{x_ipProduct=Vivado 2016.4,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=xlslice,x_ipVersion=1.0,x_ipCoreRevision=0,x_ipLanguage=VHDL,x_ipSimLanguage=MIXED,DIN_WIDTH=24,DIN_FROM=7,DIN_TO=0}";
 BEGIN
-  U0 : shifter
+  U0 : xlslice
+    GENERIC MAP (
+      DIN_WIDTH => 24,
+      DIN_FROM => 7,
+      DIN_TO => 0
+    )
     PORT MAP (
-      data_in => data_in,
-      green => green,
-      blue => blue,
-      red => red
+      Din => Din,
+      Dout => Dout
     );
-END system_shifter_0_0_arch;
+END system_xlslice_0_0_arch;
