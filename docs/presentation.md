@@ -41,3 +41,4 @@
 
 * Complexere filters opbouwen
 * meer zaken doen met de kleuren dan alleen filteren
+* filter aanpassen via command line (Zync processing system)

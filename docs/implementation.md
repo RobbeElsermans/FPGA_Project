@@ -9,13 +9,13 @@ Dit zijn de kern stappen die ik ga volgen in dit project:
 
 ## Tutorial
 
-Als we even naar de tutorial's pagina gaan, dan zien we dat we niet enkel en alleen het tutorial project moeten downloaden. We hebben ook nog board-files nodig.
+Als we even naar de tutorials pagina gaan, dan zien we dat we niet enkel en alleen het tutorial project moeten downloaden. We hebben ook nog board-files nodig.
 
-?> **board-files** beschrijven een evaluation board zoals type FPGA, Boudrate, hoeveelheid flipflops etc.
+?> **board-files** beschrijven een evaluation board zoals type FPGA, Baudrate, hoeveelheid flipflops etc.
 
 [Hier](https://digilent.com/reference/software/vivado/board-files) een tutorial om board-files te importeren in Vivado 2016.4. [Dit](https://github.com/Digilent/vivado-boards/) is de GitRepo van de nodige board-files. 
 
-Na het downloaden en installeren van Vivado Design Suite & Xilinx SDK 2016.4 en het inporteren van de juiste board-files gaan we het [tutorial project](https://github.com/Digilent/Zybo-Z7-20-pcam-5c/releases/download/v2016.4-1/Zybo-Z7-20-pcam-5c-2016.4-1.zip) downloaden en openen in Vivado Design Suite.
+Na het downloaden en installeren van Vivado Design Suite & Xilinx SDK 2016.4 en het importeren van de juiste board-files gaan we het [tutorial project](https://github.com/Digilent/Zybo-Z7-20-pcam-5c/releases/download/v2016.4-1/Zybo-Z7-20-pcam-5c-2016.4-1.zip) downloaden en openen in Vivado Design Suite.
 
 !> **OPGELET** er zijn nog andere versies ter beschikking op de [GitHub Pagina](https://github.com/Digilent/Zybo-Z7-20-pcam-5c/releases). Wij gaan versie 2016.4 nemen zoals in de tutorial.
 
@@ -59,9 +59,9 @@ Als we het Block Design openen, dan zien we rechts vanonder dat zich daar de out
 
 ![REAL Block Design](./pictures/REAL_Block_Design.jpg)
 
-voor de blok "rgb2dvi_0" zal dus de rgb waarden voorkomen. Dit gaan we opvangen en bewerken. Omdat ik hier nog geen enkele ervaring mee heb om met IP-blocks een hele schakeling op te bouwen, zal het niet vanzelf gaan.
+voor de blok **"rgb2dvi_0"** zal dus de rgb waarden voorkomen. Dit gaan we opvangen en bewerken. Omdat ik hier nog geen enkele ervaring mee heb om met IP-blocks een hele schakeling op te bouwen, zal het niet vanzelf gaan.
 
-We weten nu via [deze](https://www.xilinx.com/content/dam/xilinx/support/documentation/ip_documentation/v_axi4s_vid_out/v4_0/pg044_v_axis_vid_out.pdf) datasheet van AXI4-Stream to Video Out dat **vid_active_video** een vector bevat van 24. Elke 8'ste bit van de vector stelt een rgb waarde voor. 
+We weten nu via [deze](https://www.xilinx.com/content/dam/xilinx/support/documentation/ip_documentation/v_axi4s_vid_out/v4_0/pg044_v_axis_vid_out.pdf) datasheet van AXI4-Stream to Video Out dat **vid_active_video** een vector bevat van 24. Waarin elke kleur 8-bit is.
 
 * 0-7 GREEN
 * 8-15 BLUE
@@ -101,7 +101,7 @@ Ook niet onbelangrijk is dat we de andere uitgangen van ***v_axi4s_vid_out_0*** 
 * vid_hsync -> vid_pHSync
 * vid_vsync -> vid_pVSync
 
-Nu dat deze zijn aangesloten is het tijd om eens met de gevonden (slice & concat) IP-blocks te experimenteren. We gaan **vid_data[23:0]** slicen in 3 verschillende vectoren met elks een lengte van 8. Nadien gaan we deze terug samenbrengen naar een vector van 23.
+Nu dat deze zijn aangesloten is het tijd om eens met de gevonden (slice & concat) IP-blocks te experimenteren. We gaan **vid_data[23:0]** slice in 3 verschillende vectoren met elk een lengte van 8. Nadien gaan we deze terug samenbrengen naar een vector van 23.
 
 ### Slice
 De slice IP-block bevat een ingang die van [x:0] gaat en een uitgang die een deel van de ingang doorgeeft. Wij gaan in dit geval een ingang ontvangen die van [23:0] gaat en een uitgang die van [7:0]. Omdat we in de [23:0] vector, 3 andere vectoren gaan halen is het van belang dat we beschrijven hoe we dit doen.
@@ -116,7 +116,7 @@ We gaan het menu van de slice even verduidelijken.
 |Dout Width|The width of the output vector|
 
 
-Even benaderen hoe we de [23:0] slicen om hiervan de eerste byte te verkrijgen die van [7-0] gaat (wat de kleur groen voorstelt).
+Even benaderen hoe we de [23:0] slice om hiervan de eerste byte te verkrijgen die van [7-0] gaat (wat de kleur groen voorstelt).
 
 |Name|Value|Description|
 |:---|:----------|:-----|
@@ -155,7 +155,7 @@ Bij het aansluiten van de slice's naar de concat IP-Block moeten we rekening hou
 
 ![Hookup slice's & concat](./pictures/REAL_Block_Design_Hookup_3.jpg)
 
-Als laatste connecteren we de concat IP-Block.
+Nu connecteren we de concat IP-Block.
 
 ![Hookup concat](pictures/REAL_Block_Design_Hookup_4.jpg)
 
@@ -165,13 +165,13 @@ Na de bitstream aanmaken, zouden we hetzelfde resultaat moeten te zien krijgen.
 
 Het beeld was een beetje verschoven en de kleur wit was meer richting rood
 
-**De oorzaak hiervan ligt denk ik aan het feit dat de IP-block rgb2dvi_0 de VSync en HSync bits vele eerder krijgt dan de RGB-data waardoor er een verschuiving ontstaat.**
+?> De oorzaak hiervan ligt denk ik aan het feit dat de IP-block rgb2dvi_0 de VSync en HSync bits vele eerder krijgt dan de RGB-data waardoor er een verschuiving ontstaat.
 
 # Data filtering
-Nu we weten hoe de de RGB waardes kunnen scheiden van elkaar, kunnen we eens proberen om hier een filter op toe te passen. We gaan zelf een "filter" maken in VHDL en deze nadien toevoegen aan de block design. 
+Nu we weten hoe we de RGB waardes kunnen scheiden van elkaar, kunnen we eens proberen om hier een filter op toe te passen. We gaan zelf een "filter" maken in VHDL en deze nadien toevoegen aan de block design. 
 
 ## First "filter"
-We gaan eerst gewoon proberen om een 8 bit vector te shiften naar links met 2 bits en nadien terug naar buiten te sturen. We gaan dit met de kleur rood doen.
+We gaan eerst gewoon proberen om een 8 bit vector te schiften naar links met 2 bits en nadien terug naar buiten te sturen. We gaan dit met de kleur rood doen.
 
 ``` filter VHDL
 entity Filter is
@@ -268,15 +268,14 @@ In de code hierboven is te zien dat we de switches als ```div``` hebben gedeclar
 We zien nu bovenaan dat er een popup is gekomen die zegt dat de module ***out-of-date*** is. Deze moeten we refreshen vooraleer we verder gaan.
 ![refresh popup](pictures/REAL_Block_Design_Refresh_Filter_Test.png)
 
-Omdat de externe switches gebruikt worden, gaan we dit in ons Block Design moeten specifiëren. 
-We klikken op de ***div[1:0]*** input van onze filter en nadien op het icoontje ```Make External``` of ```Ctrl+T```.Het kan ook zijn dat de output pin ***div[1:0]*** vanzelf is geïnporteerd links bovenaan de block design. Als dit is dan moet je het gewoon verbinden met de ***div[1:0]*** input van onze filter.
+Omdat de externe switches gebruikt worden, gaan we dit in ons Block Design moeten specificeren. 
+We klikken op de ***div[1:0]*** input van onze filter en nadien op het icoontje ```Make External``` of ```Ctrl+T```.Het kan ook zijn dat de output pin ***div[1:0]*** vanzelf is geïmporteerd links bovenaan de block design. Als dit is dan moet je het gewoon verbinden met de ***div[1:0]*** input van onze filter.
 
 ![make External Icon](pictures/REAL_Block_Design_Make_External_Filter_Test.png)
 
 Ook moeten we het .xdc bestand aanpassen in de folder ***constrains*** zodat Vivado weet welke pinnen we bedoelen.
 
 ![xdc file](pictures/REAL_Block_Design_XDC_External_Filter_Test.png)
-
 
 Nu rest ons nog de bitstream aan te maken en weer de hardware exporteren zoals we al eerder hebben gedaan bij het importeren van de filter. Ook om de SDK up te daten en de FPGA opnieuw programmeren.
 
@@ -333,7 +332,7 @@ De output van de monitor was speciaal. Enkel mask_1 en mask_2 hadden een zichtba
 
 ## Advanced dividing
 
-Nu dat we weten dat de filter zijn ding doet, kunnen we de slice en concat blokken mee in het blok-design steken als IP-blokken. Hiervoor gaan we zelf een slice (shifter) en concat (concater) design block maken in VHDL.
+Nu dat we weten dat de filter zijn ding doet, kunnen we de slice en concat blokken mee in het blok-design steken als IP-blokken. Hiervoor gaan we zelf een slice (shifter) en concat (concater) design block aanmaken in VHDL.
 
 We weten dat de data 24 bits lang is en dat elke kleur 8-bits in beslag neemt gaande van groen (LSB), blauw en rood.
 
@@ -645,7 +644,7 @@ Na dat ik opnieuw de originele code heb geüpload en hiermee de data lijnen deel
 
 ![problem solved](pictures/REAL_Block_Design_Reveal_Sync_Error.png)
 
-Zoals we kunnen zien op de foto zijn de datalijnen gewoon verbonden zoals het hoort zonder iets ertussen. Als ik nu enkel lijnen **AXI_Stream_Master** en **S_AXIS_S2MM** verbind zonder tuser, tvaldi, tlast en tdata dan verkrijgen we een perfect beeld. Als ik deze weg laat en de andere met elkaar verbind, verkrijg ik een verschove beeld en de kleuren zijn mee verschoven (blauw wordt rood etc.)
+Zoals we kunnen zien op de foto zijn de datalijnen gewoon verbonden zoals het hoort zonder iets ertussen. Als ik nu enkel lijnen **AXI_Stream_Master** en **S_AXIS_S2MM** verbind zonder tuser, tvalid, tlast en tdata dan verkrijgen we een perfect beeld. Als ik deze weg laat en de andere met elkaar verbind, verkrijg ik een verschove beeld en de kleuren zijn mee verschoven (blauw wordt rood etc.)
 
 Echter als we ze allemaal verbinden, krijg ik enkel een kleur verschuiving (rood -> groen, groen -> blauw, blauw -> rood) en de beeldverschuiving lijkt weg te zijn. Om onze kleur verschuiving dus op te lossen gaan we eerst een component aanmaken die de kleuren juist zal plaatsen en deze eerst testen. Als dit niet werkt gaan we dit proberen met de slice en concat IP-blokken.
 
@@ -668,7 +667,7 @@ Dit is natuurlijk geen oplossing voor het probleem.
 
 De verschuiving in het beeld is er nog steeds.
 
-## Problem solved?
+## Problem solved
 
 Een laatste poging om het probleem op te lossen was een succes. Ik heb de slice & concat blokken samen met een filter ertussen nog eens tussen **v_axi4s_vid_out_0** en **rgb2dvi_0** geplaatst en dezelfde methode toegepast zoals bij [Problem continued](#problem-continued). Ook heb ik hier de datalijnen die ik kan verbinden tussen beide IP-blokken, verbonden.
 
@@ -680,8 +679,11 @@ Dit gaf een juist resultaat wanneer de video output werd doorgestuurd zonder eni
 
 Ik heb dit ook meerdere keren herprogrammeerd om zeker te zijn dat dit werkte.
 
+!> Als je de FPGA herprogrameerd is het best om deze volledig los te koppelen van de computer en ook het bordje even af en op zetten. Dit gaf voor mij de beste resultaten.
+
 ## Result
-Het is me niet gelukt om de juiste kleuren over te zetten wegens onbekende redenen. De video zelf was verschoven in tijd waardoor de kleuren mee verschuiven denk ik.
+
+Het is me gelukt om een correct beeld te verkrijgen op de monitor waar dat de kleuren juist worden weer gegeven en waar het beeld niet verschoven is in tijd. 
 
 # Bronnen
 * [Tutorial usage Demo](https://digilent.com/reference/learn/programmable-logic/tutorials/zybo-z7-pcam-5c-demo/start)

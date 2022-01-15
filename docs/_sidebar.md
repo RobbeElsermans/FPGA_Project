@@ -4,4 +4,3 @@
 * [Research](./research.md)
 * [Implementation](./implementation.md)
 * [Presentation](./presentation.md)
-<!-- * [Code Explaining](./codeExplaining.md) -->
