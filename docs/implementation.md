@@ -7,6 +7,10 @@ Dit zijn de kern stappen die ik ga volgen in dit project:
 3. Start en evalueer/ onderzoek het tutorial project.
 4. Probeer een filter in de flow te verwerken.
 
+## Block diagram opdracht
+
+<iframe width="790" height="400" src="https://miro.com/app/live-embed/uXjVOVIHbB4=/?moveToViewport=-61,-216,778,383" frameBorder="0" scrolling="no" allowFullScreen></iframe>
+
 ## Tutorial
 
 Als we even naar de tutorials pagina gaan, dan zien we dat we niet enkel en alleen het tutorial project moeten downloaden. We hebben ook nog board-files nodig.
