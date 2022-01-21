@@ -2,6 +2,7 @@
 
 ## wat was je oorspronkelijke idee
 
+* Tutorial werkend krijgen
 * Filter toepassen op een video.
 * High level coding.
 
@@ -13,7 +14,7 @@
 
 * tijds verschuivingen in video beeld (soms)
 * weinig documentatie
-* VHDL als block importeren
+* VHDL als IP-block importeren
 
 <img src="./pictures/REAL_monitor_output_Filter_Test_3.jpg">
 

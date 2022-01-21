@@ -9,7 +9,7 @@ Dit zijn de kern stappen die ik ga volgen in dit project:
 
 ## Block diagram opdracht
 
-<iframe width="790" height="400" src="https://miro.com/app/live-embed/uXjVOVIHbB4=/?moveToViewport=-61,-216,778,383" frameBorder="0" scrolling="no" allowFullScreen></iframe>
+<iframe width="790" height="400" src="https://miro.com/app/live-embed/uXjVOVIHbB4=/?moveToViewport=16,-213,482,418" frameBorder="0" scrolling="no" allowFullScreen></iframe>
 
 ## Tutorial
 
@@ -40,9 +40,9 @@ Stappen
 9. Nu moeten we ons Zybo Z7-20 board programmeren met de gegenereerde bitstream file. Hiervoor gaan we naar ```Xilinx Tools -> Program FPGA```.
 10. Als laatste gaan we het gemaakte programma in C++ uploaden naar ons Zybo Z7-20 board. Dit doen we door rechter muisknop op ```pcam_vdma_hdmi``` dan ```Run As``` -> ```1 Launch On Hardware (System Debugger)```.
 
-Als je een error ontving, kijk dan na of de jumper **JP5** op **JTAG** staat. Als dit het geval is, reset en herhaal stap 9 en 10.
+?> Als je een error ontving, kijk dan na of de jumper **JP5** op **JTAG** staat. Als dit het geval is, reset en herhaal stap 9 en 10.
 
-Kijk uiteraard ook of dat de Zybo Z7-20 board aanstaat.
+?> Kijk uiteraard ook of dat de Zybo Z7-20 board aanstaat.
 
 Na het succesvol programmeren, zou je dit moeten zien in een seriële monitor (zoals [PuTTY](https://www.putty.org/) of [Tera Term](https://ttssh2.osdn.jp/index.html.en)).
 ![picture of serial console](pictures/DEMO_Console_output.jpg)
@@ -51,7 +51,10 @@ In de seriële monitor kunnen we nu wat instellingen wijzigen en een paar regist
 
 Niet te vergeten is de video output op de HDMI display.
 
-![picture of monitor](pictures/DEMO_monitor_output.jpg)
+<img src="../pictures/DEMO_monitor_output.jpg" alt="picture of monitor"
+style=" display: block;
+        margin-left: auto;
+        margin-right: auto;">
 
 Het werkt! Dat betekend dat het tijd is om het Block Design te inspecteren en de blokken die er gebruikt worden. Zo kunnen we bepalen waar we de filters kunnen plaatsen.
 
@@ -61,7 +64,11 @@ Het werkt! Dat betekend dat het tijd is om het Block Design te inspecteren en de
 
 Als we het Block Design openen, dan zien we rechts vanonder dat zich daar de output bevind van de HDMI (HDMI_TX). Voordat we onze data naar de HDMI sturen, moet deze geconverteerd worden van RGB naar DVI.
 
+<div style="border: 2px solid black;padding:4px">
+
 ![REAL Block Design](./pictures/REAL_Block_Design.jpg)
+
+</div>
 
 voor de blok **"rgb2dvi_0"** zal dus de rgb waarden voorkomen. Dit gaan we opvangen en bewerken. Omdat ik hier nog geen enkele ervaring mee heb om met IP-blocks een hele schakeling op te bouwen, zal het niet vanzelf gaan.
 
@@ -71,7 +78,12 @@ We weten nu via [deze](https://www.xilinx.com/content/dam/xilinx/support/documen
 * 8-15 BLUE
 * 16-23 RED
 
+<div style="border: 2px solid black;padding:4px">
+
 ![REAL_RGB_STRUCTURE](./pictures/REAL_RGB_STRUCTURE.jpg)
+
+</div>
+
 
 We gaan de data dus moeten opsplitsen in telkens 8 bits om elke kleur afzonderlijk te filteren. 
 
@@ -99,7 +111,11 @@ Ook niet onbelangrijk is dat we de andere uitgangen van ***v_axi4s_vid_out_0*** 
 
 ## Hooking up
 
+<div style="border: 2px solid black;padding:4px">
+
 ![Hooking up](pictures/REAL_Block_Design_Hookup_1.jpg)
+
+</div>
 
 * vid_active_video -> vid_pVDE
 * vid_hsync -> vid_pHSync
@@ -132,7 +148,11 @@ Dit proces gaan we herhalen voor elke kleur.
 
 Na de slice IP-Blocks te hebben ingesteld, gaan we ze nu verbinden met de ***v_axi4s_vid_out_0*** op poort ***vid_data[23:0]***. Ik heb de slice IP-blokken op volgorde gezet gaande van bovenaan is groen, midden is Blauw en onderaan is rood. Hieronder een foto.
 
+<div style="border: 2px solid black;padding:4px">
+
 ![hookup slice](pictures/REAL_Block_Design_Hookup_2.jpg)
+
+</div>
 
 ### Concat
 
@@ -157,11 +177,19 @@ In ons geval gaan we dus 3 ingangen nodig hebben die elks 8 bits bevatten.
 
 Bij het aansluiten van de slice's naar de concat IP-Block moeten we rekening houden met de volgorden. De concat block zal In0 als LSB beschouden en hierop verder gaan. Wij gaan dus eerst de vector van de kleur groen, dan de vector van de kleur blauw en als laatste de kleur rood. Hieronder een foto.
 
+<div style="border: 2px solid black;padding:4px">
+
 ![Hookup slice's & concat](./pictures/REAL_Block_Design_Hookup_3.jpg)
+
+</div>
 
 Nu connecteren we de concat IP-Block.
 
+<div style="border: 2px solid black;padding:4px">
+
 ![Hookup concat](pictures/REAL_Block_Design_Hookup_4.jpg)
+
+</div>
 
 Na de bitstream aanmaken, zouden we hetzelfde resultaat moeten te zien krijgen.
 
@@ -220,15 +248,26 @@ Stappen om de filter te importeren in het block design
 2. rechtermuisklik ergens in het block design en ga naar de optie ```Add Module```.
 3. Selecteer de gemaakte component (In dit geval genaamd ***Filter***) en druk op OK.
 
-![imported filter block](pictures/REAL_Block_Design_Import_Filter_Test.png)
+<div style="border: 2px solid black;padding:4px;">
+
+<img src="../pictures/REAL_Block_Design_Import_Filter_Test.png" alt="imported filter block"
+style=" display: block;
+        margin-left: auto;
+        margin-right: auto;">
+
+</div>
 
 Nu gaan we de 1ste slice afkoppelen van de concat en onze geïmporteerde block tussen beide plaatsen.
 
+<div style="border: 2px solid black;padding:4px;">
+
 ![hookup filter](pictures/REAL_Block_Design_Hookup_Filter_Test.png)
+
+</div>
 
 Als we nu opnieuw de bitstream genereren en de hardware exporteren, dan krijgen we een popup bij het SDK window waarin staat dat de hardware definities verander zijn. We selecteren ```Yes```.
 
-Na de update voeren we stap 9 en 10 van [Tutorial](#tutorial) uit.
+!> Na de update voeren we stap 9 en 10 van [Tutorial](#tutorial) uit.
 
 Als we de video output erbij halen dan zien we dat het plots veel roder is geworden. Dit kan kloppen omdat we de rode vector hebben versterkt met factor 2.
 ![monitor output filter](pictures/REAL_monitor_output_Filter_Test.jpg)
@@ -275,11 +314,22 @@ We zien nu bovenaan dat er een popup is gekomen die zegt dat de module ***out-of
 Omdat de externe switches gebruikt worden, gaan we dit in ons Block Design moeten specificeren. 
 We klikken op de ***div[1:0]*** input van onze filter en nadien op het icoontje ```Make External``` of ```Ctrl+T```.Het kan ook zijn dat de output pin ***div[1:0]*** vanzelf is geïmporteerd links bovenaan de block design. Als dit is dan moet je het gewoon verbinden met de ***div[1:0]*** input van onze filter.
 
-![make External Icon](pictures/REAL_Block_Design_Make_External_Filter_Test.png)
+<div style="border: 2px solid black;padding:4px;">
+
+<img src="../pictures/REAL_Block_Design_Make_External_Filter_Test.png" alt="make External Icon"
+style=" display: block;
+        margin-left: auto;
+        margin-right: auto;">
+
+</div>
 
 Ook moeten we het .xdc bestand aanpassen in de folder ***constrains*** zodat Vivado weet welke pinnen we bedoelen.
 
+<div style="border: 2px solid black;padding:4px;">
+
 ![xdc file](pictures/REAL_Block_Design_XDC_External_Filter_Test.png)
+
+</div>
 
 Nu rest ons nog de bitstream aan te maken en weer de hardware exporteren zoals we al eerder hebben gedaan bij het importeren van de filter. Ook om de SDK up te daten en de FPGA opnieuw programmeren.
 
@@ -338,7 +388,7 @@ De output van de monitor was speciaal. Enkel mask_1 en mask_2 hadden een zichtba
 
 Nu dat we weten dat de filter zijn ding doet, kunnen we de slice en concat blokken mee in het blok-design steken als IP-blokken. Hiervoor gaan we zelf een slice (shifter) en concat (concater) design block aanmaken in VHDL.
 
-We weten dat de data 24 bits lang is en dat elke kleur 8-bits in beslag neemt gaande van groen (LSB), blauw en rood.
+?> We weten dat de data 24 bits lang is en dat elke kleur 8-bits in beslag neemt gaande van groen (LSB), blauw en rood.
 
 ``` shifter VHDL
 entity shifter is
@@ -388,7 +438,11 @@ end Behavioral;
 
 Aansluiting
 
+<div style="border: 2px solid black;padding:4px;">
+
 ![block design aansluiting](pictures/REAL_Block_Design_Hookup_AdvancedFilter_4.png)
+
+</div>
 
 Dit geeft hetzelfde resultaat weer zoals bij [Advanced filter](#advanced-filter)
 
@@ -399,7 +453,6 @@ Omdat we maar over 4 switches bezitten, gaan we 2 voor de filter nemen ( in tota
 Uiteraard gaan we de .xdc file ook moeten aanpassen naar 2 verschillende switches (fir en div).
 
 ``` Advanced filter VHDL
-
 entity FilterSpecial is
     Port ( data_in : in STD_LOGIC_VECTOR (7 downto 0);
            data_out : out STD_LOGIC_VECTOR (7 downto 0);
@@ -433,7 +486,6 @@ end Behavioral;
 ```
 
 ``` slicer VHDL
-
 entity shifter is
     Port ( data_in : in STD_LOGIC_VECTOR (23 downto 0);
            data_out : out STD_LOGIC_VECTOR (7 downto 0);
@@ -516,13 +568,15 @@ end process;
 end Behavioral;
 ```
 
+<div style="border: 2px solid black;padding:4px;margin-bottom: 4px">
+
 ![block design aansluitingg](pictures/REAL_Block_Design_Hookup_AdvancedFilter_5.png)
 
 <img src="./pictures/REAL_monitor_output_AdvancedFilter_Test_3.jpg" width="32%">
 <img src="./pictures/REAL_monitor_output_AdvancedFilter_Test_2.jpg" width="32%">
 <img src="./pictures/REAL_monitor_output_AdvancedFilter_Test_1.jpg" width="32%">
 
-
+</div>
 
 # Fix video shift
 
@@ -532,16 +586,23 @@ Zoals we hebben beschreven in [Resultaat](#result) hebben we een rare image outp
 
 We gaan de slice - filter - concat tussen de component **AXI_GammaCorrection_0** en **AXI_VDMA_0** plaatsen. Hier hebben we ook de RGB waardes verpakt als 24 bit vector.
 
+<div style="border: 2px solid black;padding:4px;margin-bottom: 4px">
 
 <img src="./pictures/REAL_Block_Design_Hookup_Filter_Test_2.png" width="49%">
 <img src="./pictures/REAL_monitor_output_Filter_Test_2.jpg" width="49%">
+
+</div>
 
 wederom geen succes.
 
 i.p.v. maar op 1 datapad een filter te plaatsen, kan ik ook op alle 3 een filter plaatsen. Dit kan misschien ons probleem verhelpen.
 
+<div style="border: 2px solid black;padding:4px;margin-bottom: 4px">
+
 <img src="./pictures/REAL_Block_Design_Hookup_Filter_3_Test_2.png" width="49%">
 <img src="./pictures/REAL_monitor_output_Filter_Test_3.jpg" width="49%">
+
+</div>
 
 tevergeefs was dit ook geen succes.
 
@@ -618,9 +679,13 @@ end Behavioral;
 Zoals we zien in bovenstaande code gaan we onze uitgebreide filter gebruiken als component. Zo maken we onze code modulair als we bijvoorbeeld andere filters willen toepassen. Ook hebben we hier nu een valid in & out die zal zorgen voor de syncronisatie tussen de blokken. Ook een klok input voor extra timing.
 De selector voor de filters moeten we ook doorgeven via de syncer blok. Op deze moment heeft elke filter de zelfde selector inputs. Dit kan later eventueel opgesplitst worden.
 
+<div style="border: 2px solid black;padding:4px;margin-bottom: 4px">
+
 ![aansluiting](./pictures/REAL_Block_Design_Hookup_Syncer.png)
 
-De aansluiting is nog steeds tussen de **AXI_GammaCorrection_0** en **AXI_VDMA_0** blokken. 
+</div>
+
+!> De aansluiting is tussen de **AXI_GammaCorrection_0** en **AXI_VDMA_0** blok. 
 
 XDC File 
 
@@ -646,7 +711,14 @@ Jammer genoeg gaf dit hetzelfde resultaat.
 
 Na dat ik opnieuw de originele code heb geüpload en hiermee de data lijnen deel per deel heb opgesplitst en bekeken, heb ik het probleem denk ik gevonden.
 
-![problem solved](pictures/REAL_Block_Design_Reveal_Sync_Error.png)
+<div style="border: 2px solid black;padding:4px;margin-bottom: 4px">
+
+<img src="../pictures/REAL_Block_Design_Reveal_Sync_Error.png" alt="problem solved"
+style=" display: block;
+        margin-left: auto;
+        margin-right: auto;">
+
+</div>
 
 Zoals we kunnen zien op de foto zijn de datalijnen gewoon verbonden zoals het hoort zonder iets ertussen. Als ik nu enkel lijnen **AXI_Stream_Master** en **S_AXIS_S2MM** verbind zonder tuser, tvalid, tlast en tdata dan verkrijgen we een perfect beeld. Als ik deze weg laat en de andere met elkaar verbind, verkrijg ik een verschove beeld en de kleuren zijn mee verschoven (blauw wordt rood etc.)
 
@@ -660,11 +732,17 @@ De kleuren bleven geshift staan. Ookal veranderde we de volgorden, deed dit niet
 
 Ik was ten einde raad dus ik klikte op wat knopjes in de hoop dat het iets deed. En dit deed ook iets wat ik wou. 
 
-De FPGA werd telkens geprogrameerd met de geëxporteerde bitstream file in het SDK programma. Ik heb nu eens de FPGA geprogrammeerd in het Vivado programma (Hardware Manager) en dit gaf een juist resultaat. De kleuren waren niet verschoven. Uiteraard moeten we stap 10 van hoofdstuk [Tutorial](#tutorial) nog wel uitvoeren.
+De FPGA werd telkens geprogrameerd met de geëxporteerde bitstream file in het SDK programma. Ik heb nu eens de FPGA geprogrammeerd in het Vivado programma (Hardware Manager) en dit gaf een juist resultaat. De kleuren waren niet verschoven. 
+
+!> Uiteraard moeten we stap 10 van hoofdstuk [Tutorial](#tutorial) nog wel uitvoeren.
 
 We zullen eens proberen om de slicer block te plaatsen die de data zal uitpakken en terug zal inpakken zonder enige wijzigingen.
 
+<div style="border: 2px solid black;padding:4px;margin-bottom: 4px">
+
 ![block diagram probeersel 3](pictures/REAL_Block_Design_Hookup_Filter_Test_3.png)
+
+</div>
 
 Dit gaf me weer een verkeerd resultaat. Echter wanneer ik gewoon keer na keer de FPGA programeerde verschoof telkens de kleur totdat de kleuren weer correct stonden.
 Dit is natuurlijk geen oplossing voor het probleem. 
@@ -675,7 +753,11 @@ De verschuiving in het beeld is er nog steeds.
 
 Een laatste poging om het probleem op te lossen was een succes. Ik heb de slice & concat blokken samen met een filter ertussen nog eens tussen **v_axi4s_vid_out_0** en **rgb2dvi_0** geplaatst en dezelfde methode toegepast zoals bij [Problem continued](#problem-continued). Ook heb ik hier de datalijnen die ik kan verbinden tussen beide IP-blokken, verbonden.
 
+<div style="border: 2px solid black;padding:4px;margin-bottom: 4px">
+
 ![schema block design](pictures/REAL_Block_Design_Hookup_AdvancedFilter_3_Test_2.png)
+
+</div>
 
 Dit gaf een juist resultaat wanneer de video output werd doorgestuurd zonder enige bewerkingen op.
 
