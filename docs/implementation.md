@@ -45,6 +45,7 @@ Stappen
 ?> Kijk uiteraard ook of dat de Zybo Z7-20 board aanstaat.
 
 Na het succesvol programmeren, zou je dit moeten zien in een seriële monitor (zoals [PuTTY](https://www.putty.org/) of [Tera Term](https://ttssh2.osdn.jp/index.html.en)).
+
 ![picture of serial console](pictures/DEMO_Console_output.jpg)
 
 In de seriële monitor kunnen we nu wat instellingen wijzigen en een paar register waardes opvragen van de Pcam 5C.
@@ -450,7 +451,7 @@ We gaan de slicer en concater nog wat verbeteren door hier ook een selector toe 
 
 Omdat we maar over 4 switches bezitten, gaan we 2 voor de filter nemen ( in totaal 4 toestanden ) en 2 voor de slicer en concater blokken ( ook 4 toestanden ).
 
-Uiteraard gaan we de .xdc file ook moeten aanpassen naar 2 verschillende switches (fir en div).
+!> Uiteraard gaan we de .xdc file ook moeten aanpassen naar 2 verschillende switches (fir en div).
 
 ``` Advanced filter VHDL
 entity FilterSpecial is
