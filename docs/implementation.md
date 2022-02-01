@@ -1,5 +1,7 @@
 # Implementation
 
+Het project is te vinden onder ***Releases*** op [GitHub](https://github.com/RobbeElsermans/FPGA_Project/releases).
+
 Dit zijn de kern stappen die ik ga volgen in dit project:
 
 1. Installeer Vivado Design Suite & Xilinx SDK 2016.4,
