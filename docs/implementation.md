@@ -253,10 +253,7 @@ Stappen om de filter te importeren in het block design
 
 <div style="border: 2px solid black;padding:4px;">
 
-<img src="../docs/pictures/REAL_monitor_output_Filter_Test.jpg" alt="imported filter block"
-style=" display: block;
-        margin-left: auto;
-        margin-right: auto;">
+![hookup filter](pictures/REAL_monitor_output_Filter_Test.jpg)
 
 </div>
 
