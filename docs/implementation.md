@@ -253,7 +253,7 @@ Stappen om de filter te importeren in het block design
 
 <div style="border: 2px solid black;padding:4px;">
 
-<img src="../pictures/REAL_Block_Design_Import_Filter_Test.png" alt="imported filter block"
+<img src="../docs/pictures/REAL_monitor_output_Filter_Test.jpg" alt="imported filter block"
 style=" display: block;
         margin-left: auto;
         margin-right: auto;">
@@ -319,7 +319,7 @@ We klikken op de ***div[1:0]*** input van onze filter en nadien op het icoontje 
 
 <div style="border: 2px solid black;padding:4px;">
 
-<img src="../pictures/REAL_Block_Design_Make_External_Filter_Test.png" alt="make External Icon"
+<img src="../docs/pictures/REAL_Block_Design_Make_External_Filter_Test.png" alt="make External Icon"
 style=" display: block;
         margin-left: auto;
         margin-right: auto;">
@@ -716,7 +716,7 @@ Na dat ik opnieuw de originele code heb geüpload en hiermee de data lijnen deel
 
 <div style="border: 2px solid black;padding:4px;margin-bottom: 4px">
 
-<img src="../pictures/REAL_Block_Design_Reveal_Sync_Error.png" alt="problem solved"
+<img src="../docs/pictures/REAL_Block_Design_Reveal_Sync_Error.png" alt="problem solved"
 style=" display: block;
         margin-left: auto;
         margin-right: auto;">
